@@ -12,7 +12,7 @@ In daily heavy usage, the native architecture's full context reading causes unbe
 | **Retrieval Latency** | Increases with context | **~130ms** | ⚡ Local incremental index |
 | **Error Handling** | Prone to ReAct loops | **"Muscle Memory"** | 🧬 Auto-reflection, 0 retry cost |
 
-> 📖 Detailed benchmark data available in [BENCHMARK.md](BENCHMARK.md)
+> 📖 Detailed benchmark data available in [BENCHMARK_EN.md](BENCHMARK_EN.md)
 
 ---
 
