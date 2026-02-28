@@ -95,6 +95,6 @@ brain_synapse/
 
 ---
 
-*Created by zhangzhenwei | Contact: maxray1356660523@gmail.com*
+*Created by [zhangzhenwei](https://github.com/kiddbin) | Contact: maxray1356660523@gmail.com*
 
 *If this project helped you, please give it a 🌟 Star!*
