@@ -1259,6 +1259,63 @@ async function main() {
             console.log(`Pinned experience saved: "${pinKeyword}" -> "${pinRule}"`);
             setTimeout(() => process.exit(0), 10);
             break;
+        case 'memorize':
+            // Instant memory write - for when user explicitly asks to remember something
+            // Supports multiple formats:
+            //   memorize <concept>:<content>
+            //   memorize <concept> <content>
+            const memArgs = args.join(' ');
+            let memConcept, memContent;
+            
+            // Try colon format first
+            const memColonIndex = memArgs.indexOf(':');
+            if (memColonIndex !== -1) {
+                memConcept = memArgs.substring(0, memColonIndex).trim();
+                memContent = memArgs.substring(memColonIndex + 1).trim();
+            } else {
+                // Space-separated format: first word is concept, rest is content
+                const memParts = args;
+                if (memParts.length < 2) {
+                    console.error('Usage: memorize <concept>:<content>');
+                    console.error('   or: memorize <concept> <content>');
+                    console.error('');
+                    console.error('Examples:');
+                    console.error('  node skill.js memorize "user_preference:prefers Chinese communication"');
+                    console.error('  node skill.js memorize "user_preference" "prefers Chinese communication"');
+                    console.error('  node skill.js memorize "important:meeting at 3pm tomorrow"');
+                    process.exit(1);
+                }
+                memConcept = memParts[0];
+                memContent = memParts.slice(1).join(' ');
+            }
+            
+            if (!memConcept || !memContent) {
+                console.error('Concept and content are required');
+                process.exit(1);
+            }
+            
+            // Write to synapse_weights.json with high initial weight
+            const memLower = memConcept.toLowerCase();
+            const timestamp = Date.now();
+            memory.weights[memLower] = {
+                weight: 2.5,  // High initial weight for explicit memories
+                lastAccess: timestamp,
+                lastSeen: timestamp,
+                firstSeen: timestamp,
+                count: 1,
+                refs: [],
+                pinned: true,
+                rule: memContent,
+                source: 'explicit_memorize',
+                memorizedAt: new Date().toISOString()
+            };
+            memory.save();
+            
+            console.log(`[Synapse] Instant memory physically written: "${memConcept}"`);
+            console.log(`[Synapse] Content: "${memContent}"`);
+            console.log(`[Synapse] Weight: 2.5 (high priority, will not fade easily)`);
+            setTimeout(() => process.exit(0), 10);
+            break;
         case 'get-pinned':
             const pinnedRules = Object.entries(memory.weights)
                 .filter(([_, val]) => val.pinned)
@@ -1314,27 +1371,30 @@ async function main() {
             console.log(JSON.stringify(memory.observe(sessionHistory), null, 2));
             break;
         default:
-            console.log(`Brain Synapse CLI - 数字突触记忆系统
+            console.log(`Brain Synapse CLI - Digital Synapse Memory System
 
 Usage: node skill.js <command> [options]
 
 Commands:
-  distill              蒸馏记忆（将日志转为权重）
-  recall <query>       联想检索
-    --deep, -d         深度检索（包含冷库）
-  deep-recall <query>  催眠检索（从冷库恢复记忆）
-  latent-stats         查看冷库统计
-  forget               手动触发遗忘周期
-  get-top-concepts [n] 获取权重最高的概念（默认5个）
-  pin-exp <kw>:<rule>  固定经验规则（永不衰减）
-  get-pinned           查看所有已固定的规则
-  observe [file]       观察会话模式
+  distill              Distill memories (convert logs to weights)
+  recall <query>       Associative recall
+    --deep, -d         Deep recall (includes cold storage)
+  deep-recall <query>  Hypnotic recall (recover from cold storage)
+  latent-stats         View cold storage statistics
+  forget               Manual LTD cycle
+  get-top-concepts [n] Get top weighted concepts (default 5)
+  pin-exp <kw>:<rule>  Pin experience rule (never decays)
+  memorize <kw>:<content>  Instant memory write (CRITICAL: use when user asks to remember)
+  get-pinned           View all pinned rules
+  observe [file]       Observe session patterns
 
 Examples:
-  node skill.js recall "浏览器"
-  node skill.js recall "浏览器" --deep
-  node skill.js deep-recall "很久以前的量化策略"
-  node skill.js pin-exp "browser_fill:遇到fill报错必须用type替代"
+  node skill.js recall "browser"
+  node skill.js recall "browser" --deep
+  node skill.js deep-recall "quant strategy from long ago"
+  node skill.js memorize "user_preference:prefers Chinese communication"
+  node skill.js memorize "important:meeting at 3pm tomorrow"
+  node skill.js pin-exp "browser_fill:use type instead of fill on errors"
   node skill.js get-pinned
   node skill.js latent-stats`);
     }
