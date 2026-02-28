@@ -1,21 +1,21 @@
 /**
  * @file brain_synapse/observer.js
- * @description 观察者模式实现 - 读写分离架构
+ * @description Observer Pattern Implementation - Read/Write Separation Architecture
  * @version 2.0.0
  * 
- * ==================== 功能说明 ====================
+ * ==================== Functionality Description ====================
  * 
- * 本模块实现观察者模式，用于自动识别用户行为模式并创建"本能"(Instincts)。
+ * This module implements the Observer Pattern for automatically identifying user behavior patterns and creating "Instincts".
  * 
- * 读写分离架构：
- * - 极速写：recordObservation() 只做同步追加到 observations.jsonl
- * - 重度算：performBatchAnalysis() 在 distill 时被调用，分析并生成 pinned 规则
+ * Read/Write Separation Architecture:
+ * - Ultra-fast write: recordObservation() only performs synchronous append to observations.jsonl
+ * - Heavy computation: performBatchAnalysis() is called during distill, analyzes and generates pinned rules
  * 
- * 观察类型：
- * - user_correction: 用户纠正模式
- * - error_resolution: 错误解决模式
- * - workflow: 工作流模式
- * - tool_preference: 工具偏好模式
+ * Observation Types:
+ * - user_correction: User correction pattern
+ * - error_resolution: Error resolution pattern
+ * - workflow: Workflow pattern
+ * - tool_preference: Tool preference pattern
  */
 
 const fs = require('fs');
@@ -48,7 +48,7 @@ class ObserverPattern {
                     return true;
                 }
             } catch (e) {
-                // 锁文件被占用，等待
+                // Lock file is occupied, wait
             }
             if (i < maxRetries - 1) {
                 const start = Date.now();
@@ -112,13 +112,13 @@ class ObserverPattern {
      * 分析所有观察记录，生成 pinned 规则
      */
     performBatchAnalysis() {
-        console.log('[Observer] 开始批量分析...');
+        console.log('[Observer] Starting batch analysis...');
         
         const count = this.getObservationCount();
-        console.log(`[Observer] 发现 ${count} 条观察记录`);
+        console.log(`[Observer] Found ${count} observation records`);
         
         if (count < 5) {
-            console.log(`[Observer] 观察记录不足（需要 5 条，当前 ${count} 条）`);
+            console.log(`[Observer] Insufficient observation records (need 5, current ${count})`);
             return;
         }
         
@@ -168,10 +168,10 @@ class ObserverPattern {
         }
         
         if (instinctCreated > 0) {
-            console.log(`[Observer] ✅ 创建了 ${instinctCreated} 个本能规则`);
+            console.log(`[Observer] ✅ Created ${instinctCreated} instinct rules`);
             this.clearObservations();
         } else {
-            console.log(`[Observer] 未检测到模式（需要 3+ 条相似观察）`);
+            console.log(`[Observer] No patterns detected (need 3+ similar observations)`);
         }
     }
 
@@ -246,7 +246,7 @@ class ObserverPattern {
      */
     createOrUpdateInstinct(instinct) {
         if (!this.acquireLock()) {
-            console.log(`[Observer] 无法获取锁，跳过本能创建: ${instinct.id}`);
+            console.log(`[Observer] Failed to acquire lock, skipping instinct creation: ${instinct.id}`);
             return false;
         }
         
@@ -275,10 +275,10 @@ class ObserverPattern {
             };
             
             fs.writeFileSync(this.WEIGHTS_FILE, JSON.stringify(weights, null, 2), 'utf8');
-            console.log(`[Observer] ✅ 创建了固定本能: ${instinct.id}`);
+            console.log(`[Observer] ✅ Created pinned instinct: ${instinct.id}`);
             return true;
         } catch (error) {
-            console.error(`[Observer] 创建本能失败: ${error.message}`);
+            console.error(`[Observer] Failed to create instinct: ${error.message}`);
             return false;
         } finally {
             this.releaseLock();

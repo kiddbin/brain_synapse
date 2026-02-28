@@ -1,174 +1,175 @@
 /**
  * @file brain_synapse/config.js
- * @description 集中配置文件 - 用于管理所有可配置的参数
+ * @description Central configuration file for managing all tunable parameters
  * 
- * ==================== 配置说明 ====================
+ * ==================== Configuration Guide ====================
  * 
- * 本文件包含 brain_synapse 系统的所有可配置项。
- * 开源版本已移除所有隐私信息，请按需配置。
+ * This file contains all configurable options for the brain_synapse system.
+ * The open-source version has removed all private information - configure as needed.
  * 
- * 【支持的向量 API 提供商】
- * - Voyage AI (推荐): https://dash.voyageai.com
+ * 【Supported Vector API Providers】
+ * - Voyage AI (Recommended): https://dash.voyageai.com
  * - Hugging Face: https://huggingface.co
- * - Ollama (本地): http://localhost:11434
+ * - Ollama (Local): http://localhost:11434
  * 
- * 【本地运行模式】
- * - 即使不配置 API Key，系统也能完全本地运行！
- * - 不使用向量搜索时，系统会回退到本地文件搜索
- * - 所有记忆功能（蒸馏、联想检索、遗忘周期等）都能正常工作
+ * 【Local-Only Mode】
+ * - The system can run fully locally without any API Key!
+ * - When vector search is not configured, the system falls back to local file search
+ * - All memory functions (distillation, associative recall, forgetting cycles, etc.) work normally
  * 
- * ==================== 配置项 ====================
+ * ==================== Configuration Options ====================
  */
 
-// ==================== 向量搜索 API 配置 ====================
-// 【可选】如需启用语义向量搜索，请配置以下选项
-// 方式1: 在此直接填写（不推荐开源项目使用）
+// ==================== Vector Search API Configuration ====================
+// 【Optional】Configure the following to enable semantic vector search
+// Method 1: Fill in directly here (not recommended for open-source projects)
 // CONFIG.vectorSearchApi.apiKey = 'your-api-key-here';
 
-// 方式2: 设置环境变量（推荐）
+// Method 2: Set environment variables (recommended)
 // Voyage AI: export VOYAGE_API_KEY='your-key'    (Linux/Mac)
 // HuggingFace: export HF_TOKEN='your-token'
-// Ollama: 无需设置 (本地离线)
+// Ollama: No configuration needed (local offline)
 
 const CONFIG = {
-    // ==================== 核心配置 ====================
+    // ==================== Core Configuration ====================
     
-    // 工作目录 - 指向包含 memory 文件夹的目录
-    workspaceRoot: null,  // 运行时自动检测
+    // Workspace directory - points to the directory containing the memory folder
+    workspaceRoot: null,  // Auto-detected at runtime
     
-    // 活跃记忆存储路径
+    // Active memory storage path
     weightsFile: 'synapse_weights.json',
     
-    // 冷库记忆存储路径（遗忘的记忆）
+    // Cold storage memory path (forgotten memories)
     latentWeightsFile: 'latent_weights.json',
     
-    // ==================== LTD (Long-Term Depression) 遗忘周期参数 ====================
-    // 【新手安全测试模式 - 专为前期测试设计】
+    // ==================== LTD (Long-Term Depression) Forgetting Cycle Parameters ====================
+    // 【Beginner Safe Testing Mode - Designed for early testing】
     // 
-    // [为什么是保守配置]
-    // 刚装好系统时，大多数人都会胡乱测试。如果 AI 学习太敏锐、记忆留存太久，
-    // 反而会把错误测试固化成垃圾记忆，甚至导致 Token 浪费。
+    // [Why Conservative Settings]
+    // When first installing the system, most people will test randomly. If the AI learns too quickly
+    // and retains memories too long, it will solidify incorrect tests into garbage memories,
+    // even causing Token waste.
     // 
-    // [参数说明]
-    // - decayRate 0.90: 较快的遗忘率，半衰期约 7 轮
-    // - forgetThreshold 0.2: 较容易进入冷库，防止脏数据污染
-    // - minObservationsForInstinct 5: 保守阈值，防止把"瞎折腾"当成真理
+    // [Parameter Description]
+    // - decayRate 0.90: Faster forgetting rate, half-life ~7 turns
+    // - forgetThreshold 0.2: Easier to move to cold storage, prevents dirty data pollution
+    // - minObservationsForInstinct 5: Conservative threshold, prevents "random testing" from becoming "truth"
     // 
     ltd: {
-        // 每次遗忘周期的权重衰减率
-        // [新手安全配置] 0.90 = 每次衰减10%，半衰期约 7 轮
-        // 快速遗忘适合前期测试，确保上下文保持极简，不浪费 Token
+        // Weight decay rate per forgetting cycle
+        // [Beginner Safe Config] 0.90 = 10% decay per turn, half-life ~7 turns
+        // Fast forgetting suitable for early testing, ensures context stays minimal, saves Tokens
         decayRate: 0.90,
         
-        // 低于此权重值，记忆移入冷库
-        // [新手安全配置] 0.2 较高门槛，记忆稍微不用就立刻踢入冷库，极致省 Token
+        // Below this weight value, memory moves to cold storage
+        // [Beginner Safe Config] 0.2 higher threshold, unused memories quickly move to cold storage, extreme Token saving
         forgetThreshold: 0.2,
         
-        // 从冷库复苏后的初始权重
+        // Initial weight when reviving from cold storage
         revivedWeight: 0.5,
         
-        // 新记忆创建时的初始权重
+        // Initial weight for new memories
         initialWeight: 1.0
     },
     
-    // ==================== 向量搜索 API 配置 ====================
-    // 【可选】如需启用语义搜索，请配置
-    // 支持多提供商：Voyage AI, Hugging Face, Ollama
+    // ==================== Vector Search API Configuration ====================
+    // 【Optional】Configure to enable semantic search
+    // Supports multiple providers: Voyage AI, Hugging Face, Ollama
     vectorSearchApi: {
-        // API 地址（根据提供商选择）
+        // API URL (choose based on provider)
         // Voyage AI:   'https://api.voyageai.com/v1/embeddings'
         // HuggingFace: 'https://api-inference.huggingface.co/pipeline/feature-extraction/BAAI/bge-m3'
         // Ollama:      'http://localhost:11434/api/embeddings'
         apiUrl: 'https://api-inference.huggingface.co/pipeline/feature-extraction/BAAI/bge-m3',
         
-        // 向量模型选择
-        // Voyage AI:   'voyage-3' (SOTA) 或 'voyage-multilingual-2'
-        // HuggingFace: 'BAAI/bge-m3' (推荐多语言) 或 'BAAI/bge-large-zh-v1.5' (中文)
+        // Vector model selection
+        // Voyage AI:   'voyage-3' (SOTA) or 'voyage-multilingual-2'
+        // HuggingFace: 'BAAI/bge-m3' (recommended multilingual) or 'BAAI/bge-large-zh-v1.5' (Chinese)
         // Ollama:      'nomic-embed-text'
         model: 'BAAI/bge-m3',
         
-        // API Key - 支持环境变量或直接填写
-        // 优先级: VOYAGE_API_KEY > HF_TOKEN > SILICONFLOW_API_KEY > 直接填写
-        // 如果未配置，系统会自动回退到本地搜索
+        // API Key - supports environment variables or direct fill
+        // Priority: VOYAGE_API_KEY > HF_TOKEN > SILICONFLOW_API_KEY > direct fill
+        // If not configured, system will automatically fall back to local search
         apiKey: process.env.VOYAGE_API_KEY || process.env.HF_TOKEN || process.env.SILICONFLOW_API_KEY || '',
         
-        // 超时设置（毫秒）
+        // Timeout setting (milliseconds)
         timeout: 5000,
         
-        // 最大返回结果数
+        // Maximum number of results
         maxResults: 5,
         
-        // 文本分块大小
+        // Text chunk size
         chunkSize: 1000
     },
     
-    // ==================== 本地文件搜索配置 ====================
-    // 【必选】无需 API Key，完全本地运行
+    // ==================== Local File Search Configuration ====================
+    // 【Required】No API Key needed, runs completely locally
     localSearch: {
-        // 最大执行时间（毫秒）
-        // 防止搜索占用过多资源
+        // Maximum execution time (milliseconds)
+        // Prevents search from consuming too many resources
         maxExecutionTime: 100,
         
-        // 缓存文件路径
+        // Cache file path
         cacheFile: 'local_index_cache.json'
     },
     
-    // ==================== Observer 模式配置 ====================
-    // 【新手安全测试模式 - 保守的潜意识固化】
+    // ==================== Observer Mode Configuration ====================
+    // 【Beginner Safe Testing Mode - Conservative subconscious solidification】
     // 
-    // [为什么是保守配置]
-    // 新手前期经常会胡乱测试。如果阈值太低，AI 会把你的"瞎折腾"当成真理
-    // 固化下来，产生垃圾本能。设为 5 次可以有效防止误学。
+    // [Why Conservative Settings]
+    // Beginners often test randomly early on. If threshold is too low, AI will treat your "random testing" as "truth"
+    // and solidify it into garbage instincts. Setting to 5 times effectively prevents mislearning.
     // 
     observer: {
-        // 创建本能（Instinct）所需的最少观察次数
-        // [新手安全配置] 5 次保守阈值，防止把测试行为固化为本能
-        // 初期测试时行为不稳定，需要更多次数确认是真实模式
+        // Minimum observations required to create an Instinct
+        // [Beginner Safe Config] 5 times conservative threshold, prevents test behavior from becoming instinct
+        // During early testing, behavior is unstable, need more observations to confirm real patterns
         minObservationsForInstinct: 5,
         
-        // 置信度参数
-        confidenceBase: 0.3,        // 基础置信度
-        confidenceIncrement: 0.05, // 每次正向反馈增量
-        confidenceDecrement: 0.1,  // 每次负向反馈减量
-        confidenceDecayWeekly: 0.02 // 每周自然衰减
+        // Confidence parameters
+        confidenceBase: 0.3,        // Base confidence
+        confidenceIncrement: 0.05, // Increment per positive feedback
+        confidenceDecrement: 0.1,  // Decrement per negative feedback
+        confidenceDecayWeekly: 0.02 // Natural weekly decay
     },
     
-    // ==================== 关键词提取配置 ====================
+    // ==================== Keyword Extraction Configuration ====================
     keywords: {
-        // 最小词长度
+        // Minimum word length
         minWordLength: 2,
         
-        // 最大权重倍数
-        // 防止某个词权重过高而主导检索
+        // Maximum weight multiplier
+        // Prevents any single word from dominating retrieval due to excessive weight
         maxWeightMultiplier: 2.0,
         
-        // 衰减因子
+        // Decay factor
         decayFactor: 0.1,
         
-        // 有效的词性标签
+        // Valid POS tags
         validPosTags: ['n', 'nr', 'nz', 'eng', 'noun', 'NN', 'NNS', 'NNP', 'NNPS', 'FW']
     },
     
-    // ==================== 功能开关 ====================
+    // ==================== Feature Toggles ====================
     features: {
-        // 是否启用向量搜索（需要配置 API Key）
-        // 自动检测：如果有有效的 API Key 则启用
+        // Enable vector search (requires API Key configuration)
+        // Auto-detect: enabled if valid API Key exists
         enableVectorSearch: !!(process.env.VOYAGE_API_KEY || process.env.HF_TOKEN || process.env.SILICONFLOW_API_KEY),
         
-        // 是否启用 Observer 模式（自动学习用户行为）
+        // Enable Observer mode (automatically learn user behavior)
         enableObserver: true,
         
-        // 是否启用自动蒸馏
+        // Enable automatic distillation
         enableAutoDistill: true
     }
 };
 
-// 自动检测工作目录
+// Auto-detect workspace directory
 const path = require('path');
 const fs = require('fs');
 
 function detectWorkspaceRoot() {
-    // 尝试从当前目录向上查找
+    // Try to find by searching upward from current directory
     let currentDir = __dirname;
     
     for (let i = 0; i < 5; i++) {
@@ -181,14 +182,14 @@ function detectWorkspaceRoot() {
         currentDir = parent;
     }
     
-    // 默认返回父目录
+    // Default to parent directory
     return path.resolve(__dirname, '..');
 }
 
-// 初始化工作目录
+// Initialize workspace directory
 CONFIG.workspaceRoot = detectWorkspaceRoot();
 
-// 如果环境变量中有 API Key，自动启用向量搜索
+// Auto-enable vector search if API Key exists in environment variables
 if (process.env.SILICONFLOW_API_KEY) {
     CONFIG.features.enableVectorSearch = true;
 }

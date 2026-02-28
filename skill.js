@@ -1,15 +1,15 @@
 /**
  * @file brain_synapse/skill.js
- * @description 数字突触 (Digital Synapse) 记忆核心实现
+ * @description Digital Synapse - Core Memory Implementation
  * @author Foundry (on behalf of Antigravity)
  * @version 1.1.0
  * 
- * 基于《人脑记忆机制深度研究报告》构建：
- * 1. 稀疏编码 (Sparse Coding): 仅提取高权重特征，忽略冗余信息。
- * 2. 分级存储 (Hierarchical Storage): Active -> Schema -> Latent。
- * 3. 长时程抑制 (LTD - Long-Term Depression): 主动遗忘低频突触。
- * 4. 联想检索 (Spreading Activation): 激活扩散机制。
- * 5. 观察者模式 (Observer Pattern): 主动识别会话模式和行为规律。
+ * Built based on in-depth research on human memory mechanisms:
+ * 1. Sparse Coding: Extract high-weight features only, ignore redundant info.
+ * 2. Hierarchical Storage: Active -> Schema -> Latent.
+ * 3. LTD (Long-Term Depression): Active forgetting of low-frequency synapses.
+ * 4. Spreading Activation: Associative recall mechanism.
+ * 5. Observer Pattern: Proactively identify session patterns and behavioral rules.
  */
 
 const fs = require('fs');
@@ -39,13 +39,13 @@ const WORKSPACE_ROOT = path.resolve(__dirname, '../..');
 const LOGS_DIR = path.join(WORKSPACE_ROOT, 'workspace/memory'); // OpenClaw's active memory
 const ARCHIVE_DIR = path.join(WORKSPACE_ROOT, 'workspace/memory/archive'); // Latent storage
 const WEIGHTS_FILE = path.join(__dirname, 'synapse_weights.json');
-const LATENT_WEIGHTS_FILE = path.join(__dirname, 'latent_weights.json'); // 冷库：低权重记忆归档
+const LATENT_WEIGHTS_FILE = path.join(__dirname, 'latent_weights.json'); // Cold storage: archived low-weight memories
 const INSTINCTS_DIR = path.join(__dirname, 'instincts'); // Observer instincts storage
 
 // LTD Parameters
-const DECAY_RATE = 0.90; // 每次遗忘周期的衰减率
-const FORGET_THRESHOLD = 0.2; // 低于此权重则移入冷库（不再删除）
-const REVIVED_WEIGHT = 0.5; // 从冷库复苏后的初始权重
+const DECAY_RATE = 0.90; // Weight decay rate per forgetting cycle
+const FORGET_THRESHOLD = 0.2; // Below this weight, move to cold storage (not deleted)
+const REVIVED_WEIGHT = 0.5; // Initial weight when reviving from cold storage
 const INITIAL_WEIGHT = 1.0;
 
 const VALID_POS_TAGS = ['n', 'nr', 'nz', 'eng', 'noun', 'NN', 'NNS', 'NNP', 'NNPS', 'FW'];
@@ -156,11 +156,11 @@ function extractKeywords(text) {
 }
 
 // Observer Parameters
-const MIN_OBSERVATIONS_FOR_INSTINCT = 3; // 创建本能所需的最少观察次数
-const CONFIDENCE_BASE = 0.3; // 基础置信度
-const CONFIDENCE_INCREMENT = 0.05; // 每次确认观察增加的置信度
-const CONFIDENCE_DECREMENT = 0.1; // 每次矛盾观察减少的置信度
-const CONFIDENCE_DECAY_WEEKLY = 0.02; // 每周无观察的置信度衰减
+const MIN_OBSERVATIONS_FOR_INSTINCT = 3; // Minimum observations to create an instinct
+const CONFIDENCE_BASE = 0.3; // Base confidence level
+const CONFIDENCE_INCREMENT = 0.05; // Confidence increment per confirmed observation
+const CONFIDENCE_DECREMENT = 0.1; // Confidence decrement per conflicting observation
+const CONFIDENCE_DECAY_WEEKLY = 0.02; // Weekly confidence decay without observation
 
 // Ensure directories exist
 if (!fs.existsSync(ARCHIVE_DIR)) fs.mkdirSync(ARCHIVE_DIR, { recursive: true });
@@ -188,7 +188,7 @@ function silentObserve(context, type = 'workflow') {
         
         obs.recordObservation(observation);
     } catch (e) {
-        // 静默失败，不影响主流程
+        // Silent failure, does not affect main flow
     }
 }
 
@@ -197,7 +197,7 @@ function silentObserve(context, type = 'workflow') {
 class SynapseMemory {
     constructor() {
         this.weights = JSON.parse(fs.readFileSync(WEIGHTS_FILE, 'utf8'));
-        this.latentWeights = JSON.parse(fs.readFileSync(LATENT_WEIGHTS_FILE, 'utf8')); // 冷库记忆
+        this.latentWeights = JSON.parse(fs.readFileSync(LATENT_WEIGHTS_FILE, 'utf8')); // Cold storage memories
         this.observationsDir = path.join(__dirname, 'observations');
         this.instinctsDir = path.join(__dirname, 'instincts');
         
@@ -224,7 +224,7 @@ class SynapseMemory {
     async distill(forceToday = false) {
         console.log('[Synapse] Starting distillation process...');
         
-        // 优先执行观察者分析（不管有没有历史日志）
+        // Prioritize observer analysis (regardless of historical logs)
         try {
             const Observer = require('./observer.js');
             const obs = new Observer();
@@ -243,7 +243,7 @@ class SynapseMemory {
         let processedCount = 0;
         let keywordsExtracted = 0;
         
-        // 收集每个文件的关键词用于赫布链接构建
+        // Collect keywords from each file for Hebbian linkage construction
         const fileKeywordsMap = new Map();
 
         if (logs.length === 0) {
@@ -282,11 +282,11 @@ class SynapseMemory {
                 keywordsExtracted++;
             });
             
-            // 收集该文件的关键词用于赫布链接
+            // Collect keywords from this file for Hebbian linkage
             fileKeywordsMap.set(file, Array.from(keywords).map(k => k.toLowerCase()));
         });
         
-        // 处理 IMPORTANT/TODO 等特殊概念行
+        // Process IMPORTANT/TODO special concept lines
         logs.forEach(file => {
             const filePath = path.join(LOGS_DIR, file);
             const content = fs.readFileSync(filePath, 'utf8');
@@ -325,10 +325,10 @@ class SynapseMemory {
             }
         });
 
-        // 应用"召回但未使用"的 LTD 惩罚
+        // Apply LTD penalty for "recalled but not used"
         this.applyUnusedRecallPenalty();
 
-        // 构建赫布链接（零成本类脑联想）
+        // Build Hebbian linkages (zero-cost brain-like association)
         this.buildHebbianLinks(fileKeywordsMap);
 
         this.applyLTD();
@@ -371,17 +371,17 @@ class SynapseMemory {
         // 2. Spreading Activation (Simulated)
         const topConcepts = activatedConcepts.sort((a, b) => this.weights[b].weight - this.weights[a].weight).slice(0, 5);
         
-        // 4. 短时程增强 (LTP) + 追踪 recall 次数
-        // 复习强化：只增加 weight，不重置 firstSeen（保护存活时钟）
+        // 4. Short-Term Potentiation (LTP) + track recall count
+        // Reinforcement: only increase weight, do not reset firstSeen (protect lifespan clock)
         topConcepts.forEach(c => {
             this.weights[c].lastAccess = Date.now();
             this.weights[c].weight += 0.1;
-            // 追踪被 recall 的次数（用于后续判断是否"召回但未使用"）
+            // Track recall count (for determining if "recalled but not used")
             this.weights[c].recall_count = (this.weights[c].recall_count || 0) + 1;
-            // 注意：firstSeen 绝对不修改！它是计算 lifespan 的唯一锚点
+            // Note: firstSeen must NEVER be modified! It's the only anchor for lifespan calculation
         });
         
-        // 5. 赫布扩散激活（零成本类脑联想）
+        // 5. Hebbian spreading activation (zero-cost brain-like association)
         const hebbianTerms = this.getHebbianAssociations(query);
         const expandedQuery = [query, ...hebbianTerms];
         console.log(`[Synapse] Hebbian expansion: "${query}" → [${expandedQuery.join(', ')}]`);
@@ -445,10 +445,10 @@ class SynapseMemory {
             searchSource = 'local-file-search';
         }
         
-        // 4. Deep recall (催眠检索) - only when explicitly requested
+        // 4. Deep recall (hypnotic retrieval) - only when explicitly requested
         let deepRecallResult = null;
         if (deep) {
-            // deep recall 也支持赫布联想扩展
+            // Deep recall also supports Hebbian association expansion
             deepRecallResult = await this.deepRecall(expandedQuery, reviveLimit);
         }
         
@@ -607,11 +607,11 @@ class SynapseMemory {
         
         let linkCount = 0;
         
-        // 遍历每个文件的关键词列表
+        // Iterate through each file's keyword list
         for (const [file, keywords] of fileKeywordsMap) {
             if (!keywords || keywords.length < 2) continue;
             
-            // 对该文件内的所有关键词对建立双向链接
+            // Build bidirectional links for all keyword pairs in this file
             for (let i = 0; i < keywords.length; i++) {
                 for (let j = i + 1; j < keywords.length; j++) {
                     const wordA = keywords[i];
@@ -619,7 +619,7 @@ class SynapseMemory {
                     
                     if (wordA === wordB) continue;
                     
-                    // 初始化 synapses 字段（如果不存在）
+                    // Initialize synapses field (if not exists)
                     if (!this.weights[wordA]) {
                         this.weights[wordA] = { weight: 0.5, synapses: {} };
                     }
@@ -633,7 +633,7 @@ class SynapseMemory {
                         this.weights[wordB].synapses = {};
                     }
                     
-                    // 增加共现权重
+                    // Increase co-occurrence weight
                     this.weights[wordA].synapses[wordB] = (this.weights[wordA].synapses[wordB] || 0) + 1;
                     this.weights[wordB].synapses[wordA] = (this.weights[wordB].synapses[wordA] || 0) + 1;
                     
@@ -657,27 +657,27 @@ class SynapseMemory {
     applyUnusedRecallPenalty() {
         let penalized = 0;
         const PENALTY_RATE = 0.1;
-        const RECALL_THRESHOLD = 3; // 至少被 recall 3 次才触发检查
+        const RECALL_THRESHOLD = 3; // Minimum recall count to trigger check
         
         Object.keys(this.weights).forEach(key => {
             const concept = this.weights[key];
             if (concept.pinned) return;
             if (!concept.recall_count || concept.recall_count < RECALL_THRESHOLD) return;
             
-            // 如果 recall_count >= 3，但 count 没有显著增加，说明"召回但未使用"
-            // 计算预期的 count 增长：如果每次 recall 都使用了，count 应该 >= recall_count * 0.5
+            // If recall_count >= 3, but count hasn't increased significantly, it means "recalled but not used"
+            // Calculate expected count growth: if every recall was used, count should be >= recall_count * 0.5
             const expectedMinCount = concept.recall_count * 0.5;
             const actualCount = concept.count || 0;
             
             if (actualCount < expectedMinCount) {
-                // 触发 LTD 惩罚
+                // Apply LTD penalty
                 const penalty = PENALTY_RATE * concept.recall_count;
                 concept.weight -= penalty;
                 console.log(`[Synapse] Predictive LTD: "${key}" recall=${concept.recall_count} count=${actualCount} penalty=${penalty.toFixed(3)}`);
                 penalized++;
             }
             
-            // 清零 recall_count，开始新一轮追踪
+            // Reset recall_count, start new tracking cycle
             concept.recall_count = 0;
         });
         
@@ -698,16 +698,16 @@ class SynapseMemory {
         const associations = [];
         const lowerQuery = query.toLowerCase();
         
-        // 初始化 synapses（兼容旧数据）
+        // Initialize synapses (compatible with old data)
         if (this.weights[lowerQuery] && !this.weights[lowerQuery].synapses) {
             this.weights[lowerQuery].synapses = {};
         }
         
-        // 获取当前词的所有关联词
+        // Get all high-weight associated words linked to the query word via Hebbian links
         const synapses = this.weights[lowerQuery]?.synapses || {};
         
         if (Object.keys(synapses).length > 0) {
-            // 按权重排序，提取 Top N
+            // Sort by weight, extract Top N
             const sorted = Object.entries(synapses)
                 .sort((a, b) => b[1] - a[1])
                 .slice(0, topN)
@@ -768,7 +768,7 @@ class SynapseMemory {
      * @returns {Object} Revived memories and search results
      */
     async deepRecall(queryOrArray, limit = 5) {
-        // 支持数组查询（赫布联想扩展）
+        // Support array query (Hebbian association expansion)
         const queries = Array.isArray(queryOrArray) ? queryOrArray : [queryOrArray];
         const mainQuery = queries.join(' + ');
         console.log(`[Synapse] Deep recall (催眠检索): "${mainQuery}"`);
@@ -776,7 +776,7 @@ class SynapseMemory {
         const revived = [];
         const latentKeys = Object.keys(this.latentWeights);
         
-        // Search in latent storage - 支持多查询
+        // Search in latent storage - support multiple queries
         const matchedKeys = latentKeys.filter(k => {
             const keyLower = k.toLowerCase();
             return queries.some(q => {
