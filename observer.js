@@ -38,7 +38,7 @@ class ObserverPattern {
     }
 
     /**
-     * 简单的文件锁机制（避免 JSON 并发写入损坏）
+     * Simple file lock mechanism (prevents JSON corruption from concurrent writes)
      */
     acquireLock(maxRetries = 5, delayMs = 50) {
         for (let i = 0; i < maxRetries; i++) {
@@ -69,8 +69,8 @@ class ObserverPattern {
     }
 
     /**
-     * 极速写：只做同步追加到文件
-     * @param {Object} observation - 观察数据
+     * Ultra-fast write: only performs synchronous append to file
+     * @param {Object} observation - Observation data
      */
     recordObservation(observation) {
         const timestamp = new Date().toISOString();
@@ -85,14 +85,14 @@ class ObserverPattern {
         try {
             fs.appendFileSync(this.observationsFile, observationLine, 'utf8');
         } catch (error) {
-            console.error(`[Observer] 记录观察失败: ${error.message}`);
+            console.error(`[Observer] Failed to record observation: ${error.message}`);
         }
         
         return observationRecord.id;
     }
 
     /**
-     * 获取观察记录数量
+     * Get observation record count
      */
     getObservationCount() {
         try {
@@ -108,8 +108,8 @@ class ObserverPattern {
     }
 
     /**
-     * 重度算：在 distill 时被调用
-     * 分析所有观察记录，生成 pinned 规则
+     * Heavy computation: called during distill
+     * Analyze all observation records, generate pinned rules
      */
     performBatchAnalysis() {
         console.log('[Observer] Starting batch analysis...');
@@ -176,7 +176,7 @@ class ObserverPattern {
     }
 
     /**
-     * 从分析结果生成本能
+     * Generate instincts from analysis results
      */
     generateInstinctFromAnalysis(type, key, observations) {
         let instinct = null;
@@ -242,7 +242,7 @@ class ObserverPattern {
     }
 
     /**
-     * 创建或更新本能（写入 synapse_weights.json，带 pinned: true）
+     * Create or update instinct (writes to synapse_weights.json, with pinned: true)
      */
     createOrUpdateInstinct(instinct) {
         if (!this.acquireLock()) {
@@ -286,7 +286,7 @@ class ObserverPattern {
     }
 
     /**
-     * 清空观察记录文件
+     * Clear observation record file
      */
     clearObservations() {
         try {
@@ -337,15 +337,15 @@ class ObserverPattern {
         
         if (analysisContext.includes('QMD') || analysisContext.includes('GitHub')) {
             analysisResult.observedPainPoints = [
-                "依赖外部工具链（如QMD）导致系统脆弱性",
-                "GitHub克隆失败可能与网络环境或认证问题相关",
-                "缺乏自动化的错误恢复机制"
+                "Dependency on external toolchains (e.g., QMD) increases system fragility",
+                "GitHub clone failures may be related to network environment or authentication issues",
+                "Lack of automated error recovery mechanisms"
             ];
             
             analysisResult.recommendations = [
-                "建立本地化的备份搜索机制，减少对外部工具的依赖",
-                "实施更健壮的错误处理和重试策略",
-                "创建标准化的开发环境配置流程"
+                "Establish localized backup search mechanisms to reduce dependency on external tools",
+                "Implement more robust error handling and retry strategies",
+                "Create standardized development environment configuration processes"
             ];
         }
         
