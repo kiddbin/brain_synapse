@@ -16,12 +16,48 @@ A biologically-inspired memory system for AI Agents.
 - **Deep Recall**: Recover forgotten memories from cold storage
 - **Observer Pattern**: Automatic pattern detection and instinct creation
 - **Instant Memorize**: Explicit memory write with high priority
+- **Dual-Lane Distillation**: Fast lane (~100ms) + Slow lane (background)
+
+## Architecture
+
+```
+/new 触发
+    ↓
+┌─────────────────────────────────────────────────────────┐
+│ Fast Lane (Hippocampus) - Synchronous, ~100ms           │
+│ distill-core --force                                    │
+│ - Pure local I/O + CPU                                  │
+│ - Extracts keywords from memory/*.md                    │
+│ - Updates synapse_weights.json                          │
+│ - Guarantees memory continuity                          │
+└─────────────────────────────────────────────────────────┘
+    ↓
+┌─────────────────────────────────────────────────────────┐
+│ Slow Lane (Cortex) - Background, Detached               │
+│ distill-vector                                          │
+│ - Async API calls for semantic embedding                │
+│ - Non-blocking, runs in background                      │
+│ - Updates vector_cache.json                             │
+└─────────────────────────────────────────────────────────┘
+    ↓
+┌─────────────────────────────────────────────────────────┐
+│ Recall: session_start                                   │
+│ - Retrieves relevant memories                           │
+│ - Caches results for AI consumption                     │
+└─────────────────────────────────────────────────────────┘
+```
 
 ## Usage
 
 ```bash
-# Memory Distillation
+# Full Distillation (fast lane + slow lane)
 node skill.js distill
+
+# Fast Lane Only (~100ms, for /new trigger)
+node skill.js distill-core --force
+
+# Slow Lane Only (background vector indexing)
+node skill.js distill-vector
 
 # Associative Recall
 node skill.js recall "keyword"
@@ -109,3 +145,11 @@ Explicit Memory (memorize, weight: 5.0)
     ↓ LTD decay (if not reactivated)
 Cold Storage (eventually, if forgotten)
 ```
+
+## Performance
+
+| Lane | Duration | Blocking | Purpose |
+|------|----------|----------|---------|
+| Fast | ~100ms | Yes | Core memory consolidation |
+| Slow | 1-3s | No | Semantic vector indexing |
+| Recall | ~100ms | Yes | Memory retrieval |

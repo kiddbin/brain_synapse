@@ -215,7 +215,170 @@ class SynapseMemory {
     }
 
     /**
-     * Memory Distiller (记忆蒸馏)
+     * Core Distillation (Fast Lane - Hippocampus Fast Channel)
+     * Pure local I/O and CPU computation, ~100ms
+     * Safe to call synchronously during /new session switch
+     * @param {boolean} forceToday - If true, also processes today's log
+     * @returns {object} Result with stats and whether vector indexing is needed
+     */
+    distillCore(forceToday = false) {
+        console.log('[Synapse] Core distillation (fast lane)...');
+        
+        // Observer analysis (lightweight, local)
+        try {
+            const Observer = require('./observer.js');
+            const obs = new Observer();
+            obs.performBatchAnalysis();
+        } catch (e) {
+            console.log(`[Observer] Batch analysis skipped: ${e.message}`);
+        }
+        
+        const today = new Date().toISOString().split('T')[0];
+        let logFilter = f => f.match(/^\d{4}-\d{2}-\d{2}\.md$/) && !f.includes(today);
+        if (forceToday) {
+            logFilter = f => f.match(/^\d{4}-\d{2}-\d{2}\.md$/);
+            console.log('[Synapse] ⚡ Force mode: Including today\'s log');
+        }
+        const logs = fs.readdirSync(LOGS_DIR).filter(logFilter);
+        let processedCount = 0;
+        let keywordsExtracted = 0;
+        
+        const fileKeywordsMap = new Map();
+
+        if (logs.length === 0) {
+            return { success: true, processedCount: 0, keywordsExtracted: 0, needsVectorIndex: false };
+        }
+
+        // Extract keywords and update weights
+        logs.forEach(file => {
+            const filePath = path.join(LOGS_DIR, file);
+            const content = fs.readFileSync(filePath, 'utf8');
+            
+            const keywords = extractKeywords(content);
+            keywords.forEach(keyword => {
+                const lowerKeyword = keyword.toLowerCase();
+                if (!this.weights[lowerKeyword]) {
+                    this.weights[lowerKeyword] = { 
+                        weight: 1.0, 
+                        lastAccess: Date.now(), 
+                        lastSeen: Date.now(),
+                        firstSeen: Date.now(),
+                        count: 1,
+                        recall_count: 0,
+                        refs: [file] 
+                    };
+                } else {
+                    if (!this.weights[lowerKeyword].count) {
+                        this.weights[lowerKeyword].count = 1;
+                    } else {
+                        this.weights[lowerKeyword].count += 1;
+                    }
+                    this.weights[lowerKeyword].lastSeen = Date.now();
+                    this.weights[lowerKeyword].lastAccess = Date.now();
+                    if (!this.weights[lowerKeyword].refs.includes(file)) {
+                        this.weights[lowerKeyword].refs.push(file);
+                    }
+                }
+                keywordsExtracted++;
+            });
+            
+            fileKeywordsMap.set(file, Array.from(keywords).map(k => k.toLowerCase()));
+        });
+        
+        // Process IMPORTANT/TODO special lines
+        logs.forEach(file => {
+            const filePath = path.join(LOGS_DIR, file);
+            const content = fs.readFileSync(filePath, 'utf8');
+            
+            const lines = content.split('\n');
+            lines.forEach(line => {
+                if (line.match(/(IMPORTANT|TODO|DECISION|LESSON|REMEMBER|重要|决策|教训|记住)/i)) {
+                    const concept = line.replace(/[-*#]/g, '').trim().substring(0, 50); 
+                    const lowerConcept = concept.toLowerCase();
+                    if (!this.weights[lowerConcept]) {
+                        this.weights[lowerConcept] = { 
+                            weight: 1.0, 
+                            lastAccess: Date.now(),
+                            lastSeen: Date.now(),
+                            firstSeen: Date.now(),
+                            count: 1,
+                            recall_count: 0,
+                            refs: [file] 
+                        };
+                    } else {
+                        this.weights[lowerConcept].weight += 0.5;
+                        this.weights[lowerConcept].lastAccess = Date.now();
+                        this.weights[lowerConcept].lastSeen = Date.now();
+                        this.weights[lowerConcept].count = (this.weights[lowerConcept].count || 0) + 1;
+                        if (!this.weights[lowerConcept].refs.includes(file)) this.weights[lowerConcept].refs.push(file);
+                    }
+                }
+            });
+
+            // Archive processed files
+            const archivePath = path.join(ARCHIVE_DIR, file);
+            try {
+                fs.renameSync(filePath, archivePath);
+                processedCount++;
+            } catch (e) {
+                console.error(`Failed to archive ${file}: ${e.message}`);
+            }
+        });
+
+        // Apply LTD and save
+        this.applyUnusedRecallPenalty();
+        this.buildHebbianLinks(fileKeywordsMap);
+        this.applyLTD();
+        this.save();
+        
+        silentObserve('distill-core-completed', 'workflow');
+        
+        return { 
+            success: true, 
+            processedCount, 
+            keywordsExtracted, 
+            totalConcepts: Object.keys(this.weights).length,
+            needsVectorIndex: true
+        };
+    }
+
+    /**
+     * Vector Indexing (Slow Lane - Cortex Slow Channel)
+     * Async API calls for semantic embedding
+     * Should be called in background, non-blocking
+     * @param {string} specificFile - Optional specific file to index
+     */
+    async distillVector(specificFile = null) {
+        console.log('[Synapse] Vector indexing (slow lane, background)...');
+        
+        try {
+            const SiliconEmbed = require('./silicon-embed');
+            const embedder = new SiliconEmbed();
+            
+            if (!embedder.isConfigured()) {
+                console.log('[Synapse] Vector indexing skipped: API not configured');
+                return { success: false, reason: 'API not configured' };
+            }
+            
+            const today = new Date().toISOString().split('T')[0];
+            const targetFile = specificFile || path.join(LOGS_DIR, `${today}.md`);
+            
+            if (fs.existsSync(targetFile)) {
+                await embedder.incrementalIndex(targetFile);
+                console.log('[Synapse] Vector indexing completed');
+                return { success: true, file: targetFile };
+            } else {
+                console.log('[Synapse] No file to index');
+                return { success: false, reason: 'No file to index' };
+            }
+        } catch (e) {
+            console.log('[Synapse] Vector indexing error:', e.message);
+            return { success: false, error: e.message };
+        }
+    }
+
+    /**
+     * Memory Distiller (记忆蒸馏) - Full version with both lanes
      * Implements "Schema" formation from "Active" logs.
      * Scans daily logs, extracts sparse features (keywords/important lines),
      * updates weights, and moves raw logs to Latent storage (archive).
@@ -1200,6 +1363,19 @@ async function main() {
             const distillResult = await memory.distill(forceDistill);
             console.log(distillResult);
             break;
+        case 'distill-core':
+            // Fast lane only - synchronous, ~100ms
+            const forceCore = args.includes('--force') || args.includes('-f');
+            const coreResult = memory.distillCore(forceCore);
+            console.log(JSON.stringify(coreResult, null, 2));
+            process.exit(0);
+            break;
+        case 'distill-vector':
+            // Slow lane only - async, for background execution
+            const vectorResult = await memory.distillVector(args[0]);
+            console.log(JSON.stringify(vectorResult, null, 2));
+            process.exit(0);
+            break;
         case 'recall':
             const recallArgs = args.join(' ');
             const isDeep = recallArgs.includes('--deep') || recallArgs.includes('-d');
@@ -1377,7 +1553,9 @@ async function main() {
 Usage: node skill.js <command> [options]
 
 Commands:
-  distill              Distill memories (convert logs to weights)
+  distill              Distill memories (full: fast lane + slow lane)
+  distill-core         Fast lane only (~100ms, local, for /new trigger)
+  distill-vector       Slow lane only (async vector indexing, background)
   recall <query>       Associative recall
     --deep, -d         Deep recall (includes cold storage)
   deep-recall <query>  Hypnotic recall (recover from cold storage)
@@ -1390,6 +1568,8 @@ Commands:
   observe [file]       Observe session patterns
 
 Examples:
+  node skill.js distill-core --force   # Fast process today's log on /new
+  node skill.js distill-vector         # Background async vector indexing
   node skill.js recall "browser"
   node skill.js recall "browser" --deep
   node skill.js deep-recall "quant strategy from long ago"
