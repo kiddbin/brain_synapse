@@ -1295,16 +1295,17 @@ async function main() {
             }
             
             // Write to synapse_weights.json with high initial weight
+            // High weight (5.0) simulates strong LTP from intense focus/emotional stimulus
+            // Will still decay via LTD if not reactivated - ensures system stays lightweight
             const memLower = memConcept.toLowerCase();
             const timestamp = Date.now();
             memory.weights[memLower] = {
-                weight: 2.5,  // High initial weight for explicit memories
+                weight: 5.0,  // High initial weight (strong LTP), but NOT pinned - will decay if unused
                 lastAccess: timestamp,
                 lastSeen: timestamp,
                 firstSeen: timestamp,
                 count: 1,
                 refs: [],
-                pinned: true,
                 rule: memContent,
                 source: 'explicit_memorize',
                 memorizedAt: new Date().toISOString()
@@ -1313,7 +1314,7 @@ async function main() {
             
             console.log(`[Synapse] Instant memory physically written: "${memConcept}"`);
             console.log(`[Synapse] Content: "${memContent}"`);
-            console.log(`[Synapse] Weight: 2.5 (high priority, will not fade easily)`);
+            console.log(`[Synapse] Weight: 5.0 (strong LTP, will decay if not reactivated)`);
             setTimeout(() => process.exit(0), 10);
             break;
         case 'get-pinned':

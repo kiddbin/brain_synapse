@@ -104,7 +104,8 @@ Cold Storage (weight < 0.1)
     ↓ deep_recall
 Revived Memory (weight: 0.5)
 
-Explicit Memory (memorize, weight: 2.5)
-    ↓ pinned: true
-Never Decays
+Explicit Memory (memorize, weight: 5.0)
+    ↓ strong LTP, but NOT pinned
+    ↓ LTD decay (if not reactivated)
+Cold Storage (eventually, if forgotten)
 ```
