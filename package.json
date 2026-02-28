@@ -1,0 +1,34 @@
+{
+  "name": "brain-synapse",
+  "version": "1.2.0",
+  "description": "Biologically-inspired digital memory system for AI Agents",
+  "main": "skill.js",
+  "scripts": {
+    "start": "node skill.js",
+    "distill": "node skill.js distill",
+    "recall": "node skill.js recall",
+    "deep-recall": "node skill.js deep-recall",
+    "latent-stats": "node skill.js latent-stats",
+    "forget": "node skill.js forget",
+    "test": "node test_synapse.js"
+  },
+  "keywords": [
+    "memory",
+    "ai",
+    "brain",
+    "synapse",
+    "agent",
+    "nlp",
+    "cognitive"
+  ],
+  "author": "Brain Synapse Team",
+  "license": "MIT",
+  "dependencies": {},
+  "optionalDependencies": {
+    "node-nlp": "^4.10.0",
+    "@nlpjs/lang-zh": "^4.26.1"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

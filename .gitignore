@@ -1,0 +1,32 @@
+# Dependencies
+node_modules/
+
+# Logs
+logs/
+*.log
+
+# Data files (keep templates)
+*.json
+!package.json
+
+# Cache
+cache/
+.vector_cache/
+local_index_cache.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Environment
+.env
+.env.local
+
+# API Keys (NEVER commit)
+*api*.js
+*key*.js
+credentials.json
