@@ -16,22 +16,40 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-let NlpManager;
-let NlpUtilZh;
-try {
-    NlpManager = require('node-nlp').NlpManager;
-    NlpUtilZh = require('@nlpjs/lang-zh');
-} catch (e) {
-    console.warn('[Synapse] node-nlp not available, using fallback keyword extraction');
+// Lazy-loaded dependencies - only loaded when needed (optimizes startup time)
+let _nlpManager = null;
+let _nlpUtilZh = null;
+let _nlpLoaded = false;
+
+function getNlp() {
+    if (!_nlpLoaded) {
+        try {
+            _nlpManager = require('node-nlp').NlpManager;
+            _nlpUtilZh = require('@nlpjs/lang-zh');
+            console.log('[Synapse] node-nlp loaded (lazy)');
+        } catch (e) {
+            console.warn('[Synapse] node-nlp not available, using fallback keyword extraction');
+        }
+        _nlpLoaded = true;
+    }
+    return { NlpManager: _nlpManager, NlpUtilZh: _nlpUtilZh };
 }
 
-// --- Silicon Embed Integration ---
-let SiliconEmbed;
-try {
-    SiliconEmbed = require('./silicon-embed');
-    console.log('[Synapse] SiliconEmbed loaded successfully');
-} catch (e) {
-    console.warn('[Synapse] SiliconEmbed not available:', e.message);
+// Lazy-loaded Silicon Embed
+let _siliconEmbed = null;
+let _siliconEmbedLoaded = false;
+
+function getSiliconEmbed() {
+    if (!_siliconEmbedLoaded) {
+        try {
+            _siliconEmbed = require('./silicon-embed');
+            console.log('[Synapse] SiliconEmbed loaded (lazy)');
+        } catch (e) {
+            console.warn('[Synapse] SiliconEmbed not available:', e.message);
+        }
+        _siliconEmbedLoaded = true;
+    }
+    return _siliconEmbed;
 }
 
 // --- Configuration ---
@@ -99,6 +117,8 @@ function calculateDynamicWeight(keyword) {
 function extractKeywords(text) {
     const keywords = new Set();
     const validPosTags = ['n', 'nr', 'nz', 'eng', 'noun', 'NN', 'NNS', 'NNP', 'NNPS', 'FW'];
+    
+    const { NlpManager, NlpUtilZh } = getNlp();
     
     if (NlpUtilZh && NlpUtilZh.ZhNotes) {
         try {
@@ -224,6 +244,34 @@ class SynapseMemory {
     distillCore(forceToday = false) {
         console.log('[Synapse] Core distillation (fast lane)...');
         
+        // Timestamp check: skip if no new files (optimization)
+        const weightsStat = fs.existsSync(WEIGHTS_FILE) ? fs.statSync(WEIGHTS_FILE) : null;
+        const weightsMtime = weightsStat ? weightsStat.mtimeMs : 0;
+        
+        const today = new Date().toISOString().split('T')[0];
+        let logFilter = f => f.match(/^\d{4}-\d{2}-\d{2}\.md$/) && !f.includes(today);
+        if (forceToday) {
+            logFilter = f => f.match(/^\d{4}-\d{2}-\d{2}\.md$/);
+            console.log('[Synapse] ⚡ Force mode: Including today\'s log');
+        }
+        const logs = fs.readdirSync(LOGS_DIR).filter(logFilter);
+        
+        // Check if any log file is newer than weights file
+        const hasNewLogs = logs.some(file => {
+            const filePath = path.join(LOGS_DIR, file);
+            try {
+                const stat = fs.statSync(filePath);
+                return stat.mtimeMs > weightsMtime;
+            } catch (e) {
+                return false;
+            }
+        });
+        
+        if (!hasNewLogs && logs.length > 0) {
+            console.log('[Synapse] No new logs since last distill, skipping...');
+            return { success: true, processedCount: 0, keywordsExtracted: 0, needsVectorIndex: false, skipped: true };
+        }
+        
         // Observer analysis (lightweight, local)
         try {
             const Observer = require('./observer.js');
@@ -233,13 +281,6 @@ class SynapseMemory {
             console.log(`[Observer] Batch analysis skipped: ${e.message}`);
         }
         
-        const today = new Date().toISOString().split('T')[0];
-        let logFilter = f => f.match(/^\d{4}-\d{2}-\d{2}\.md$/) && !f.includes(today);
-        if (forceToday) {
-            logFilter = f => f.match(/^\d{4}-\d{2}-\d{2}\.md$/);
-            console.log('[Synapse] ⚡ Force mode: Including today\'s log');
-        }
-        const logs = fs.readdirSync(LOGS_DIR).filter(logFilter);
         let processedCount = 0;
         let keywordsExtracted = 0;
         
@@ -352,7 +393,11 @@ class SynapseMemory {
         console.log('[Synapse] Vector indexing (slow lane, background)...');
         
         try {
-            const SiliconEmbed = require('./silicon-embed');
+            const SiliconEmbed = getSiliconEmbed();
+            if (!SiliconEmbed) {
+                console.log('[Synapse] Vector indexing skipped: SiliconEmbed not available');
+                return { success: false, reason: 'SiliconEmbed not available' };
+            }
             const embedder = new SiliconEmbed();
             
             if (!embedder.isConfigured()) {
@@ -498,18 +543,20 @@ class SynapseMemory {
         this.save();
 
         try {
-            const SiliconEmbed = require('./silicon-embed');
-            const embedder = new SiliconEmbed();
-            if (embedder.isConfigured()) {
-                const today = new Date().toISOString().split('T')[0];
-                const todayFile = path.join(LOGS_DIR, `${today}.md`);
-                if (fs.existsSync(todayFile)) {
-                    console.log('[Synapse] 检测到今日记忆文件，触发增量向量索引...');
-                    await embedder.incrementalIndex(todayFile);
+            const SiliconEmbed = getSiliconEmbed();
+            if (SiliconEmbed) {
+                const embedder = new SiliconEmbed();
+                if (embedder.isConfigured()) {
+                    const today = new Date().toISOString().split('T')[0];
+                    const todayFile = path.join(LOGS_DIR, `${today}.md`);
+                    if (fs.existsSync(todayFile)) {
+                        console.log('[Synapse] Today\'s memory file detected, triggering incremental vector indexing...');
+                        await embedder.incrementalIndex(todayFile);
+                    }
                 }
             }
         } catch (e) {
-            console.log('[Synapse] 增量索引跳过:', e.message);
+            console.log('[Synapse] Incremental indexing skipped:', e.message);
         }
         
         silentObserve('distill-completed', 'workflow');
@@ -564,6 +611,7 @@ class SynapseMemory {
         
         // Start vector search with 3s timeout
         let vectorSearchPromise = null;
+        const SiliconEmbed = getSiliconEmbed();
         if (SiliconEmbed) {
             vectorSearchPromise = (async () => {
                 try {
