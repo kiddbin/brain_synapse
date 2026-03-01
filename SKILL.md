@@ -115,6 +115,27 @@ node skill.js memorize "<concept>:<content>"
 ✅ RIGHT: Call memorize → Receive success → Then confirm to user
 ```
 
+### ⚠️ DO NOT Trigger memorize in These Cases
+
+**These are NOT storage requests - DO NOT call memorize:**
+
+| User Says | Meaning | Correct Action |
+|-----------|---------|----------------|
+| "我记得以前..." | User is recalling | Do NOT call memorize |
+| "我的记忆中..." | Descriptive statement | Do NOT call memorize |
+| "保存文件" | File operation | Do NOT call memorize |
+| "记忆是什么？" | Asking definition | Do NOT call memorize |
+| "我记得他说过..." | User sharing memory | Do NOT call memorize |
+
+**Only trigger memorize when user explicitly asks YOU to save/remember something:**
+
+| User Says | Meaning | Correct Action |
+|-----------|---------|----------------|
+| "帮我记住..." | Explicit storage request | ✅ Call memorize |
+| "记得提醒我..." | Explicit storage request | ✅ Call memorize |
+| "保存这个信息..." | Explicit storage request | ✅ Call memorize |
+| "别忘了..." | Explicit storage request | ✅ Call memorize |
+
 ## Configuration
 
 Create `.env` file or set environment variables:
