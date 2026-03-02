@@ -234,6 +234,83 @@ class SynapseMemory {
         fs.writeFileSync(LATENT_WEIGHTS_FILE, JSON.stringify(this.latentWeights, null, 2), 'utf8');
     }
 
+    _getLogFiles(forceToday = false) {
+        const today = new Date().toISOString().split('T')[0];
+        let logFilter = f => f.match(/^\d{4}-\d{2}-\d{2}\.md$/) && !f.includes(today);
+        if (forceToday) {
+            logFilter = f => f.match(/^\d{4}-\d{2}-\d{2}\.md$/);
+            console.log('[Synapse] ⚡ Force mode: Including today\'s log');
+        }
+        return fs.readdirSync(LOGS_DIR).filter(logFilter);
+    }
+
+    _extractKeywordsAndUpdateWeights(logs, fileKeywordsMap) {
+        let keywordsExtracted = 0;
+        logs.forEach(file => {
+            const filePath = path.join(LOGS_DIR, file);
+            const content = fs.readFileSync(filePath, 'utf8');
+            const keywords = extractKeywords(content);
+            keywords.forEach(keyword => {
+                const lowerKeyword = keyword.toLowerCase();
+                if (!this.weights[lowerKeyword]) {
+                    this.weights[lowerKeyword] = { weight: 1.0, lastAccess: Date.now(), lastSeen: Date.now(), firstSeen: Date.now(), count: 1, recall_count: 0, refs: [file] };
+                } else {
+                    if (!this.weights[lowerKeyword].count) { this.weights[lowerKeyword].count = 1; }
+                    else { this.weights[lowerKeyword].count += 1; }
+                    this.weights[lowerKeyword].lastSeen = Date.now();
+                    this.weights[lowerKeyword].lastAccess = Date.now();
+                    if (!this.weights[lowerKeyword].refs.includes(file)) { this.weights[lowerKeyword].refs.push(file); }
+                }
+                keywordsExtracted++;
+            });
+            fileKeywordsMap.set(file, Array.from(keywords).map(k => k.toLowerCase()));
+        });
+        return keywordsExtracted;
+    }
+
+    _processSpecialLinesAndArchive(logs) {
+        let processedCount = 0;
+        logs.forEach(file => {
+            const filePath = path.join(LOGS_DIR, file);
+            const content = fs.readFileSync(filePath, 'utf8');
+            const lines = content.split('\n');
+            lines.forEach(line => {
+                if (line.match(/(IMPORTANT|TODO|DECISION|LESSON|REMEMBER|重要|决策|教训|记住)/i)) {
+                    const concept = line.replace(/[-*#]/g, '').trim().substring(0, 50);
+                    const lowerConcept = concept.toLowerCase();
+                    if (!this.weights[lowerConcept]) {
+                        this.weights[lowerConcept] = { weight: 1.0, lastAccess: Date.now(), lastSeen: Date.now(), firstSeen: Date.now(), count: 1, recall_count: 0, refs: [file] };
+                    } else {
+                        this.weights[lowerConcept].weight += 0.5;
+                        this.weights[lowerConcept].lastAccess = Date.now();
+                        this.weights[lowerConcept].lastSeen = Date.now();
+                        this.weights[lowerConcept].count = (this.weights[lowerConcept].count || 0) + 1;
+                        if (!this.weights[lowerConcept].refs.includes(file)) { this.weights[lowerConcept].refs.push(file); }
+                    }
+                }
+            });
+            const archivePath = path.join(ARCHIVE_DIR, file);
+            try { fs.renameSync(filePath, archivePath); processedCount++; }
+            catch (e) { console.error(`Failed to archive ${file}: ${e.message}`); }
+        });
+        return processedCount;
+    }
+
+    _applyLTDAndSave(fileKeywordsMap) {
+        this.applyUnusedRecallPenalty();
+        this.buildHebbianLinks(fileKeywordsMap);
+        this.applyLTD();
+        this.save();
+    }
+
+    _performObserverAnalysis() {
+        try {
+            const Observer = require('./observer.js');
+            const obs = new Observer();
+            obs.performBatchAnalysis();
+        } catch (e) { console.log(`[Observer] Batch analysis skipped: ${e.message}`); }
+    }
+
     /**
      * Core Distillation (Fast Lane - Hippocampus Fast Channel)
      * Pure local I/O and CPU computation, ~100ms
@@ -244,19 +321,11 @@ class SynapseMemory {
     distillCore(forceToday = false) {
         console.log('[Synapse] Core distillation (fast lane)...');
         
-        // Timestamp check: skip if no new files (optimization)
         const weightsStat = fs.existsSync(WEIGHTS_FILE) ? fs.statSync(WEIGHTS_FILE) : null;
         const weightsMtime = weightsStat ? weightsStat.mtimeMs : 0;
         
-        const today = new Date().toISOString().split('T')[0];
-        let logFilter = f => f.match(/^\d{4}-\d{2}-\d{2}\.md$/) && !f.includes(today);
-        if (forceToday) {
-            logFilter = f => f.match(/^\d{4}-\d{2}-\d{2}\.md$/);
-            console.log('[Synapse] ⚡ Force mode: Including today\'s log');
-        }
-        const logs = fs.readdirSync(LOGS_DIR).filter(logFilter);
+        const logs = this._getLogFiles(forceToday);
         
-        // Check if any log file is newer than weights file
         const hasNewLogs = logs.some(file => {
             const filePath = path.join(LOGS_DIR, file);
             try {
@@ -272,105 +341,17 @@ class SynapseMemory {
             return { success: true, processedCount: 0, keywordsExtracted: 0, needsVectorIndex: false, skipped: true };
         }
         
-        // Observer analysis (lightweight, local)
-        try {
-            const Observer = require('./observer.js');
-            const obs = new Observer();
-            obs.performBatchAnalysis();
-        } catch (e) {
-            console.log(`[Observer] Batch analysis skipped: ${e.message}`);
-        }
+        this._performObserverAnalysis();
         
-        let processedCount = 0;
-        let keywordsExtracted = 0;
-        
-        const fileKeywordsMap = new Map();
-
         if (logs.length === 0) {
             return { success: true, processedCount: 0, keywordsExtracted: 0, needsVectorIndex: false };
         }
 
-        // Extract keywords and update weights
-        logs.forEach(file => {
-            const filePath = path.join(LOGS_DIR, file);
-            const content = fs.readFileSync(filePath, 'utf8');
-            
-            const keywords = extractKeywords(content);
-            keywords.forEach(keyword => {
-                const lowerKeyword = keyword.toLowerCase();
-                if (!this.weights[lowerKeyword]) {
-                    this.weights[lowerKeyword] = { 
-                        weight: 1.0, 
-                        lastAccess: Date.now(), 
-                        lastSeen: Date.now(),
-                        firstSeen: Date.now(),
-                        count: 1,
-                        recall_count: 0,
-                        refs: [file] 
-                    };
-                } else {
-                    if (!this.weights[lowerKeyword].count) {
-                        this.weights[lowerKeyword].count = 1;
-                    } else {
-                        this.weights[lowerKeyword].count += 1;
-                    }
-                    this.weights[lowerKeyword].lastSeen = Date.now();
-                    this.weights[lowerKeyword].lastAccess = Date.now();
-                    if (!this.weights[lowerKeyword].refs.includes(file)) {
-                        this.weights[lowerKeyword].refs.push(file);
-                    }
-                }
-                keywordsExtracted++;
-            });
-            
-            fileKeywordsMap.set(file, Array.from(keywords).map(k => k.toLowerCase()));
-        });
+        const fileKeywordsMap = new Map();
+        const keywordsExtracted = this._extractKeywordsAndUpdateWeights(logs, fileKeywordsMap);
+        const processedCount = this._processSpecialLinesAndArchive(logs);
         
-        // Process IMPORTANT/TODO special lines
-        logs.forEach(file => {
-            const filePath = path.join(LOGS_DIR, file);
-            const content = fs.readFileSync(filePath, 'utf8');
-            
-            const lines = content.split('\n');
-            lines.forEach(line => {
-                if (line.match(/(IMPORTANT|TODO|DECISION|LESSON|REMEMBER|重要|决策|教训|记住)/i)) {
-                    const concept = line.replace(/[-*#]/g, '').trim().substring(0, 50); 
-                    const lowerConcept = concept.toLowerCase();
-                    if (!this.weights[lowerConcept]) {
-                        this.weights[lowerConcept] = { 
-                            weight: 1.0, 
-                            lastAccess: Date.now(),
-                            lastSeen: Date.now(),
-                            firstSeen: Date.now(),
-                            count: 1,
-                            recall_count: 0,
-                            refs: [file] 
-                        };
-                    } else {
-                        this.weights[lowerConcept].weight += 0.5;
-                        this.weights[lowerConcept].lastAccess = Date.now();
-                        this.weights[lowerConcept].lastSeen = Date.now();
-                        this.weights[lowerConcept].count = (this.weights[lowerConcept].count || 0) + 1;
-                        if (!this.weights[lowerConcept].refs.includes(file)) this.weights[lowerConcept].refs.push(file);
-                    }
-                }
-            });
-
-            // Archive processed files
-            const archivePath = path.join(ARCHIVE_DIR, file);
-            try {
-                fs.renameSync(filePath, archivePath);
-                processedCount++;
-            } catch (e) {
-                console.error(`Failed to archive ${file}: ${e.message}`);
-            }
-        });
-
-        // Apply LTD and save
-        this.applyUnusedRecallPenalty();
-        this.buildHebbianLinks(fileKeywordsMap);
-        this.applyLTD();
-        this.save();
+        this._applyLTDAndSave(fileKeywordsMap);
         
         silentObserve('distill-core-completed', 'workflow');
         
@@ -432,115 +413,19 @@ class SynapseMemory {
     async distill(forceToday = false) {
         console.log('[Synapse] Starting distillation process...');
         
-        // Prioritize observer analysis (regardless of historical logs)
-        try {
-            const Observer = require('./observer.js');
-            const obs = new Observer();
-            obs.performBatchAnalysis();
-        } catch (e) {
-            console.log(`[Observer] Batch analysis skipped: ${e.message}`);
-        }
+        this._performObserverAnalysis();
         
-        const today = new Date().toISOString().split('T')[0];
-        let logFilter = f => f.match(/^\d{4}-\d{2}-\d{2}\.md$/) && !f.includes(today);
-        if (forceToday) {
-            logFilter = f => f.match(/^\d{4}-\d{2}-\d{2}\.md$/);
-            console.log('[Synapse] ⚡ Force mode: Including today\'s log');
-        }
-        const logs = fs.readdirSync(LOGS_DIR).filter(logFilter);
-        let processedCount = 0;
-        let keywordsExtracted = 0;
-        
-        // Collect keywords from each file for Hebbian linkage construction
-        const fileKeywordsMap = new Map();
+        const logs = this._getLogFiles(forceToday);
 
         if (logs.length === 0) {
             return 'No historical logs to distill. Today\'s log is kept Active.';
         }
 
-        logs.forEach(file => {
-            const filePath = path.join(LOGS_DIR, file);
-            const content = fs.readFileSync(filePath, 'utf8');
-            
-            const keywords = extractKeywords(content);
-            keywords.forEach(keyword => {
-                const lowerKeyword = keyword.toLowerCase();
-                if (!this.weights[lowerKeyword]) {
-                    this.weights[lowerKeyword] = { 
-                        weight: 1.0, 
-                        lastAccess: Date.now(), 
-                        lastSeen: Date.now(),
-                        firstSeen: Date.now(),
-                        count: 1,
-                        recall_count: 0,
-                        refs: [file] 
-                    };
-                } else {
-                    if (!this.weights[lowerKeyword].count) {
-                        this.weights[lowerKeyword].count = 1;
-                    } else {
-                        this.weights[lowerKeyword].count += 1;
-                    }
-                    this.weights[lowerKeyword].lastSeen = Date.now();
-                    this.weights[lowerKeyword].lastAccess = Date.now();
-                    if (!this.weights[lowerKeyword].refs.includes(file)) {
-                        this.weights[lowerKeyword].refs.push(file);
-                    }
-                }
-                keywordsExtracted++;
-            });
-            
-            // Collect keywords from this file for Hebbian linkage
-            fileKeywordsMap.set(file, Array.from(keywords).map(k => k.toLowerCase()));
-        });
+        const fileKeywordsMap = new Map();
+        const keywordsExtracted = this._extractKeywordsAndUpdateWeights(logs, fileKeywordsMap);
+        const processedCount = this._processSpecialLinesAndArchive(logs);
         
-        // Process IMPORTANT/TODO special concept lines
-        logs.forEach(file => {
-            const filePath = path.join(LOGS_DIR, file);
-            const content = fs.readFileSync(filePath, 'utf8');
-            
-            const lines = content.split('\n');
-            lines.forEach(line => {
-                if (line.match(/(IMPORTANT|TODO|DECISION|LESSON|REMEMBER|重要|决策|教训|记住)/i)) {
-                    const concept = line.replace(/[-*#]/g, '').trim().substring(0, 50); 
-                    const lowerConcept = concept.toLowerCase();
-                    if (!this.weights[lowerConcept]) {
-                        this.weights[lowerConcept] = { 
-                            weight: 1.0, 
-                            lastAccess: Date.now(),
-                            lastSeen: Date.now(),
-                            firstSeen: Date.now(),
-                            count: 1,
-                            recall_count: 0,
-                            refs: [file] 
-                        };
-                    } else {
-                        this.weights[lowerConcept].weight += 0.5;
-                        this.weights[lowerConcept].lastAccess = Date.now();
-                        this.weights[lowerConcept].lastSeen = Date.now();
-                        this.weights[lowerConcept].count = (this.weights[lowerConcept].count || 0) + 1;
-                        if (!this.weights[lowerConcept].refs.includes(file)) this.weights[lowerConcept].refs.push(file);
-                    }
-                }
-            });
-
-            const archivePath = path.join(ARCHIVE_DIR, file);
-            try {
-                fs.renameSync(filePath, archivePath);
-                processedCount++;
-            } catch (e) {
-                console.error(`Failed to archive ${file}: ${e.message}`);
-            }
-        });
-
-        // Apply LTD penalty for "recalled but not used"
-        this.applyUnusedRecallPenalty();
-
-        // Build Hebbian linkages (zero-cost brain-like association)
-        this.buildHebbianLinks(fileKeywordsMap);
-
-        this.applyLTD();
-        this.save();
+        this._applyLTDAndSave(fileKeywordsMap);
 
         try {
             const SiliconEmbed = getSiliconEmbed();
