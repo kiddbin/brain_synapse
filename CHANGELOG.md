@@ -5,23 +5,23 @@ All notable changes to this project will be documented in this file.
 ## [v1.2.0] - 2025-03-02
 
 ### Core
-- **DRY Refactor**: 提取 `distill()` 与 `distillCore()` 重复代码 (~200行) 为5个私有方法
-- **双通道架构**: Fast Lane (海马体快通道 ~100ms) + Slow Lane (皮层慢通道 异步)
+- **DRY Refactor**: Extracted ~200 lines of duplicate code from `distill()` and `distillCore()` into 5 private methods
+- **Dual-Channel Architecture**: Fast Lane (Hippocampus ~100ms sync) + Slow Lane (Cortex async)
 
 ### Features
-- **LTD 遗忘机制**: 主动遗忘低频突触，冷热分离存储
-- **赫布联想**: 零成本共现关联，扩散激活召回
-- **深度回忆**: 催眠检索，从冷库复活记忆
-- **Observer 模式**: 会话模式识别，自动生成本能
+- **LTD Mechanism**: Active forgetting of low-frequency synapses with hot/cold storage separation
+- **Hebbian Association**: Zero-cost co-occurrence linking, spreading activation recall
+- **Deep Recall**: Hypnotic retrieval to revive memories from cold storage
+- **Observer Pattern**: Session pattern detection, automatic instinct generation
 
 ### Performance
-- 懒加载 NLP 依赖，启动提速
-- 时间戳检查优化，跳过无变更蒸馏
-- 3秒超时降级，向量搜索失败自动回退本地
+- Lazy-loaded NLP dependencies for faster startup
+- Timestamp check optimization to skip unchanged distillation
+- 3s timeout fallback to local search when vector search fails
 
 ### Architecture
 ```
-Active (热) → Schema (提炼) → Latent (冷库)
-     ↑              ↓            ↑
-     └── Recall ←── LTD ────────┘
+Active (Hot) → Schema (Distill) → Latent (Cold Storage)
+     ↑               ↓                  ↑
+     └── Recall ←── LTD ───────────────┘
 ```
