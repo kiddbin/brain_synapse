@@ -7,11 +7,6 @@
  * This file contains all configurable options for the brain_synapse system.
  * The open-source version has removed all private information - configure as needed.
  * 
- * 【Supported Vector API Providers】
- * - Voyage AI (Recommended): https://dash.voyageai.com
- * - Hugging Face: https://huggingface.co
- * - Ollama (Local): http://localhost:11434
- * 
  * 【Local-Only Mode】
  * - The system can run fully locally without any API Key!
  * - When vector search is not configured, the system falls back to local file search
@@ -21,14 +16,9 @@
  */
 
 // ==================== Vector Search API Configuration ====================
-// 【Optional】Configure the following to enable semantic vector search
-// Method 1: Fill in directly here (not recommended for open-source projects)
-// CONFIG.vectorSearchApi.apiKey = 'your-api-key-here';
-
-// Method 2: Set environment variables (recommended)
-// Voyage AI: export VOYAGE_API_KEY='your-key'    (Linux/Mac)
-// HuggingFace: export HF_TOKEN='your-token'
-// Ollama: No configuration needed (local offline)
+// 【Optional】Configure to enable semantic vector search
+// Set environment variable: export VECTOR_API_KEY='your-key'
+// Or modify vectorSearchApi.apiKey directly in this file
 
 const CONFIG = {
     // ==================== Core Configuration ====================
@@ -74,24 +64,16 @@ const CONFIG = {
     
     // ==================== Vector Search API Configuration ====================
     // 【Optional】Configure to enable semantic search
-    // Supports multiple providers: Voyage AI, Hugging Face, Ollama
     vectorSearchApi: {
-        // API URL (choose based on provider)
-        // Voyage AI:   'https://api.voyageai.com/v1/embeddings'
-        // HuggingFace: 'https://api-inference.huggingface.co/pipeline/feature-extraction/BAAI/bge-m3'
-        // Ollama:      'http://localhost:11434/api/embeddings'
+        // API URL
         apiUrl: 'https://api-inference.huggingface.co/pipeline/feature-extraction/BAAI/bge-m3',
         
         // Vector model selection
-        // Voyage AI:   'voyage-3' (SOTA) or 'voyage-multilingual-2'
-        // HuggingFace: 'BAAI/bge-m3' (recommended multilingual) or 'BAAI/bge-large-zh-v1.5' (Chinese)
-        // Ollama:      'nomic-embed-text'
         model: 'BAAI/bge-m3',
         
-        // API Key - supports environment variables or direct fill
-        // Priority: VOYAGE_API_KEY > HF_TOKEN > SILICONFLOW_API_KEY > direct fill
+        // API Key - supports environment variable or direct fill
         // If not configured, system will automatically fall back to local search
-        apiKey: process.env.VOYAGE_API_KEY || process.env.HF_TOKEN || process.env.SILICONFLOW_API_KEY || '',
+        apiKey: process.env.VECTOR_API_KEY || '',
         
         // Timeout setting (milliseconds)
         timeout: 5000,
@@ -154,7 +136,7 @@ const CONFIG = {
     features: {
         // Enable vector search (requires API Key configuration)
         // Auto-detect: enabled if valid API Key exists
-        enableVectorSearch: !!(process.env.VOYAGE_API_KEY || process.env.HF_TOKEN || process.env.SILICONFLOW_API_KEY),
+        enableVectorSearch: !!process.env.VECTOR_API_KEY,
         
         // Enable Observer mode (automatically learn user behavior)
         enableObserver: true,

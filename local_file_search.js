@@ -1,16 +1,16 @@
 /**
  * @file brain_synapse/local_file_search.js
- * @description 本地文件检索降级插件 - QMD 损坏时的备用搜索引擎
+ * @description Local File Search Fallback Plugin - Backup search engine for vector API failures
  * @author 巫迪 (Wū Dí)
  * @version 1.2.0
  * 
- * 核心特性：
- * 1. 100ms 超时竞速 - 严格执行性能优先原则
- * 2. 内存索引机制 - 避免重复磁盘 I/O
- * 3. 增量索引持久化 - 缓存 mtime，只处理变化文件
- * 4. 静默容错 - 任何错误都不会中断主流程
- * 5. 无缝集成 - 自动挂载到 brain_synapse 的 recall 逻辑
- * 6. ✅ 中文支持 - 正确处理中文字符的索引和搜索
+ * Core Features:
+ * 1. 100ms timeout enforcement - Strict performance-first principle
+ * 2. In-memory indexing - Avoid repeated disk I/O
+ * 3. Incremental index persistence - Cache mtime, only process changed files
+ * 4. Silent fault tolerance - Any error won't interrupt main flow
+ * 5. Seamless integration - Auto-mount to brain_synapse recall logic
+ * 6. Multilingual support - Correctly handle Chinese character indexing and search
  */
 
 const fs = require('fs');
@@ -20,16 +20,16 @@ const CACHE_FILE = path.join(__dirname, 'local_index_cache.json');
 
 class LocalFileSearch {
     constructor() {
-        this.maxExecutionTime = 100; // 100ms 硬限制
-        this.indexCache = new Map(); // 内存索引: word -> Set(files)
+        this.maxExecutionTime = 100; // 100ms hard limit
+        this.indexCache = new Map(); // In-memory index: word -> Set(files)
         this.lastIndexTime = 0;
         this.memoryDir = path.join(__dirname, '../../workspace/memory');
         this.archiveDir = path.join(__dirname, '../../workspace/memory/archive');
-        this._fileCache = null; // 持久化缓存: filename -> {mtime, words}
+        this._fileCache = null; // Persistent cache: filename -> {mtime, words}
     }
 
     /**
-     * 加载持久化缓存
+     * Load persistent cache
      */
     loadCache() {
         if (this._fileCache) return this._fileCache;
@@ -51,7 +51,7 @@ class LocalFileSearch {
     }
 
     /**
-     * 保存持久化缓存
+     * Save persistent cache
      */
     saveCache() {
         try {
@@ -66,15 +66,15 @@ class LocalFileSearch {
     }
 
     /**
-     * 执行本地文件搜索（带 100ms 超时保护）
-     * @param {string} query - 搜索关键词
-     * @returns {Promise<Object>} 搜索结果
+     * Execute local file search (with 100ms timeout protection)
+     * @param {string} query - Search keyword
+     * @returns {Promise<Object>} Search result
      */
     async execute(queryOrArray) {
         try {
             const startTime = Date.now();
             
-            // 支持数组查询（赫布扩展联想）
+            // Support array query (Hebbian extended association)
             const queries = Array.isArray(queryOrArray) ? queryOrArray : [queryOrArray];
             
             const timeoutPromise = new Promise((_, reject) => {
@@ -102,21 +102,21 @@ class LocalFileSearch {
     }
 
     /**
-     * 执行实际的搜索逻辑
-     * @param {string} query - 搜索关键词
-     * @returns {Promise<Object>} 搜索结果
+     * Execute actual search logic
+     * @param {string} query - Search keyword
+     * @returns {Promise<Object>} Search result
      */
     async performSearch(queries) {
         await this.buildIndexIncremental();
         
-        // 支持多查询（赫布联想扩展）
+        // Support multi-query (Hebbian association extension)
         const allResults = [];
         const processedFiles = new Set();
         
         for (const query of queries) {
             const results = this.searchInIndex(query.toLowerCase());
             
-            // 合并结果，去重
+            // Merge results, deduplicate
             for (const result of results) {
                 if (!processedFiles.has(result.file)) {
                     processedFiles.add(result.file);
@@ -125,7 +125,7 @@ class LocalFileSearch {
             }
         }
         
-        // 按相关度排序（原始查询的结果优先）
+        // Sort by relevance (original query results first)
         const querySet = new Set(queries.map(q => q.toLowerCase()));
         allResults.sort((a, b) => {
             const aHasDirectMatch = querySet.has(a.query?.toLowerCase()) || a.file.includes(a.query?.toLowerCase());
@@ -145,7 +145,7 @@ class LocalFileSearch {
     }
 
     /**
-     * 增量构建索引（核心优化）
+     * Incremental index build (core optimization)
      */
     async buildIndexIncremental() {
         const cache = this.loadCache();
@@ -193,7 +193,7 @@ class LocalFileSearch {
     }
 
     /**
-     * 从缓存重建内存索引
+     * Rebuild in-memory index from cache
      */
     rebuildMemoryIndex(cache) {
         this.indexCache.clear();
@@ -212,9 +212,9 @@ class LocalFileSearch {
     }
 
     /**
-     * 提取文本中的有效词汇（支持中英文混合）
-     * @param {string} text - 原始文本
-     * @returns {Array} 词汇数组
+     * Extract valid words from text (supports mixed Chinese-English)
+     * @param {string} text - Original text
+     * @returns {Array} Word array
      */
     extractWords(text) {
         const words = new Set();
@@ -246,9 +246,9 @@ class LocalFileSearch {
     }
 
     /**
-     * 在内存索引中搜索
-     * @param {string} query - 搜索关键词
-     * @returns {Array} 搜索结果
+     * Search in in-memory index
+     * @param {string} query - Search keyword
+     * @returns {Array} Search results
      */
     searchInIndex(query) {
         const fileScores = new Map();
@@ -292,12 +292,12 @@ class LocalFileSearch {
     }
 
     /**
-     * 提取相关文件内容片段
-     * @param {string} filePath - 文件路径
-     * @param {string} query - 搜索关键词
-     * @returns {string} 相关内容片段
+     * Extract relevant file content snippets
+     * @param {string} filePath - File path
+     * @param {string} query - Search query
+     * @returns {string} Relevant content snippet
      */
-    extractRelevantContent(filePath, query) {
+    extractSnippets(filePath, query, maxLength = 500) {
         try {
             const content = fs.readFileSync(filePath, 'utf8');
             const lines = content.split('\n');
@@ -318,9 +318,9 @@ class LocalFileSearch {
     }
 
     /**
-     * 获取目录下的所有 Markdown 文件
-     * @param {string} dir - 目录路径
-     * @returns {Array} Markdown 文件路径数组
+     * Get all Markdown files in directory
+     * @param {string} dir - directory path
+     * @returns {Array} Array of markdown file paths
      */
     getMarkdownFiles(dir) {
         if (!fs.existsSync(dir)) return [];
@@ -330,10 +330,10 @@ class LocalFileSearch {
     }
 
     /**
-     * 检测 QMD 是否可用
-     * @returns {boolean} QMD 是否可用
+     * Check if vector search is available
+     * @returns {boolean} Whether vector search is available
      */
-    static isQMDAvailable() {
+    static isVectorAvailable() {
         try {
             const result = require('child_process').execSync('qmd status', { 
                 timeout: 1000,

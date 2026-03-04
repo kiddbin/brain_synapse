@@ -141,11 +141,7 @@ node skill.js memorize "<concept>:<content>"
 Create `.env` file or set environment variables:
 
 ```bash
-# Voyage AI (Recommended)
-VOYAGE_API_KEY=your-key
-
-# Hugging Face (Free)
-HF_TOKEN=your-token
+VECTOR_API_KEY=your-key
 ```
 
 Or edit `config.js` directly.

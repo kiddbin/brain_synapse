@@ -275,7 +275,7 @@ class SynapseMemory {
             const content = fs.readFileSync(filePath, 'utf8');
             const lines = content.split('\n');
             lines.forEach(line => {
-                if (line.match(/(IMPORTANT|TODO|DECISION|LESSON|REMEMBER|重要|决策|教训|记住)/i)) {
+                if (line.match(/(IMPORTANT|TODO|DECISION|LESSON|REMEMBER)/i)) {
                     const concept = line.replace(/[-*#]/g, '').trim().substring(0, 50);
                     const lowerConcept = concept.toLowerCase();
                     if (!this.weights[lowerConcept]) {
@@ -404,7 +404,7 @@ class SynapseMemory {
     }
 
     /**
-     * Memory Distiller (记忆蒸馏) - Full version with both lanes
+     * Memory Distiller - Full version with both lanes
      * Implements "Schema" formation from "Active" logs.
      * Scans daily logs, extracts sparse features (keywords/important lines),
      * updates weights, and moves raw logs to Latent storage (archive).
@@ -450,11 +450,11 @@ class SynapseMemory {
     }
 
     /**
-     * Spreading Activation Recall (联想检索)
+     * Spreading Activation Recall
      * 1. Search weights for the query (Direct Activation).
      * 2. If found, boost related concepts (Spreading).
      * 3. Parallel search: Vector (3s timeout) + Local fallback.
-     * 4. If deep=true, also search latent storage (冷库).
+     * 4. If deep=true, also search latent storage.
      */
     async recall(query, options = {}) {
         const { deep = false, reviveLimit = 5 } = options;
@@ -689,12 +689,12 @@ class SynapseMemory {
     }
 
     /**
-     * 零成本赫布链接构建 (Hebbian Linkage)
+     * Zero-cost Hebbian Linkage Construction
      * 
-     * 基于 Hebbian Learning 原理："共现即关联"（Cells that fire together, wire together）
-     * 当多个关键词在同一文件中共现时，建立它们之间的关联权重。
+     * Based on Hebbian Learning principle: "Cells that fire together, wire together"
+     * When multiple keywords co-occur in the same file, establish association weights between them.
      * 
-     * @param {Map} fileKeywordsMap - 文件名到关键词数组的映射
+     * @param {Map} fileKeywordsMap - Mapping of filename to keyword array
      */
     buildHebbianLinks(fileKeywordsMap) {
         if (!fileKeywordsMap || fileKeywordsMap.size === 0) {
@@ -744,11 +744,11 @@ class SynapseMemory {
     }
 
     /**
-     * "召回但未使用"惩罚 (Predictive LTD)
+     * "Recalled but Not Used" Penalty (Predictive LTD)
      * 
-     * 逻辑：如果一个概念被频繁 recall（recall_count 高），
-     * 但在 distill 时其 count 没有相应增加（说明 AI 提取了但觉得没用，没有付诸实践），
-     * 则触发 LTD 惩罚。
+     * Logic: If a concept is frequently recalled (high recall_count),
+     * but its count hasn't increased correspondingly during distill (meaning AI extracted it but found it useless, didn't put into practice),
+     * then trigger LTD penalty.
      */
     applyUnusedRecallPenalty() {
         let penalized = 0;
@@ -783,12 +783,12 @@ class SynapseMemory {
     }
 
     /**
-     * 扩散激活召回 (Spreading Activation)
+     * Spreading Activation Recall
      * 
-     * 基于赫布链接，获取与查询词关联的所有高权重关联词
-     * @param {string} query - 查询关键词
-     * @param {number} topN - 返回前 N 个关联词
-     * @returns {string[]} 关联词数组
+     * Based on Hebbian links, retrieve all high-weight associated keywords with the query word
+     * @param {string} query - Query keyword
+     * @param {number} topN - Return top N associated keywords
+     * @returns {string[]} Array of associated keywords
      */
     getHebbianAssociations(query, topN = 3) {
         const associations = [];
@@ -817,9 +817,9 @@ class SynapseMemory {
     }
 
     /**
-     * Long-Term Depression (LTD - 主动遗忘)
+     * Long-Term Depression (LTD - Active Forgetting)
      * Decays weights of inactive memories. Moves those below threshold to latent storage (NOT delete).
-     * This implements "冷热分离" architecture - memories are never truly lost.
+     * This implements "hot-cold separation" architecture - memories are never truly lost.
      */
     applyLTD() {
         const now = Date.now();
@@ -855,9 +855,9 @@ class SynapseMemory {
     }
     
     /**
-     * Deep Recall (深度回忆/催眠检索)
+     * Deep Recall - Hypnotic Retrieval
      * Searches latent storage for forgotten memories and revives them.
-     * This is the "催眠" mechanism to recover low-weight memories.
+     * This is the "hypnotic" mechanism to recover low-weight memories.
      * 
      * @param {string} query - Search query
      * @param {number} limit - Maximum number of memories to revive (default: 5)
@@ -867,7 +867,7 @@ class SynapseMemory {
         // Support array query (Hebbian association expansion)
         const queries = Array.isArray(queryOrArray) ? queryOrArray : [queryOrArray];
         const mainQuery = queries.join(' + ');
-        console.log(`[Synapse] Deep recall (催眠检索): "${mainQuery}"`);
+        console.log(`[Synapse] Deep recall: "${mainQuery}"`);
         
         const revived = [];
         const latentKeys = Object.keys(this.latentWeights);
@@ -988,7 +988,7 @@ class SynapseMemory {
     }
     
     /**
-     * Observer Pattern Integration (观察者模式集成)
+     * Observer Pattern Integration
      * Analyzes session patterns and creates instincts based on observed behaviors.
      * This function should be called after significant session activity.
      * 
@@ -1054,8 +1054,7 @@ class SynapseMemory {
             
             if (current.role === 'user' && previous.role === 'assistant') {
                 const userMessage = current.content[0]?.text?.toLowerCase() || '';
-                if (userMessage.includes('no,') || userMessage.includes('actually') || 
-                    userMessage.includes('不是') || userMessage.includes('实际上')) {
+                if (userMessage.includes('no,') || userMessage.includes('actually')) {
                     patterns.userCorrections.push({
                         timestamp: current.timestamp,
                         correction: userMessage,
@@ -1077,12 +1076,10 @@ class SynapseMemory {
             
             // Check if current message contains an error
             const currentContent = current.content[0]?.text || '';
-            if (currentContent.includes('error') || currentContent.includes('failed') || 
-                currentContent.includes('错误') || currentContent.includes('失败')) {
+            if (currentContent.includes('error') || currentContent.includes('failed')) {
                 // Check if next message shows a resolution
                 const nextContent = next.content[0]?.text || '';
-                if (nextContent.includes('success') || nextContent.includes('completed') || 
-                    nextContent.includes('成功') || nextContent.includes('完成')) {
+                if (nextContent.includes('success') || nextContent.includes('completed')) {
                     patterns.errorResolutions.push({
                         timestamp: next.timestamp,
                         error: currentContent,
@@ -1338,7 +1335,7 @@ async function main() {
             const pinColonIndex = pinArgs.indexOf(':');
             if (pinColonIndex === -1) {
                 console.error('Usage: pin-exp <keyword>:<rule>');
-                console.error('Example: pin-exp browser_fill:遇到fill报错必须用type替代');
+                console.error('Example: pin-exp browser_fill:use type instead when fill fails');
                 process.exit(1);
             }
             const pinKeyword = pinArgs.substring(0, pinColonIndex).trim();
