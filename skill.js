@@ -1,22 +1,22 @@
 /**
  * @file brain_synapse/skill.js
- * @description Digital Synapse - Core Memory Implementation
+ * @description 数字突触 (Digital Synapse) 记忆核心实现
  * @author Foundry (on behalf of Antigravity)
  * @version 1.1.0
  * 
- * Built based on in-depth research on human memory mechanisms:
- * 1. Sparse Coding: Extract high-weight features only, ignore redundant info.
- * 2. Hierarchical Storage: Active -> Schema -> Latent.
- * 3. LTD (Long-Term Depression): Active forgetting of low-frequency synapses.
- * 4. Spreading Activation: Associative recall mechanism.
- * 5. Observer Pattern: Proactively identify session patterns and behavioral rules.
+ * 基于《人脑记忆机制深度研究报告》构建：
+ * 1. 稀疏编码 (Sparse Coding): 仅提取高权重特征，忽略冗余信息。
+ * 2. 分级存储 (Hierarchical Storage): Active -> Schema -> Latent。
+ * 3. 长时程抑制 (LTD - Long-Term Depression): 主动遗忘低频突触。
+ * 4. 联想检索 (Spreading Activation): 激活扩散机制。
+ * 5. 观察者模式 (Observer Pattern): 主动识别会话模式和行为规律。
  */
 
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 
-// Lazy-loaded dependencies - only loaded when needed (optimizes startup time)
+// Lazy-loaded dependencies - only loaded when needed
 let _nlpManager = null;
 let _nlpUtilZh = null;
 let _nlpLoaded = false;
@@ -57,13 +57,13 @@ const WORKSPACE_ROOT = path.resolve(__dirname, '../..');
 const LOGS_DIR = path.join(WORKSPACE_ROOT, 'workspace/memory'); // OpenClaw's active memory
 const ARCHIVE_DIR = path.join(WORKSPACE_ROOT, 'workspace/memory/archive'); // Latent storage
 const WEIGHTS_FILE = path.join(__dirname, 'synapse_weights.json');
-const LATENT_WEIGHTS_FILE = path.join(__dirname, 'latent_weights.json'); // Cold storage: archived low-weight memories
+const LATENT_WEIGHTS_FILE = path.join(__dirname, 'latent_weights.json'); // 冷库：低权重记忆归档
 const INSTINCTS_DIR = path.join(__dirname, 'instincts'); // Observer instincts storage
 
 // LTD Parameters
-const DECAY_RATE = 0.90; // Weight decay rate per forgetting cycle
-const FORGET_THRESHOLD = 0.2; // Below this weight, move to cold storage (not deleted)
-const REVIVED_WEIGHT = 0.5; // Initial weight when reviving from cold storage
+const DECAY_RATE = 0.95; // 每次遗忘周期的衰减率
+const FORGET_THRESHOLD = 0.1; // 低于此权重则移入冷库（不再删除）
+const REVIVED_WEIGHT = 0.5; // 从冷库复苏后的初始权重
 const INITIAL_WEIGHT = 1.0;
 
 const VALID_POS_TAGS = ['n', 'nr', 'nz', 'eng', 'noun', 'NN', 'NNS', 'NNP', 'NNPS', 'FW'];
@@ -118,6 +118,7 @@ function extractKeywords(text) {
     const keywords = new Set();
     const validPosTags = ['n', 'nr', 'nz', 'eng', 'noun', 'NN', 'NNS', 'NNP', 'NNPS', 'FW'];
     
+    // Lazy load NLP modules
     const { NlpManager, NlpUtilZh } = getNlp();
     
     if (NlpUtilZh && NlpUtilZh.ZhNotes) {
@@ -176,11 +177,11 @@ function extractKeywords(text) {
 }
 
 // Observer Parameters
-const MIN_OBSERVATIONS_FOR_INSTINCT = 3; // Minimum observations to create an instinct
-const CONFIDENCE_BASE = 0.3; // Base confidence level
-const CONFIDENCE_INCREMENT = 0.05; // Confidence increment per confirmed observation
-const CONFIDENCE_DECREMENT = 0.1; // Confidence decrement per conflicting observation
-const CONFIDENCE_DECAY_WEEKLY = 0.02; // Weekly confidence decay without observation
+const MIN_OBSERVATIONS_FOR_INSTINCT = 3; // 创建本能所需的最少观察次数
+const CONFIDENCE_BASE = 0.3; // 基础置信度
+const CONFIDENCE_INCREMENT = 0.05; // 每次确认观察增加的置信度
+const CONFIDENCE_DECREMENT = 0.1; // 每次矛盾观察减少的置信度
+const CONFIDENCE_DECAY_WEEKLY = 0.02; // 每周无观察的置信度衰减
 
 // Ensure directories exist
 if (!fs.existsSync(ARCHIVE_DIR)) fs.mkdirSync(ARCHIVE_DIR, { recursive: true });
@@ -208,7 +209,7 @@ function silentObserve(context, type = 'workflow') {
         
         obs.recordObservation(observation);
     } catch (e) {
-        // Silent failure, does not affect main flow
+        // 静默失败，不影响主流程
     }
 }
 
@@ -217,7 +218,7 @@ function silentObserve(context, type = 'workflow') {
 class SynapseMemory {
     constructor() {
         this.weights = JSON.parse(fs.readFileSync(WEIGHTS_FILE, 'utf8'));
-        this.latentWeights = JSON.parse(fs.readFileSync(LATENT_WEIGHTS_FILE, 'utf8')); // Cold storage memories
+        this.latentWeights = JSON.parse(fs.readFileSync(LATENT_WEIGHTS_FILE, 'utf8')); // 冷库记忆
         this.observationsDir = path.join(__dirname, 'observations');
         this.instinctsDir = path.join(__dirname, 'instincts');
         
@@ -234,6 +235,11 @@ class SynapseMemory {
         fs.writeFileSync(LATENT_WEIGHTS_FILE, JSON.stringify(this.latentWeights, null, 2), 'utf8');
     }
 
+    /**
+     * 获取需要处理的日志文件列表
+     * @param {boolean} forceToday - 是否强制处理今天的日志
+     * @returns {string[]} 日志文件列表
+     */
     _getLogFiles(forceToday = false) {
         const today = new Date().toISOString().split('T')[0];
         let logFilter = f => f.match(/^\d{4}-\d{2}-\d{2}\.md$/) && !f.includes(today);
@@ -244,58 +250,108 @@ class SynapseMemory {
         return fs.readdirSync(LOGS_DIR).filter(logFilter);
     }
 
+    /**
+     * 提取关键词并更新权重
+     * @param {string[]} logs - 日志文件列表
+     * @param {Map} fileKeywordsMap - 文件到关键词的映射
+     * @returns {number} 提取的关键词数量
+     */
     _extractKeywordsAndUpdateWeights(logs, fileKeywordsMap) {
         let keywordsExtracted = 0;
+        
         logs.forEach(file => {
             const filePath = path.join(LOGS_DIR, file);
             const content = fs.readFileSync(filePath, 'utf8');
+            
             const keywords = extractKeywords(content);
             keywords.forEach(keyword => {
                 const lowerKeyword = keyword.toLowerCase();
                 if (!this.weights[lowerKeyword]) {
-                    this.weights[lowerKeyword] = { weight: 1.0, lastAccess: Date.now(), lastSeen: Date.now(), firstSeen: Date.now(), count: 1, recall_count: 0, refs: [file] };
+                    this.weights[lowerKeyword] = { 
+                        weight: 1.0, 
+                        lastAccess: Date.now(), 
+                        lastSeen: Date.now(),
+                        firstSeen: Date.now(),
+                        count: 1,
+                        recall_count: 0,
+                        refs: [file] 
+                    };
                 } else {
-                    if (!this.weights[lowerKeyword].count) { this.weights[lowerKeyword].count = 1; }
-                    else { this.weights[lowerKeyword].count += 1; }
+                    if (!this.weights[lowerKeyword].count) {
+                        this.weights[lowerKeyword].count = 1;
+                    } else {
+                        this.weights[lowerKeyword].count += 1;
+                    }
                     this.weights[lowerKeyword].lastSeen = Date.now();
                     this.weights[lowerKeyword].lastAccess = Date.now();
-                    if (!this.weights[lowerKeyword].refs.includes(file)) { this.weights[lowerKeyword].refs.push(file); }
+                    if (!this.weights[lowerKeyword].refs.includes(file)) {
+                        this.weights[lowerKeyword].refs.push(file);
+                    }
                 }
                 keywordsExtracted++;
             });
+            
             fileKeywordsMap.set(file, Array.from(keywords).map(k => k.toLowerCase()));
         });
+        
         return keywordsExtracted;
     }
 
+    /**
+     * 处理特殊概念行（IMPORTANT/TODO 等）并归档文件
+     * @param {string[]} logs - 日志文件列表
+     * @returns {number} 处理的文件数量
+     */
     _processSpecialLinesAndArchive(logs) {
         let processedCount = 0;
+        
         logs.forEach(file => {
             const filePath = path.join(LOGS_DIR, file);
             const content = fs.readFileSync(filePath, 'utf8');
+            
             const lines = content.split('\n');
             lines.forEach(line => {
-                if (line.match(/(IMPORTANT|TODO|DECISION|LESSON|REMEMBER)/i)) {
-                    const concept = line.replace(/[-*#]/g, '').trim().substring(0, 50);
+                if (line.match(/(IMPORTANT|TODO|DECISION|LESSON|REMEMBER|重要|决策|教训|记住)/i)) {
+                    const concept = line.replace(/[-*#]/g, '').trim().substring(0, 50); 
                     const lowerConcept = concept.toLowerCase();
                     if (!this.weights[lowerConcept]) {
-                        this.weights[lowerConcept] = { weight: 1.0, lastAccess: Date.now(), lastSeen: Date.now(), firstSeen: Date.now(), count: 1, recall_count: 0, refs: [file] };
+                        this.weights[lowerConcept] = { 
+                            weight: 1.0, 
+                            lastAccess: Date.now(),
+                            lastSeen: Date.now(),
+                            firstSeen: Date.now(),
+                            count: 1,
+                            recall_count: 0,
+                            refs: [file] 
+                        };
                     } else {
                         this.weights[lowerConcept].weight += 0.5;
                         this.weights[lowerConcept].lastAccess = Date.now();
                         this.weights[lowerConcept].lastSeen = Date.now();
                         this.weights[lowerConcept].count = (this.weights[lowerConcept].count || 0) + 1;
-                        if (!this.weights[lowerConcept].refs.includes(file)) { this.weights[lowerConcept].refs.push(file); }
+                        if (!this.weights[lowerConcept].refs.includes(file)) {
+                            this.weights[lowerConcept].refs.push(file);
+                        }
                     }
                 }
             });
+
             const archivePath = path.join(ARCHIVE_DIR, file);
-            try { fs.renameSync(filePath, archivePath); processedCount++; }
-            catch (e) { console.error(`Failed to archive ${file}: ${e.message}`); }
+            try {
+                fs.renameSync(filePath, archivePath);
+                processedCount++;
+            } catch (e) {
+                console.error(`Failed to archive ${file}: ${e.message}`);
+            }
         });
+        
         return processedCount;
     }
 
+    /**
+     * 应用 LTD 并保存权重
+     * @param {Map} fileKeywordsMap - 文件到关键词的映射
+     */
     _applyLTDAndSave(fileKeywordsMap) {
         this.applyUnusedRecallPenalty();
         this.buildHebbianLinks(fileKeywordsMap);
@@ -303,29 +359,36 @@ class SynapseMemory {
         this.save();
     }
 
+    /**
+     * 执行观察者批量分析
+     */
     _performObserverAnalysis() {
         try {
             const Observer = require('./observer.js');
             const obs = new Observer();
             obs.performBatchAnalysis();
-        } catch (e) { console.log(`[Observer] Batch analysis skipped: ${e.message}`); }
+        } catch (e) {
+            console.log(`[Observer] Batch analysis skipped: ${e.message}`);
+        }
     }
 
     /**
      * Core Distillation (Fast Lane - Hippocampus Fast Channel)
      * Pure local I/O and CPU computation, ~100ms
-     * Safe to call synchronously during /new session switch
+     * With timestamp check: skip if no new files since last distill
      * @param {boolean} forceToday - If true, also processes today's log
      * @returns {object} Result with stats and whether vector indexing is needed
      */
     distillCore(forceToday = false) {
         console.log('[Synapse] Core distillation (fast lane)...');
         
+        // Timestamp check: skip if no new files
         const weightsStat = fs.existsSync(WEIGHTS_FILE) ? fs.statSync(WEIGHTS_FILE) : null;
         const weightsMtime = weightsStat ? weightsStat.mtimeMs : 0;
         
         const logs = this._getLogFiles(forceToday);
         
+        // Check if any log file is newer than weights file
         const hasNewLogs = logs.some(file => {
             const filePath = path.join(LOGS_DIR, file);
             try {
@@ -341,6 +404,7 @@ class SynapseMemory {
             return { success: true, processedCount: 0, keywordsExtracted: 0, needsVectorIndex: false, skipped: true };
         }
         
+        // Observer analysis (lightweight, local)
         this._performObserverAnalysis();
         
         if (logs.length === 0) {
@@ -348,9 +412,14 @@ class SynapseMemory {
         }
 
         const fileKeywordsMap = new Map();
-        const keywordsExtracted = this._extractKeywordsAndUpdateWeights(logs, fileKeywordsMap);
-        const processedCount = this._processSpecialLinesAndArchive(logs);
         
+        // Extract keywords and update weights
+        const keywordsExtracted = this._extractKeywordsAndUpdateWeights(logs, fileKeywordsMap);
+        
+        // Process IMPORTANT/TODO special lines and archive files
+        const processedCount = this._processSpecialLinesAndArchive(logs);
+
+        // Apply LTD and save
         this._applyLTDAndSave(fileKeywordsMap);
         
         silentObserve('distill-core-completed', 'workflow');
@@ -365,7 +434,7 @@ class SynapseMemory {
     }
 
     /**
-     * Vector Indexing (Slow Lane - Cortex Slow Channel)
+     * Vector Indexing (Slow Lane - 皮层慢通道)
      * Async API calls for semantic embedding
      * Should be called in background, non-blocking
      * @param {string} specificFile - Optional specific file to index
@@ -374,11 +443,7 @@ class SynapseMemory {
         console.log('[Synapse] Vector indexing (slow lane, background)...');
         
         try {
-            const SiliconEmbed = getSiliconEmbed();
-            if (!SiliconEmbed) {
-                console.log('[Synapse] Vector indexing skipped: SiliconEmbed not available');
-                return { success: false, reason: 'SiliconEmbed not available' };
-            }
+            const SiliconEmbed = require('./silicon-embed');
             const embedder = new SiliconEmbed();
             
             if (!embedder.isConfigured()) {
@@ -404,7 +469,7 @@ class SynapseMemory {
     }
 
     /**
-     * Memory Distiller - Full version with both lanes
+     * Memory Distiller (记忆蒸馏) - Full version with both lanes
      * Implements "Schema" formation from "Active" logs.
      * Scans daily logs, extracts sparse features (keywords/important lines),
      * updates weights, and moves raw logs to Latent storage (archive).
@@ -413,35 +478,41 @@ class SynapseMemory {
     async distill(forceToday = false) {
         console.log('[Synapse] Starting distillation process...');
         
+        // 优先执行观察者分析（不管有没有历史日志）
         this._performObserverAnalysis();
         
         const logs = this._getLogFiles(forceToday);
+        
+        // 收集每个文件的关键词用于赫布链接构建
+        const fileKeywordsMap = new Map();
 
         if (logs.length === 0) {
             return 'No historical logs to distill. Today\'s log is kept Active.';
         }
 
-        const fileKeywordsMap = new Map();
+        // Extract keywords and update weights
         const keywordsExtracted = this._extractKeywordsAndUpdateWeights(logs, fileKeywordsMap);
-        const processedCount = this._processSpecialLinesAndArchive(logs);
         
+        // Process IMPORTANT/TODO special lines and archive files
+        const processedCount = this._processSpecialLinesAndArchive(logs);
+
+        // Apply LTD and save
         this._applyLTDAndSave(fileKeywordsMap);
 
+        // Vector indexing (slow lane)
         try {
-            const SiliconEmbed = getSiliconEmbed();
-            if (SiliconEmbed) {
-                const embedder = new SiliconEmbed();
-                if (embedder.isConfigured()) {
-                    const today = new Date().toISOString().split('T')[0];
-                    const todayFile = path.join(LOGS_DIR, `${today}.md`);
-                    if (fs.existsSync(todayFile)) {
-                        console.log('[Synapse] Today\'s memory file detected, triggering incremental vector indexing...');
-                        await embedder.incrementalIndex(todayFile);
-                    }
+            const SiliconEmbed = require('./silicon-embed');
+            const embedder = new SiliconEmbed();
+            if (embedder.isConfigured()) {
+                const today = new Date().toISOString().split('T')[0];
+                const todayFile = path.join(LOGS_DIR, `${today}.md`);
+                if (fs.existsSync(todayFile)) {
+                    console.log('[Synapse] 检测到今日记忆文件，触发增量向量索引...');
+                    await embedder.incrementalIndex(todayFile);
                 }
             }
         } catch (e) {
-            console.log('[Synapse] Incremental indexing skipped:', e.message);
+            console.log('[Synapse] 增量索引跳过:', e.message);
         }
         
         silentObserve('distill-completed', 'workflow');
@@ -450,11 +521,11 @@ class SynapseMemory {
     }
 
     /**
-     * Spreading Activation Recall
+     * Spreading Activation Recall (联想检索)
      * 1. Search weights for the query (Direct Activation).
      * 2. If found, boost related concepts (Spreading).
      * 3. Parallel search: Vector (3s timeout) + Local fallback.
-     * 4. If deep=true, also search latent storage.
+     * 4. If deep=true, also search latent storage (冷库).
      */
     async recall(query, options = {}) {
         const { deep = false, reviveLimit = 5 } = options;
@@ -466,17 +537,17 @@ class SynapseMemory {
         // 2. Spreading Activation (Simulated)
         const topConcepts = activatedConcepts.sort((a, b) => this.weights[b].weight - this.weights[a].weight).slice(0, 5);
         
-        // 4. Short-Term Potentiation (LTP) + track recall count
-        // Reinforcement: only increase weight, do not reset firstSeen (protect lifespan clock)
+        // 4. 短时程增强 (LTP) + 追踪 recall 次数
+        // 复习强化：只增加 weight，不重置 firstSeen（保护存活时钟）
         topConcepts.forEach(c => {
             this.weights[c].lastAccess = Date.now();
             this.weights[c].weight += 0.1;
-            // Track recall count (for determining if "recalled but not used")
+            // 追踪被 recall 的次数（用于后续判断是否"召回但未使用"）
             this.weights[c].recall_count = (this.weights[c].recall_count || 0) + 1;
-            // Note: firstSeen must NEVER be modified! It's the only anchor for lifespan calculation
+            // 注意：firstSeen 绝对不修改！它是计算 lifespan 的唯一锚点
         });
         
-        // 5. Hebbian spreading activation (zero-cost brain-like association)
+        // 5. 赫布扩散激活（零成本类脑联想）
         const hebbianTerms = this.getHebbianAssociations(query);
         const expandedQuery = [query, ...hebbianTerms];
         console.log(`[Synapse] Hebbian expansion: "${query}" → [${expandedQuery.join(', ')}]`);
@@ -489,62 +560,93 @@ class SynapseMemory {
         let vectorTimeout = false;
         
         // Start local search with expanded query (fast, always available)
-        const localSearchPromise = this.localFileSearch(expandedQuery).catch(e => {
-            console.warn(`[Synapse] Local search failed: ${e.message}`);
-            return [];
-        });
+        const localStartTime = Date.now();
+        const localSearchPromise = this.localFileSearch(expandedQuery)
+            .then(result => {
+                console.log(`[Synapse] Local search completed in ${Date.now() - localStartTime}ms`);
+                return result;
+            })
+            .catch(e => {
+                console.warn(`[Synapse] Local search failed: ${e.message}`);
+                return [];
+            });
         
-        // Start vector search with 3s timeout
-        let vectorSearchPromise = null;
-        const SiliconEmbed = getSiliconEmbed();
-        if (SiliconEmbed) {
-            vectorSearchPromise = (async () => {
+        // ==================== 阶段 1: 本地极速检索与熔断 ====================
+        const localResults = await localSearchPromise;
+        const maxLocalScore = localResults.length > 0 
+            ? Math.max(...localResults.map(r => r.score || 0)) 
+            : 0;
+        
+        console.log(`[Synapse] Local max score: ${maxLocalScore.toFixed(2)}`);
+        
+        // 熔断判断：文件名精确匹配或极高置信度
+        const LOCAL_HIGH_CONFIDENCE_THRESHOLD = 1000;
+        if (maxLocalScore >= LOCAL_HIGH_CONFIDENCE_THRESHOLD) {
+            console.log(`[Synapse] ⚡ FAST MODE: High confidence (score: ${maxLocalScore.toFixed(2)}), skipping vector API`);
+            
+            if (localResults.length > 0 && !deep) {
+                searchResults = this.sortRecallResultsWithDynamicWeights(localResults, query);
+            } else {
+                searchResults = localResults;
+            }
+            searchSource = 'local-file-search (high-confidence)';
+            vectorTimeout = false;
+        } else {
+            // ==================== 阶段 2: 动态超时启动向量 ====================
+            const LOCAL_MODERATE_THRESHOLD = 50;
+            const vectorTimeoutMs = maxLocalScore > LOCAL_MODERATE_THRESHOLD ? 1500 : 3000;
+            console.log(`[Synapse] Vector timeout set to ${vectorTimeoutMs}ms (local score: ${maxLocalScore.toFixed(2)})`);
+            
+            // Start vector search with dynamic timeout
+            let vectorSearchPromise = null;
+            const SiliconEmbed = getSiliconEmbed();
+            if (SiliconEmbed) {
+                vectorSearchPromise = (async () => {
+                    try {
+                        const embedder = new SiliconEmbed();
+                        const result = await Promise.race([
+                            embedder.search(query),
+                            new Promise((_, reject) => setTimeout(() => reject(new Error('Vector timeout')), vectorTimeoutMs))
+                        ]);
+                        return result?.success ? result.results : null;
+                    } catch (error) {
+                        vectorTimeout = error.message.includes('timeout');
+                        console.warn(`[Synapse] Vector search: ${error.message}${vectorTimeout ? ' (timeout)' : ''}`);
+                        return null;
+                    }
+                })();
+            }
+            
+            // Wait for vector search
+            let vectorResults = null;
+            if (vectorSearchPromise) {
                 try {
-                    const embedder = new SiliconEmbed();
-                    const result = await Promise.race([
-                        embedder.search(query),
-                        new Promise((_, reject) => setTimeout(() => reject(new Error('Vector timeout')), 3000))
-                    ]);
-                    return result?.success ? result.results : null;
-                } catch (error) {
-                    vectorTimeout = error.message.includes('timeout');
-                    console.warn(`[Synapse] Vector search: ${error.message}`);
-                    return null;
+                    vectorResults = await vectorSearchPromise;
+                } catch (e) {
+                    vectorTimeout = true;
                 }
-            })();
-        }
-        
-        // Wait for vector search first (max 3s)
-        let vectorResults = null;
-        if (vectorSearchPromise) {
-            try {
-                vectorResults = await vectorSearchPromise;
-            } catch (e) {
-                vectorTimeout = true;
+            }
+            
+            // ==================== 阶段 3: 结果融合 ====================
+            if (vectorResults && vectorResults.length > 0) {
+                // RRF 融合
+                searchResults = this._reciprocalRankFusion(localResults, vectorResults);
+                searchSource = 'hybrid (local + vector)';
+                console.log(`[Synapse] RRF fusion: ${searchResults.length} results`);
+            } else if (vectorTimeout) {
+                searchResults = localResults;
+                searchSource = 'local-file-search (vector-timeout)';
+                console.log('[Synapse] Vector timeout, using local results');
+            } else {
+                searchResults = localResults;
+                console.log('[Synapse] Vector unavailable, using local results');
             }
         }
         
-        // Use vector results if available, otherwise use local
-        if (vectorResults && vectorResults.length > 0) {
-            console.log('[Synapse] Using vector search results');
-            searchResults = vectorResults;
-            searchSource = 'silicon-embed';
-        } else if (vectorTimeout) {
-            console.log('[Synapse] Vector timeout, using local search (fast mode)');
-            const localResults = await localSearchPromise;
-            searchResults = localResults;
-            searchSource = 'local-file-search';
-        } else {
-            console.log('[Synapse] Vector unavailable, using local search');
-            const localResults = await localSearchPromise;
-            searchResults = localResults;
-            searchSource = 'local-file-search';
-        }
-        
-        // 4. Deep recall (hypnotic retrieval) - only when explicitly requested
+        // 4. Deep recall (催眠检索) - only when explicitly requested
         let deepRecallResult = null;
         if (deep) {
-            // Deep recall also supports Hebbian association expansion
+            // deep recall 也支持赫布联想扩展
             deepRecallResult = await this.deepRecall(expandedQuery, reviveLimit);
         }
         
@@ -562,8 +664,16 @@ class SynapseMemory {
             pinned_rules: pinnedRules,
             search_results: searchResults,
             weights_snapshot: topConcepts.map(c => ({ [c]: this.weights[c].weight })),
-            scoring_mode: deep ? 'pure_similarity' : 'semantic_x_frequency_x_decay',
-            is_fast_mode: vectorTimeout
+            scoring_mode: deep ? 'pure_similarity' : (maxLocalScore >= 1000 ? 'filename_priority' : 'rrf_fusion'),
+            is_fast_mode: maxLocalScore >= 1000,
+            _meta: {
+                SYSTEM_NOTICE: "search_results[].content 已包含核心信息（最多 2000 字符）",
+                USAGE_RULE: "直接使用 content 字段回答，禁止使用 Read 工具二次读取原 .md 文件",
+                REASON: "二次读取会导致 Token 浪费和注意力劫持",
+                OPTIMIZATION: maxLocalScore >= 1000
+                    ? "⚡ Fast-path short-circuit (high-confidence local match)"
+                    : "🔀 Adaptive dual-track fusion (local + vector)"
+            }
         };
         
         // Include deep recall results if available
@@ -575,6 +685,69 @@ class SynapseMemory {
         silentObserve(query, 'workflow');
         
         return result;
+    }
+    
+    /**
+     * 倒数排名融合 (Reciprocal Rank Fusion, RRF)
+     * 公式：RRF Score = 1/(60 + local_rank) + 1/(60 + vector_rank)
+     */
+    _reciprocalRankFusion(localResults, vectorResults) {
+        const K = 60;
+        const rrfScores = new Map();
+        const allResults = new Map();
+        
+        // 本地结果贡献分数
+        localResults.forEach((result, rank) => {
+            const filePath = result.file || result.path;
+            const score = 1 / (K + rank);
+            rrfScores.set(filePath, (rrfScores.get(filePath) || 0) + score);
+            if (!allResults.has(filePath)) {
+                allResults.set(filePath, { ...result, rrfScore: 0 });
+            }
+        });
+        
+        // 向量结果贡献分数
+        vectorResults.forEach((result, rank) => {
+            const filePath = result.file || result.path;
+            const score = 1 / (K + rank);
+            rrfScores.set(filePath, (rrfScores.get(filePath) || 0) + score);
+            if (!allResults.has(filePath)) {
+                allResults.set(filePath, { ...result, rrfScore: 0 });
+            }
+        });
+        
+        // 应用 RRF 分数并排序
+        allResults.forEach((result, filePath) => {
+            result.rrfScore = rrfScores.get(filePath) || 0;
+            result.finalScore = result.rrfScore;
+        });
+        
+        const fusedResults = Array.from(allResults.values())
+            .sort((a, b) => b.rrfScore - a.rrfScore)
+            .slice(0, 5);
+        
+        console.log(`[Synapse] RRF: Merged ${localResults.length} local + ${vectorResults.length} vector → ${fusedResults.length} fused`);
+        
+        return fusedResults;
+    }
+    
+    /**
+     * 构建统一的召回结果对象（带优化标志）
+     */
+    _buildRecallResultEnhanced(baseResult, isFastMode, scoredBy) {
+        return {
+            ...baseResult,
+            scoring_mode: baseResult.scoring_mode === 'pure_similarity' 
+                ? 'pure_similarity' 
+                : (scoredBy === 'filename_match' ? 'filename_priority' : 'rrf_fusion'),
+            is_fast_mode: isFastMode,
+            _meta: {
+                ...baseResult._meta,
+                OPTIMIZATION: isFastMode 
+                    ? "⚡ Fast-path short-circuit (high-confidence local match)"
+                    : "🔀 Adaptive dual-track fusion (local + vector)"
+            }
+        };
     }
     
     calculateKeywordWeight(keyword) {
@@ -689,12 +862,12 @@ class SynapseMemory {
     }
 
     /**
-     * Zero-cost Hebbian Linkage Construction
+     * 零成本赫布链接构建 (Hebbian Linkage)
      * 
-     * Based on Hebbian Learning principle: "Cells that fire together, wire together"
-     * When multiple keywords co-occur in the same file, establish association weights between them.
+     * 基于 Hebbian Learning 原理："共现即关联"（Cells that fire together, wire together）
+     * 当多个关键词在同一文件中共现时，建立它们之间的关联权重。
      * 
-     * @param {Map} fileKeywordsMap - Mapping of filename to keyword array
+     * @param {Map} fileKeywordsMap - 文件名到关键词数组的映射
      */
     buildHebbianLinks(fileKeywordsMap) {
         if (!fileKeywordsMap || fileKeywordsMap.size === 0) {
@@ -703,11 +876,11 @@ class SynapseMemory {
         
         let linkCount = 0;
         
-        // Iterate through each file's keyword list
+        // 遍历每个文件的关键词列表
         for (const [file, keywords] of fileKeywordsMap) {
             if (!keywords || keywords.length < 2) continue;
             
-            // Build bidirectional links for all keyword pairs in this file
+            // 对该文件内的所有关键词对建立双向链接
             for (let i = 0; i < keywords.length; i++) {
                 for (let j = i + 1; j < keywords.length; j++) {
                     const wordA = keywords[i];
@@ -715,7 +888,7 @@ class SynapseMemory {
                     
                     if (wordA === wordB) continue;
                     
-                    // Initialize synapses field (if not exists)
+                    // 初始化 synapses 字段（如果不存在）
                     if (!this.weights[wordA]) {
                         this.weights[wordA] = { weight: 0.5, synapses: {} };
                     }
@@ -729,7 +902,7 @@ class SynapseMemory {
                         this.weights[wordB].synapses = {};
                     }
                     
-                    // Increase co-occurrence weight
+                    // 增加共现权重
                     this.weights[wordA].synapses[wordB] = (this.weights[wordA].synapses[wordB] || 0) + 1;
                     this.weights[wordB].synapses[wordA] = (this.weights[wordB].synapses[wordA] || 0) + 1;
                     
@@ -744,36 +917,36 @@ class SynapseMemory {
     }
 
     /**
-     * "Recalled but Not Used" Penalty (Predictive LTD)
+     * "召回但未使用"惩罚 (Predictive LTD)
      * 
-     * Logic: If a concept is frequently recalled (high recall_count),
-     * but its count hasn't increased correspondingly during distill (meaning AI extracted it but found it useless, didn't put into practice),
-     * then trigger LTD penalty.
+     * 逻辑：如果一个概念被频繁 recall（recall_count 高），
+     * 但在 distill 时其 count 没有相应增加（说明 AI 提取了但觉得没用，没有付诸实践），
+     * 则触发 LTD 惩罚。
      */
     applyUnusedRecallPenalty() {
         let penalized = 0;
         const PENALTY_RATE = 0.1;
-        const RECALL_THRESHOLD = 3; // Minimum recall count to trigger check
+        const RECALL_THRESHOLD = 3; // 至少被 recall 3 次才触发检查
         
         Object.keys(this.weights).forEach(key => {
             const concept = this.weights[key];
             if (concept.pinned) return;
             if (!concept.recall_count || concept.recall_count < RECALL_THRESHOLD) return;
             
-            // If recall_count >= 3, but count hasn't increased significantly, it means "recalled but not used"
-            // Calculate expected count growth: if every recall was used, count should be >= recall_count * 0.5
+            // 如果 recall_count >= 3，但 count 没有显著增加，说明"召回但未使用"
+            // 计算预期的 count 增长：如果每次 recall 都使用了，count 应该 >= recall_count * 0.5
             const expectedMinCount = concept.recall_count * 0.5;
             const actualCount = concept.count || 0;
             
             if (actualCount < expectedMinCount) {
-                // Apply LTD penalty
+                // 触发 LTD 惩罚
                 const penalty = PENALTY_RATE * concept.recall_count;
                 concept.weight -= penalty;
                 console.log(`[Synapse] Predictive LTD: "${key}" recall=${concept.recall_count} count=${actualCount} penalty=${penalty.toFixed(3)}`);
                 penalized++;
             }
             
-            // Reset recall_count, start new tracking cycle
+            // 清零 recall_count，开始新一轮追踪
             concept.recall_count = 0;
         });
         
@@ -783,27 +956,27 @@ class SynapseMemory {
     }
 
     /**
-     * Spreading Activation Recall
+     * 扩散激活召回 (Spreading Activation)
      * 
-     * Based on Hebbian links, retrieve all high-weight associated keywords with the query word
-     * @param {string} query - Query keyword
-     * @param {number} topN - Return top N associated keywords
-     * @returns {string[]} Array of associated keywords
+     * 基于赫布链接，获取与查询词关联的所有高权重关联词
+     * @param {string} query - 查询关键词
+     * @param {number} topN - 返回前 N 个关联词
+     * @returns {string[]} 关联词数组
      */
     getHebbianAssociations(query, topN = 3) {
         const associations = [];
         const lowerQuery = query.toLowerCase();
         
-        // Initialize synapses (compatible with old data)
+        // 初始化 synapses（兼容旧数据）
         if (this.weights[lowerQuery] && !this.weights[lowerQuery].synapses) {
             this.weights[lowerQuery].synapses = {};
         }
         
-        // Get all high-weight associated words linked to the query word via Hebbian links
+        // 获取当前词的所有关联词
         const synapses = this.weights[lowerQuery]?.synapses || {};
         
         if (Object.keys(synapses).length > 0) {
-            // Sort by weight, extract Top N
+            // 按权重排序，提取 Top N
             const sorted = Object.entries(synapses)
                 .sort((a, b) => b[1] - a[1])
                 .slice(0, topN)
@@ -817,9 +990,9 @@ class SynapseMemory {
     }
 
     /**
-     * Long-Term Depression (LTD - Active Forgetting)
+     * Long-Term Depression (LTD - 主动遗忘)
      * Decays weights of inactive memories. Moves those below threshold to latent storage (NOT delete).
-     * This implements "hot-cold separation" architecture - memories are never truly lost.
+     * This implements "冷热分离" architecture - memories are never truly lost.
      */
     applyLTD() {
         const now = Date.now();
@@ -855,24 +1028,24 @@ class SynapseMemory {
     }
     
     /**
-     * Deep Recall - Hypnotic Retrieval
+     * Deep Recall (深度回忆/催眠检索)
      * Searches latent storage for forgotten memories and revives them.
-     * This is the "hypnotic" mechanism to recover low-weight memories.
+     * This is the "催眠" mechanism to recover low-weight memories.
      * 
      * @param {string} query - Search query
      * @param {number} limit - Maximum number of memories to revive (default: 5)
      * @returns {Object} Revived memories and search results
      */
     async deepRecall(queryOrArray, limit = 5) {
-        // Support array query (Hebbian association expansion)
+        // 支持数组查询（赫布联想扩展）
         const queries = Array.isArray(queryOrArray) ? queryOrArray : [queryOrArray];
         const mainQuery = queries.join(' + ');
-        console.log(`[Synapse] Deep recall: "${mainQuery}"`);
+        console.log(`[Synapse] Deep recall (催眠检索): "${mainQuery}"`);
         
         const revived = [];
         const latentKeys = Object.keys(this.latentWeights);
         
-        // Search in latent storage - support multiple queries
+        // Search in latent storage - 支持多查询
         const matchedKeys = latentKeys.filter(k => {
             const keyLower = k.toLowerCase();
             return queries.some(q => {
@@ -988,7 +1161,7 @@ class SynapseMemory {
     }
     
     /**
-     * Observer Pattern Integration
+     * Observer Pattern Integration (观察者模式集成)
      * Analyzes session patterns and creates instincts based on observed behaviors.
      * This function should be called after significant session activity.
      * 
@@ -1054,7 +1227,8 @@ class SynapseMemory {
             
             if (current.role === 'user' && previous.role === 'assistant') {
                 const userMessage = current.content[0]?.text?.toLowerCase() || '';
-                if (userMessage.includes('no,') || userMessage.includes('actually')) {
+                if (userMessage.includes('no,') || userMessage.includes('actually') || 
+                    userMessage.includes('不是') || userMessage.includes('实际上')) {
                     patterns.userCorrections.push({
                         timestamp: current.timestamp,
                         correction: userMessage,
@@ -1076,10 +1250,12 @@ class SynapseMemory {
             
             // Check if current message contains an error
             const currentContent = current.content[0]?.text || '';
-            if (currentContent.includes('error') || currentContent.includes('failed')) {
+            if (currentContent.includes('error') || currentContent.includes('failed') || 
+                currentContent.includes('错误') || currentContent.includes('失败')) {
                 // Check if next message shows a resolution
                 const nextContent = next.content[0]?.text || '';
-                if (nextContent.includes('success') || nextContent.includes('completed')) {
+                if (nextContent.includes('success') || nextContent.includes('completed') || 
+                    nextContent.includes('成功') || nextContent.includes('完成')) {
                     patterns.errorResolutions.push({
                         timestamp: next.timestamp,
                         error: currentContent,
@@ -1335,7 +1511,7 @@ async function main() {
             const pinColonIndex = pinArgs.indexOf(':');
             if (pinColonIndex === -1) {
                 console.error('Usage: pin-exp <keyword>:<rule>');
-                console.error('Example: pin-exp browser_fill:use type instead when fill fails');
+                console.error('Example: pin-exp browser_fill:遇到fill报错必须用type替代');
                 process.exit(1);
             }
             const pinKeyword = pinArgs.substring(0, pinColonIndex).trim();
@@ -1478,34 +1654,34 @@ async function main() {
             console.log(JSON.stringify(memory.observe(sessionHistory), null, 2));
             break;
         default:
-            console.log(`Brain Synapse CLI - Digital Synapse Memory System
+            console.log(`Brain Synapse CLI - 数字突触记忆系统
 
 Usage: node skill.js <command> [options]
 
 Commands:
-  distill              Distill memories (full: fast lane + slow lane)
-  distill-core         Fast lane only (~100ms, local, for /new trigger)
-  distill-vector       Slow lane only (async vector indexing, background)
-  recall <query>       Associative recall
-    --deep, -d         Deep recall (includes cold storage)
-  deep-recall <query>  Hypnotic recall (recover from cold storage)
-  latent-stats         View cold storage statistics
-  forget               Manual LTD cycle
-  get-top-concepts [n] Get top weighted concepts (default 5)
-  pin-exp <kw>:<rule>  Pin experience rule (never decays)
-  memorize <kw>:<content>  Instant memory write (CRITICAL: use when user asks to remember)
-  get-pinned           View all pinned rules
-  observe [file]       Observe session patterns
+  distill              蒸馏记忆（完整版：快通道+慢通道）
+  distill-core         快通道（~100ms，纯本地，适合/new时调用）
+  distill-vector       慢通道（异步向量索引，后台运行）
+  recall <query>       联想检索
+    --deep, -d         深度检索（包含冷库）
+  deep-recall <query>  催眠检索（从冷库恢复记忆）
+  latent-stats         查看冷库统计
+  forget               手动触发遗忘周期
+  get-top-concepts [n] 获取权重最高的概念（默认5个）
+  pin-exp <kw>:<rule>  固定经验规则（永不衰减）
+  memorize <kw>:<content>  瞬时记忆写入（重要：用户要求记住时调用）
+  get-pinned           查看所有已固定的规则
+  observe [file]       观察会话模式
 
 Examples:
-  node skill.js distill-core --force   # Fast process today's log on /new
-  node skill.js distill-vector         # Background async vector indexing
-  node skill.js recall "browser"
-  node skill.js recall "browser" --deep
-  node skill.js deep-recall "quant strategy from long ago"
-  node skill.js memorize "user_preference:prefers Chinese communication"
-  node skill.js memorize "important:meeting at 3pm tomorrow"
-  node skill.js pin-exp "browser_fill:use type instead of fill on errors"
+  node skill.js distill-core --force   # /new时快速处理今日日志
+  node skill.js distill-vector         # 后台异步向量索引
+  node skill.js recall "浏览器"
+  node skill.js recall "浏览器" --deep
+  node skill.js deep-recall "很久以前的量化策略"
+  node skill.js memorize "用户偏好:喜欢使用中文交流"
+  node skill.js memorize "重要事项:明天下午3点有会议"
+  node skill.js pin-exp "browser_fill:遇到fill报错必须用type替代"
   node skill.js get-pinned
   node skill.js latent-stats`);
     }
