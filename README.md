@@ -47,22 +47,6 @@ node skill.js latent-stats
 # Manual forget cycle
 node skill.js forget
 ```
-
----
-
-## ☕ Sponsor & Get Pro Deep Tuning Pack
-
-Brain Synapse core engine is 100% permanently open source. The default open-source parameters are a "ultra-safe, beginner-proof" conservative configuration. If you have enough time, you can tune it yourself.
-
-But if you want to save time on tuning and API costs, sponsor this project:
-
-👉 **[Get Brain Synapse Pro Deep Tuning Pack ($9.9+)](https://maxray0.gumroad.com/l/brain-synapse-pro)**
-
-**Sponsors automatically unlock:**
-- **Golden Ratio Config**: Aggressive memory parameters that squeeze every Token efficiency.
-- **Core Soul Persona (SOUL.md)**: Gives AI subconscious, eliminates "forced retrieval" waste.
-- **Anti-Infinite-Loop Package** & **Free Vector API Guide**.
-
 ---
 
 ## 🏗️ Architecture
@@ -95,6 +79,6 @@ brain_synapse/
 
 ---
 
-*Created by [zhangzhenwei](https://github.com/kiddbin) | Contact: maxray1356660523@gmail.com*
+*Created by(https://github.com/kiddbin) | Contact: maxray1356660523@gmail.com*
 
-*If this project helped you, please give it a 🌟 Star!*
+
