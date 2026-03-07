@@ -47,22 +47,6 @@ node skill.js latent-stats
 # 手动触发遗忘周期
 node skill.js forget
 ```
-
----
-
-## ☕ 赞助开源 & 获取 Pro 深度调参包
-
-Brain Synapse 的核心引擎 100% 永久开源。默认的开源参数是一套"极度安全、防小白玩坏"的保守配置。如果你有充足的时间，完全可以自己对着源码进行极限调参。
-
-但如果你想直接抄作业，节省大量调优时间与 API 费用，欢迎赞助本项目：
-
-👉 **[点击这里获取 Brain Synapse Pro 深度调参包 ($9.9+)](https://maxray0.gumroad.com/l/brain-synapse-pro)**
-
-**赞助即可自动解锁：**
-- **黄金比例 Config**：榨干每一分 Token 效率的激进记忆参数。
-- **核心灵魂人设 (SOUL.md)**：赋予 AI 潜意识，彻底消灭"强制检索"浪费。
-- **防死循环熔断包** & **免费向量 API 实用指南**。
-
 ---
 
 ## 🏗️ 系统架构
@@ -95,6 +79,5 @@ brain_synapse/
 
 ---
 
-*Created by [zhangzhenwei](https://github.com/kiddbin) | Contact: maxray1356660523@gmail.com*
+*Created by (https://github.com/kiddbin) | Contact: maxray1356660523@gmail.com*
 
-*如果这个项目帮到了你，请点个 🌟 Star！*
