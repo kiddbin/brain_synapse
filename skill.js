@@ -222,9 +222,35 @@ class SynapseMemory {
         this.observationsDir = path.join(__dirname, 'observations');
         this.instinctsDir = path.join(__dirname, 'instincts');
         
+        // Initialize STDP and Conflict Resolver modules
+        this._initAdvancedModules();
+        
         // Ensure observation and instinct directories exist
         if (!fs.existsSync(this.observationsDir)) fs.mkdirSync(this.observationsDir, { recursive: true });
         if (!fs.existsSync(this.instinctsDir)) fs.mkdirSync(this.instinctsDir, { recursive: true });
+    }
+    
+    /**
+     * Initialize advanced modules (STDP and Conflict Resolver)
+     */
+    _initAdvancedModules() {
+        try {
+            const STDPTrainer = require('./stdp-temporal.js');
+            this.stdpTrainer = new STDPTrainer();
+            console.log('[Synapse] STDP temporal learning module loaded');
+        } catch (e) {
+            console.warn('[Synapse] STDP module not available:', e.message);
+            this.stdpTrainer = null;
+        }
+        
+        try {
+            const ConflictResolver = require('./conflict-resolver.js');
+            this.conflictResolver = new ConflictResolver(this.weights);
+            console.log('[Synapse] Conflict resolver module loaded');
+        } catch (e) {
+            console.warn('[Synapse] Conflict resolver not available:', e.message);
+            this.conflictResolver = null;
+        }
     }
 
     save() {
@@ -264,8 +290,31 @@ class SynapseMemory {
             const content = fs.readFileSync(filePath, 'utf8');
             
             const keywords = extractKeywords(content);
+            
+            // STDP: Process temporal relationships
+            if (this.stdpTrainer) {
+                try {
+                    this.stdpTrainer.processContent(content);
+                } catch (e) {
+                    console.warn('[Synapse] STDP processing failed:', e.message);
+                }
+            }
+            
             keywords.forEach(keyword => {
                 const lowerKeyword = keyword.toLowerCase();
+                
+                // Conflict Resolution: Check for conflicts before adding
+                if (this.conflictResolver && !this.weights[lowerKeyword]) {
+                    const conflictCheck = this.conflictResolver.checkAndResolve(
+                        { keyword: lowerKeyword, rule: keyword },
+                        this.weights
+                    );
+                    
+                    if (conflictCheck.action === 'flag') {
+                        console.log(`[Synapse] Potential conflict detected for "${lowerKeyword}", flagged for review`);
+                    }
+                }
+                
                 if (!this.weights[lowerKeyword]) {
                     this.weights[lowerKeyword] = { 
                         weight: 1.0, 
@@ -1653,6 +1702,61 @@ async function main() {
             
             console.log(JSON.stringify(memory.observe(sessionHistory), null, 2));
             break;
+        case 'stdp-stats':
+            if (memory.stdpTrainer) {
+                const stdpStats = memory.stdpTrainer.getStats();
+                console.log(JSON.stringify(stdpStats, null, 2));
+            } else {
+                console.log('STDP module not available');
+            }
+            setTimeout(() => process.exit(0), 10);
+            break;
+        case 'stdp-predict':
+            const predictQuery = args.join(' ');
+            if (memory.stdpTrainer) {
+                const predictions = memory.stdpTrainer.getTemporalPredictions(predictQuery, 5);
+                console.log(JSON.stringify({
+                    query: predictQuery,
+                    predictions: predictions
+                }, null, 2));
+            } else {
+                console.log('STDP module not available');
+            }
+            setTimeout(() => process.exit(0), 10);
+            break;
+        case 'stdp-chain':
+            const chainStart = args[0];
+            const maxDepth = parseInt(args[1]) || 3;
+            if (memory.stdpTrainer) {
+                const chain = memory.stdpTrainer.detectCausalChain(chainStart, maxDepth);
+                console.log(JSON.stringify({
+                    start: chainStart,
+                    chain: chain
+                }, null, 2));
+            } else {
+                console.log('STDP module not available');
+            }
+            setTimeout(() => process.exit(0), 10);
+            break;
+        case 'conflict-log':
+            const limit = parseInt(args[0]) || 20;
+            if (memory.conflictResolver) {
+                const log = memory.conflictResolver.getConflictLog(limit);
+                console.log(JSON.stringify(log, null, 2));
+            } else {
+                console.log('Conflict resolver not available');
+            }
+            setTimeout(() => process.exit(0), 10);
+            break;
+        case 'conflict-stats':
+            if (memory.conflictResolver) {
+                const conflictStats = memory.conflictResolver.getStats();
+                console.log(JSON.stringify(conflictStats, null, 2));
+            } else {
+                console.log('Conflict resolver not available');
+            }
+            setTimeout(() => process.exit(0), 10);
+            break;
         default:
             console.log(`Brain Synapse CLI - 数字突触记忆系统
 
@@ -1672,6 +1776,15 @@ Commands:
   memorize <kw>:<content>  瞬时记忆写入（重要：用户要求记住时调用）
   get-pinned           查看所有已固定的规则
   observe [file]       观察会话模式
+  
+  === STDP 时序学习 (v1.5.0) ===
+  stdp-stats           查看时序学习统计
+  stdp-predict <kw>    获取时序预测（基于关键词）
+  stdp-chain <kw> [n]  检测因果链条
+  
+  === 冲突解决 (v1.5.0) ===
+  conflict-log [n]     查看冲突解决日志
+  conflict-stats       查看冲突解决统计
 
 Examples:
   node skill.js distill-core --force   # /new时快速处理今日日志
@@ -1683,7 +1796,10 @@ Examples:
   node skill.js memorize "重要事项:明天下午3点有会议"
   node skill.js pin-exp "browser_fill:遇到fill报错必须用type替代"
   node skill.js get-pinned
-  node skill.js latent-stats`);
+  node skill.js latent-stats
+  node skill.js stdp-predict "浏览器"    # 预测浏览器相关的后续概念
+  node skill.js stdp-chain "错误" 3      # 检测错误→解决链条
+  node skill.js conflict-stats         # 查看冲突解决统计`);
     }
 }
 
