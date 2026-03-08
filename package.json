@@ -8,8 +8,7 @@
     "distill": "node skill.js distill",
     "distill-core": "node skill.js distill-core",
     "distill-vector": "node skill.js distill-vector",
-    "recall": "node skill.js recall",
-    "test": "node __tests__/test_synapse.js"
+    "recall": "node skill.js recall"
   },
   "dependencies": {
     "@nlpjs/core": "^4.26.1",
@@ -28,9 +27,6 @@
     "vector-embeddings"
   ],
   "license": "MIT",
-  "devDependencies": {
-    "jest": "^30.2.0"
-  },
   "repository": {
     "type": "git",
     "url": "https://github.com/kiddbin/brain_synapse.git"
