@@ -1,11 +1,13 @@
 {
   "name": "brain-synapse",
-  "version": "1.3.0",
-  "description": "Biologically-inspired digital memory system for AI Agents - Now with Adaptive Dual-Track RAG",
+  "version": "1.4.0",
+  "description": "Biologically-inspired digital memory system for AI Agents - Now with Auto Hook System and Adaptive Dual-Track RAG",
   "main": "skill.js",
   "scripts": {
     "start": "node skill.js",
     "distill": "node skill.js distill",
+    "distill-core": "node skill.js distill-core",
+    "distill-vector": "node skill.js distill-vector",
     "recall": "node skill.js recall",
     "deep-recall": "node skill.js deep-recall",
     "latent-stats": "node skill.js latent-stats",
@@ -19,7 +21,9 @@
     "synapse",
     "agent",
     "nlp",
-    "cognitive"
+    "cognitive",
+    "auto-hook",
+    "vector-search"
   ],
   "author": "Brain Synapse Team",
   "license": "MIT",

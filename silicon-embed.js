@@ -1,22 +1,12 @@
 /**
  * @file brain_synapse/silicon-embed.js
- * @description Vector Embedding Module - Provides semantic search capability for brain_synapse
- * @version 2.1.0
+ * @description 硅基流动向量嵌入模块 - 为 brain_synapse 提供语义检索能力
+ * @version 2.0.0
  * 
- * ==================== Important Notes ====================
- * 
- * This module provides vector-based semantic search functionality.
- * Configure your preferred vector API provider in config.js or via environment variables.
- * 
- * 【Local-Only Mode】
- * If API Key is not configured or API calls fail, the system automatically falls back to local file search
- * 
- * ==================== Architecture Notes ====================
- * 
- * 1. Local vector cache - Pre-process and store file embeddings to avoid real-time API calls
- * 2. Single API on query - Only make one API call for the query
- * 3. Local cosine similarity calculation - Pure Node.js computation, ultra-fast returns
- * 4. Seamless degradation - Automatically use local search when API is unavailable
+ * 架构升级：
+ * 1. 本地向量缓存 - 预处理存储文件 embedding，避免实时 API 调用
+ * 2. 查询时单次 API - 仅对 query 发起一次 API 调用
+ * 3. 本地余弦相似度计算 - 纯 Node.js 运算，极速返回
  */
 
 const fs = require('fs');
@@ -24,20 +14,13 @@ const path = require('path');
 const https = require('https');
 const { URL } = require('url');
 
-const CONFIG = require('./config');
-
-const getVectorConfig = () => {
-    if (CONFIG.vectorSearchApi) {
-        return CONFIG.vectorSearchApi;
-    }
-    return {
-        apiUrl: 'https://api-inference.huggingface.co/pipeline/feature-extraction/BAAI/bge-m3',
-        model: 'BAAI/bge-m3',
-        apiKey: '',
-        timeout: 5000,
-        maxResults: 5,
-        chunkSize: 1000
-    };
+const CONFIG = {
+    apiUrl: 'https://api.siliconflow.cn/v1/embeddings',
+    apiKey: 'sk-ectpacxsixjjytbzewfbojxcwxjsbrwfsvmmlzjklmgaaaoy',
+    model: 'BAAI/bge-m3',
+    timeout: 5000,
+    maxResults: 5,
+    chunkSize: 1000
 };
 
 const VECTOR_CACHE_FILE = path.join(__dirname, 'vector_cache.json');
@@ -50,30 +33,19 @@ class SiliconEmbed {
         this._fileIndexCache = null;
         this._cacheTime = 0;
         this._vectorCache = null;
-        
-        const vectorConfig = getVectorConfig();
-        this.apiUrl = vectorConfig.apiUrl;
-        this.apiKey = vectorConfig.apiKey;
-        this.model = vectorConfig.model;
-        this.timeout = vectorConfig.timeout;
-        this.maxResults = vectorConfig.maxResults;
-        this.chunkSize = vectorConfig.chunkSize;
-        
-        this.isEnabled = CONFIG.features.enableVectorSearch && this.apiKey;
-        if (!this.isEnabled) {
-            console.log('[SiliconEmbed] Vector search not enabled (API Key not configured), using local search');
-        }
     }
 
+    /**
+     * 检查是否已配置 API
+     */
     isConfigured() {
-        return this.apiKey && this.apiKey.length > 0;
+        return CONFIG.apiKey && CONFIG.apiKey.length > 0;
     }
 
-    isAvailable() {
-        if (!this.isEnabled || !this.apiKey) return false;
-        return this.apiKey.length > 10;
-    }
-
+    /**
+     * 加载向量缓存
+     * @returns {Object} 向量缓存 { chunks: [{id, file, preview, embedding}], lastUpdate }
+     */
     loadVectorCache() {
         if (this._vectorCache) {
             return this._vectorCache;
@@ -93,6 +65,9 @@ class SiliconEmbed {
         return this._vectorCache;
     }
 
+    /**
+     * 加载元数据（文件 mtime 记录）
+     */
     loadMeta() {
         if (fs.existsSync(VECTOR_META_FILE)) {
             try {
@@ -104,6 +79,9 @@ class SiliconEmbed {
         return { files: {} };
     }
 
+    /**
+     * 保存元数据
+     */
     saveMeta(meta) {
         try {
             fs.writeFileSync(VECTOR_META_FILE, JSON.stringify(meta, null, 2), 'utf8');
@@ -112,6 +90,9 @@ class SiliconEmbed {
         }
     }
 
+    /**
+     * 保存向量缓存
+     */
     saveVectorCache() {
         try {
             fs.writeFileSync(VECTOR_CACHE_FILE, JSON.stringify(this._vectorCache, null, 2), 'utf8');
@@ -121,9 +102,14 @@ class SiliconEmbed {
         }
     }
 
+    /**
+     * 调用硅基流动 API 生成向量
+     * @param {string} text - 要向量化的文本
+     * @returns {Promise<number[]>} 向量数组
+     */
     async getEmbedding(text) {
         return new Promise((resolve, reject) => {
-            const url = new URL(this.apiUrl);
+            const url = new URL(CONFIG.apiUrl);
             
             const options = {
                 hostname: url.hostname,
@@ -131,9 +117,9 @@ class SiliconEmbed {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${this.apiKey}`
+                    'Authorization': `Bearer ${CONFIG.apiKey}`
                 },
-                timeout: this.timeout
+                timeout: CONFIG.timeout
             };
 
             const req = https.request(options, (res) => {
@@ -164,7 +150,7 @@ class SiliconEmbed {
             });
 
             const payload = {
-                model: this.model,
+                model: CONFIG.model,
                 input: text
             };
 
@@ -173,11 +159,16 @@ class SiliconEmbed {
         });
     }
 
+    /**
+     * 批量获取向量（减少 API 调用次数）
+     * @param {string[]} texts - 文本数组
+     * @returns {Promise<number[][]>} 向量数组
+     */
     async getEmbeddingsBatch(texts) {
         if (texts.length === 0) return [];
         
         return new Promise((resolve, reject) => {
-            const url = new URL(this.apiUrl);
+            const url = new URL(CONFIG.apiUrl);
             
             const options = {
                 hostname: url.hostname,
@@ -185,9 +176,9 @@ class SiliconEmbed {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${this.apiKey}`
+                    'Authorization': `Bearer ${CONFIG.apiKey}`
                 },
-                timeout: this.timeout * 2
+                timeout: CONFIG.timeout * 2
             };
 
             const req = https.request(options, (res) => {
@@ -219,7 +210,7 @@ class SiliconEmbed {
             });
 
             const payload = {
-                model: this.model,
+                model: CONFIG.model,
                 input: texts
             };
 
@@ -228,6 +219,12 @@ class SiliconEmbed {
         });
     }
 
+    /**
+     * 计算余弦相似度
+     * @param {number[]} a - 向量 A
+     * @param {number[]} b - 向量 B
+     * @returns {number} 相似度
+     */
     cosineSimilarity(a, b) {
         if (a.length !== b.length) return 0;
         
@@ -246,6 +243,11 @@ class SiliconEmbed {
         return dotProduct / (Math.sqrt(normA) * Math.sqrt(normB));
     }
 
+    /**
+     * 查询预处理 - 清洗路径符号，提取核心词汇
+     * @param {string} query - 原始查询
+     * @returns {string} 处理后的查询
+     */
     preprocessQuery(query) {
         let processed = query;
         
@@ -259,6 +261,12 @@ class SiliconEmbed {
         return processed;
     }
 
+    /**
+     * 双轨混合打分 - 字面匹配奖励机制
+     * @param {string} query - 原始查询
+     * @param {Object} chunk - 缓存块
+     * @returns {number} 词汇匹配奖励分数
+     */
     computeLexicalBonus(query, chunk) {
         const LEXICAL_BONUS = 0.15;
         const MIN_KEYWORD_LENGTH = 2;
@@ -283,6 +291,10 @@ class SiliconEmbed {
         return 0;
     }
 
+    /**
+     * 加载 memory 目录中的所有文件
+     * @returns {Array<{path: string, content: string}>} 文件列表
+     */
     loadMemoryFiles() {
         const now = Date.now();
         
@@ -324,6 +336,13 @@ class SiliconEmbed {
         return files;
     }
 
+    /**
+     * 将文本分块
+     * @param {string} content - 文档内容
+     * @param {string} fileName - 文件名（可选）
+     * @param {number} maxLength - 最大块长度
+     * @returns {string[]} 段落数组
+     */
     splitIntoChunks(content, fileName = '', maxLength = 1000) {
         const paragraphs = content.split(/\n\n+/);
         const chunks = [];
@@ -351,6 +370,10 @@ class SiliconEmbed {
         return chunks;
     }
 
+    /**
+     * 构建向量索引（预处理）
+     * @param {boolean} force - 是否强制重建
+     */
     async buildIndex(force = false) {
         const startTime = Date.now();
         
@@ -456,19 +479,24 @@ class SiliconEmbed {
         return { chunks: newChunks.length, apiCalls, elapsed };
     }
 
+    /**
+     * 增量索引 - 只对指定文件进行向量化
+     * @param {string|string[]} filePaths - 单个文件路径或文件路径数组
+     * @returns {Promise<number>} 新增的块数量
+     */
     async incrementalIndex(filePaths) {
         if (!this.isConfigured()) {
-            console.log('[SiliconEmbed] Vector search not configured, skipping incremental index');
+            console.log('[SiliconEmbed] 向量搜索未配置，跳过增量索引');
             return 0;
         }
 
         if (!filePaths || (Array.isArray(filePaths) && filePaths.length === 0)) {
-            console.log('[SiliconEmbed] No files to incrementally index');
+            console.log('[SiliconEmbed] 没有文件需要增量索引');
             return 0;
         }
 
         const files = Array.isArray(filePaths) ? filePaths : [filePaths];
-        console.log(`[SiliconEmbed] Starting incremental index: ${files.length} files`);
+        console.log(`[SiliconEmbed] 开始增量索引: ${files.length} 个文件`);
 
         const cache = this.loadVectorCache();
         const meta = this.loadMeta();
@@ -487,7 +515,7 @@ class SiliconEmbed {
 
         for (const filePath of files) {
             if (!fs.existsSync(filePath)) {
-                console.log(`[SiliconEmbed] File not found: ${filePath}`);
+                console.log(`[SiliconEmbed] 文件不存在: ${filePath}`);
                 continue;
             }
 
@@ -496,7 +524,7 @@ class SiliconEmbed {
             const content = fs.readFileSync(filePath, 'utf8');
 
             const fileChunks = this.splitIntoChunks(content, fileName);
-            console.log(`[SiliconEmbed] Processing file: ${fileName}, generating ${fileChunks.length} chunks`);
+            console.log(`[SiliconEmbed] 处理文件: ${fileName}, 生成 ${fileChunks.length} 个块`);
 
             const texts = fileChunks;
 
@@ -525,7 +553,7 @@ class SiliconEmbed {
                 };
 
             } catch (e) {
-                console.error(`[SiliconEmbed] Incremental index embedding failed for ${fileName}: ${e.message}`);
+                console.error(`[SiliconEmbed] 增量索引获取向量失败 ${fileName}: ${e.message}`);
             }
         }
 
@@ -534,14 +562,19 @@ class SiliconEmbed {
             this._vectorCache = cache;
             this.saveVectorCache();
             this.saveMeta(meta);
-            console.log(`[SiliconEmbed] Incremental index complete: ${newChunksAdded} new chunks, total ${cache.chunks.length} chunks`);
+            console.log(`[SiliconEmbed] 增量索引完成: 新增 ${newChunksAdded} 个块，总计 ${cache.chunks.length} 个块`);
         } else {
-            console.log('[SiliconEmbed] No new content');
+            console.log('[SiliconEmbed] 没有新增内容');
         }
 
         return newChunksAdded;
     }
 
+    /**
+     * 执行向量检索（使用缓存）
+     * @param {string} query - 查询文本
+     * @returns {Promise<Object>} 检索结果
+     */
     async search(query) {
         const startTime = Date.now();
         
@@ -588,7 +621,7 @@ class SiliconEmbed {
             
             results.sort((a, b) => b.finalScore - a.finalScore);
             
-            const topResults = results.slice(0, this.maxResults);
+            const topResults = results.slice(0, CONFIG.maxResults);
             
             const executionTime = Date.now() - startTime;
             console.log(`[SiliconEmbed] Search completed in ${executionTime}ms (query: ${queryTime}ms, similarity: ${executionTime - queryTime}ms)`);
@@ -617,6 +650,10 @@ class SiliconEmbed {
         }
     }
 
+    /**
+     * 快速测试 API 是否可用
+     * @returns {Promise<boolean>}
+     */
     async testConnection() {
         try {
             await this.getEmbedding('test');
@@ -627,6 +664,9 @@ class SiliconEmbed {
         }
     }
 
+    /**
+     * 获取向量缓存状态
+     */
     getCacheStatus() {
         const cache = this.loadVectorCache();
         const meta = this.loadMeta();
@@ -640,6 +680,7 @@ class SiliconEmbed {
     }
 }
 
+// CLI 接口
 if (require.main === module) {
     const args = process.argv.slice(2);
     const command = args[0];
@@ -671,7 +712,7 @@ if (require.main === module) {
             process.exit(result.success ? 0 : 1);
         });
     } else {
-        console.log(`SiliconEmbed v2.1.0 - Vector Cache CLI
+        console.log(`SiliconEmbed v2.0.0 - Vector Cache CLI
 
 Usage: node silicon-embed.js <command> [options]
 
@@ -685,7 +726,7 @@ Commands:
 Examples:
   node silicon-embed.js test
   node silicon-embed.js build-index
-  node silicon-embed.js search "browser automation"
+  node silicon-embed.js search "浏览器操作"
 `);
     }
 }
