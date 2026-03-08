@@ -9,6 +9,10 @@ logs/
 *.json
 !package.json
 
+# Runtime data
+*.jsonl
+observations.jsonl
+
 # Cache
 cache/
 .vector_cache/
