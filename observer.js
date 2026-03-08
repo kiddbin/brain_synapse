@@ -1,21 +1,12 @@
 /**
  * @file brain_synapse/observer.js
- * @description Observer Pattern Implementation - Read/Write Separation Architecture
+ * @description Observer Pattern Implementation - Read-Write Separation Architecture
+ * @author Foundry (on behalf of Antigravity)
  * @version 2.0.0
  * 
- * ==================== Functionality Description ====================
- * 
- * This module implements the Observer Pattern for automatically identifying user behavior patterns and creating "Instincts".
- * 
- * Read/Write Separation Architecture:
- * - Ultra-fast write: recordObservation() only performs synchronous append to observations.jsonl
- * - Heavy computation: performBatchAnalysis() is called during distill, analyzes and generates pinned rules
- * 
- * Observation Types:
- * - user_correction: User correction pattern
- * - error_resolution: Error resolution pattern
- * - workflow: Workflow pattern
- * - tool_preference: Tool preference pattern
+ * Read-Write Separation Architecture:
+ * - Fast Write: recordObservation() only does synchronous append to observations.jsonl
+ * - Heavy Compute: performBatchAnalysis() is called during distill, analyzes and generates pinned rules
  */
 
 const fs = require('fs');
@@ -37,9 +28,6 @@ class ObserverPattern {
         this.instincts = this.loadInstincts();
     }
 
-    /**
-     * Simple file lock mechanism (prevents JSON corruption from concurrent writes)
-     */
     acquireLock(maxRetries = 5, delayMs = 50) {
         for (let i = 0; i < maxRetries; i++) {
             try {
@@ -48,11 +36,10 @@ class ObserverPattern {
                     return true;
                 }
             } catch (e) {
-                // Lock file is occupied, wait
             }
             if (i < maxRetries - 1) {
                 const start = Date.now();
-                while (Date.now() - start < delayMs) { /* busy wait */ }
+                while (Date.now() - start < delayMs) { }
             }
         }
         return false;
@@ -64,14 +51,9 @@ class ObserverPattern {
                 fs.unlinkSync(this.LOCK_FILE);
             }
         } catch (e) {
-            // ignore
         }
     }
 
-    /**
-     * Ultra-fast write: only performs synchronous append to file
-     * @param {Object} observation - Observation data
-     */
     recordObservation(observation) {
         const timestamp = new Date().toISOString();
         const observationRecord = {
@@ -91,9 +73,6 @@ class ObserverPattern {
         return observationRecord.id;
     }
 
-    /**
-     * Get observation record count
-     */
     getObservationCount() {
         try {
             if (!fs.existsSync(this.observationsFile)) {
@@ -107,18 +86,14 @@ class ObserverPattern {
         }
     }
 
-    /**
-     * Heavy computation: called during distill
-     * Analyze all observation records, generate pinned rules
-     */
     performBatchAnalysis() {
         console.log('[Observer] Starting batch analysis...');
         
         const count = this.getObservationCount();
-        console.log(`[Observer] Found ${count} observation records`);
+        console.log(`[Observer] Found ${count} observations`);
         
         if (count < 5) {
-            console.log(`[Observer] Insufficient observation records (need 5, current ${count})`);
+            console.log(`[Observer] Not enough observations (need 5, got ${count})`);
             return;
         }
         
@@ -134,7 +109,6 @@ class ObserverPattern {
             try {
                 observations.push(JSON.parse(line));
             } catch (e) {
-                // ignore
             }
         }
         
@@ -168,16 +142,13 @@ class ObserverPattern {
         }
         
         if (instinctCreated > 0) {
-            console.log(`[Observer] ✅ Created ${instinctCreated} instinct rules`);
+            console.log(`[Observer] Created ${instinctCreated} pinned instincts`);
             this.clearObservations();
         } else {
             console.log(`[Observer] No patterns detected (need 3+ similar observations)`);
         }
     }
 
-    /**
-     * Generate instincts from analysis results
-     */
     generateInstinctFromAnalysis(type, key, observations) {
         let instinct = null;
         
@@ -241,12 +212,9 @@ class ObserverPattern {
         return 0.85;
     }
 
-    /**
-     * Create or update instinct (writes to synapse_weights.json, with pinned: true)
-     */
     createOrUpdateInstinct(instinct) {
         if (!this.acquireLock()) {
-            console.log(`[Observer] Failed to acquire lock, skipping instinct creation: ${instinct.id}`);
+            console.log(`[Observer] Could not acquire lock, skipping instinct creation: ${instinct.id}`);
             return false;
         }
         
@@ -275,7 +243,7 @@ class ObserverPattern {
             };
             
             fs.writeFileSync(this.WEIGHTS_FILE, JSON.stringify(weights, null, 2), 'utf8');
-            console.log(`[Observer] ✅ Created pinned instinct: ${instinct.id}`);
+            console.log(`[Observer] Created pinned instinct: ${instinct.id}`);
             return true;
         } catch (error) {
             console.error(`[Observer] Failed to create instinct: ${error.message}`);
@@ -285,16 +253,12 @@ class ObserverPattern {
         }
     }
 
-    /**
-     * Clear observation record file
-     */
     clearObservations() {
         try {
             if (fs.existsSync(this.observationsFile)) {
                 fs.unlinkSync(this.observationsFile);
             }
         } catch (e) {
-            // ignore
         }
     }
 
@@ -337,7 +301,7 @@ class ObserverPattern {
         
         if (analysisContext.includes('QMD') || analysisContext.includes('GitHub')) {
             analysisResult.observedPainPoints = [
-                "Dependency on external toolchains (e.g., QMD) increases system fragility",
+                "Dependency on external toolchains (like QMD) causes system fragility",
                 "GitHub clone failures may be related to network environment or authentication issues",
                 "Lack of automated error recovery mechanisms"
             ];

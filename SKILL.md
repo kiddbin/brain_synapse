@@ -104,7 +104,7 @@ brain_synapse/
 ├── auto-hook.js             # Auto experience capture
 ├── stdp-temporal.js         # STDP temporal learning (v1.5.0)
 ├── conflict-resolver.js     # Conflict resolution (v1.5.0)
-├── silicon-embed.js         # Optional: Vector embedding for semantic search
+├── vector-embed.js         # Optional: Vector embedding for semantic search
 ├── .env.example             # API configuration template
 └── instincts/               # Observer-generated instincts
 ```
@@ -311,14 +311,16 @@ Conflict resolution runs automatically in the background:
 
 ## Optional: Vector Semantic Search
 
-For enhanced semantic retrieval, configure Silicon Flow API:
+For enhanced semantic retrieval, configure any OpenAI-compatible embedding API:
 
 ```bash
 # Copy example configuration
 cp .env.example .env
 
-# Edit .env with your API key
-SILICON_API_KEY=your_actual_api_key
+# Edit .env with your API settings
+VECTOR_API_URL=https://api.openai.com/v1/embeddings
+VECTOR_API_KEY=your_actual_api_key
+VECTOR_MODEL=text-embedding-3-small
 
 # Run indexing
 node skill.js distill-vector

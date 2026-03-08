@@ -63,7 +63,7 @@ brain_synapse/
 ├── skill.js                    # Core memory system
 ├── observer.js                 # Behavior pattern observer
 ├── config.js                   # Configuration
-├── silicon-embed.js            # Vector search (optional)
+├── vector-embed.js            # Vector search (optional)
 ├── local_file_search.js        # Local file search
 ├── synapse_weights.json        # Active memory
 ├── latent_weights.json         # Cold storage

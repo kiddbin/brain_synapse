@@ -172,7 +172,7 @@ function detectWorkspaceRoot() {
 CONFIG.workspaceRoot = detectWorkspaceRoot();
 
 // Auto-enable vector search if API Key exists in environment variables
-if (process.env.SILICONFLOW_API_KEY) {
+if (process.env.VECTOR_API_KEY || process.env.EMBEDDING_API_KEY) {
     CONFIG.features.enableVectorSearch = true;
 }
 

@@ -2,6 +2,98 @@
 
 All notable changes to this project will be documented in this file.
 
+## [v1.6.0] - 2026-03-08
+
+### 🚀 Major Features
+
+#### Modular Architecture Refactoring
+Complete restructuring of the codebase into a clean modular architecture:
+
+```
+brain_synapse/
+├── core/
+│   ├── memory.js      # Core memory management (SynapseMemory class)
+│   └── nlp.js         # Natural language processing utilities
+├── storage/
+│   └── storage.js     # ACID-like local JSON file storage
+├── __tests__/
+│   └── test_synapse.js # Comprehensive test suite
+├── skill.js           # Main CLI entry point
+├── observer.js        # Behavior pattern observer
+├── stdp-temporal.js   # STDP temporal learning
+├── conflict-resolver.js # Memory conflict resolution
+├── auto-hook.js       # Automated experience capture
+├── local_file_search.js # Local file search with fallback
+└── vector-embed.js    # Generic vector embedding module
+```
+
+#### Generic Vector Embedding Module
+- Renamed from `silicon-embed.js` to `vector-embed.js`
+- Supports any OpenAI-compatible embedding API
+- Generic environment variables: `VECTOR_API_KEY`, `VECTOR_API_URL`, `VECTOR_MODEL`
+- Alternative naming also supported: `EMBEDDING_API_KEY`, etc.
+- No vendor-specific references exposed
+
+### 🔒 Privacy & Security
+
+- **Zero Vendor Exposure**: Removed all references to specific API providers
+- **Generic Configuration**: Environment variables use generic names
+- **No Hardcoded Keys**: All API keys loaded from environment or `.env` file
+- **Safe for Open Source**: Can be safely published to public repositories
+
+### 📁 New Files
+
+| File | Description |
+|------|-------------|
+| `core/memory.js` | Core SynapseMemory class with all memory operations |
+| `core/nlp.js` | Keyword extraction and stopword filtering |
+| `storage/storage.js` | Atomic JSON file storage with ACID-like guarantees |
+| `vector-embed.js` | Generic vector embedding (replaces silicon-embed.js) |
+| `__tests__/test_synapse.js` | Comprehensive test suite (23 tests) |
+
+### 📝 Configuration Changes
+
+#### Environment Variables (`.env.example`)
+```bash
+# Old (vendor-specific)
+SILICON_API_KEY=xxx
+SILICON_API_URL=xxx
+
+# New (generic)
+VECTOR_API_URL=your_embedding_api_url_here
+VECTOR_API_KEY=your_api_key_here
+VECTOR_MODEL=text-embedding-3-small
+```
+
+### 🏗️ Architecture Improvements
+
+- **Separation of Concerns**: Memory, NLP, and Storage are now independent modules
+- **Testability**: Each module can be tested in isolation
+- **Maintainability**: Clear module boundaries make future changes easier
+- **Extensibility**: Easy to add new storage backends or NLP processors
+
+### 📊 Test Coverage
+
+- 23 automated tests covering all core modules
+- Module existence checks
+- Module loadability verification
+- NLP functionality tests
+
+### 🐛 Bug Fixes
+
+- Fixed PowerShell command compatibility issues
+- Resolved module path resolution on Windows
+- Fixed Chinese filename encoding in tests
+
+### 📚 Documentation
+
+- Updated README.md with new file structure
+- Updated README_CN.md with Chinese documentation
+- Updated SKILL.md with generic API configuration
+- Added comprehensive code comments
+
+---
+
 ## [v1.3.0] - 2026-03-05
 
 ### 🚀 Major Features

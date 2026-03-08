@@ -63,7 +63,7 @@ brain_synapse/
 ├── skill.js                    # 核心记忆系统
 ├── observer.js                 # 行为模式观察器
 ├── config.js                   # 配置文件
-├── silicon-embed.js            # 向量搜索（可选）
+├── vector-embed.js            # 向量搜索（可选）
 ├── local_file_search.js        # 本地文件搜索
 ├── synapse_weights.json        # 活跃记忆
 ├── latent_weights.json        # 冷库存储
