@@ -1,0 +1,54 @@
+{
+  "memories": {
+    "mem_old_db": {
+      "id": "mem_old_db",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "数据库",
+        "rule": "使用 MySQL 数据库"
+      },
+      "timestamp_valid_from": 1772980804154,
+      "timestamp_valid_to": null,
+      "created_at": 1772980804154,
+      "updated_at": 1772980804154,
+      "confidence": 0.5,
+      "salience": 0.5,
+      "recency": 1,
+      "access_count": 0,
+      "linked_entities": [],
+      "supersedes": null,
+      "superseded_by": "mem_new_db",
+      "provenance": null,
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_new_db": {
+      "id": "mem_new_db",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "数据库",
+        "rule": "迁移到 PostgreSQL，MySQL 已废弃"
+      },
+      "timestamp_valid_from": 1772980804157,
+      "timestamp_valid_to": null,
+      "created_at": 1772980804157,
+      "updated_at": 1772980804157,
+      "confidence": 0.5,
+      "salience": 0.5,
+      "recency": 1,
+      "access_count": 0,
+      "linked_entities": [],
+      "supersedes": "mem_old_db",
+      "superseded_by": null,
+      "provenance": null,
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    }
+  },
+  "latent": {},
+  "metadata": {}
+}

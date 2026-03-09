@@ -1,0 +1,54 @@
+{
+  "memories": {
+    "mem_cors_v1": {
+      "id": "mem_cors_v1",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "CORS",
+        "rule": "允许所有来源访问"
+      },
+      "timestamp_valid_from": 1772980804203,
+      "timestamp_valid_to": null,
+      "created_at": 1772980804203,
+      "updated_at": 1772980804203,
+      "confidence": 0.5,
+      "salience": 0.5,
+      "recency": 1,
+      "access_count": 0,
+      "linked_entities": [],
+      "supersedes": null,
+      "superseded_by": "mem_cors_v2",
+      "provenance": null,
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_cors_v2": {
+      "id": "mem_cors_v2",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "CORS",
+        "rule": "仅允许特定域名访问"
+      },
+      "timestamp_valid_from": 1772980804207,
+      "timestamp_valid_to": null,
+      "created_at": 1772980804207,
+      "updated_at": 1772980804207,
+      "confidence": 0.5,
+      "salience": 0.5,
+      "recency": 1,
+      "access_count": 0,
+      "linked_entities": [],
+      "supersedes": "mem_cors_v1",
+      "superseded_by": null,
+      "provenance": null,
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    }
+  },
+  "latent": {},
+  "metadata": {}
+}

@@ -1,0 +1,2050 @@
+{
+  "memories": {
+    "mem_1": {
+      "id": "mem_1",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "数据库",
+        "rule": "数据库相关规则：使用标准配置，最大连接数为 128"
+      },
+      "timestamp_valid_from": 1773024339896,
+      "timestamp_valid_to": null,
+      "created_at": 1772160339858,
+      "updated_at": 1772851539858,
+      "confidence": 0.6036788325655289,
+      "salience": 0.5304706985410776,
+      "recency": 0.9383349170567817,
+      "access_count": 9,
+      "linked_entities": [
+        "UserService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/services/api.js:L40"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_2": {
+      "id": "mem_2",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "缓存",
+        "rule": "缓存相关规则：使用标准配置，最大连接数为 112"
+      },
+      "timestamp_valid_from": 1773024339900,
+      "timestamp_valid_to": null,
+      "created_at": 1772246739858,
+      "updated_at": 1773024339858,
+      "confidence": 0.7996016648933382,
+      "salience": 0.8913563049918521,
+      "recency": 0.8239473718361311,
+      "access_count": 0,
+      "linked_entities": [
+        "AuthService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/services/auth.js:L88"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_3": {
+      "id": "mem_3",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "认证",
+        "rule": "认证相关规则：使用标准配置，最大连接数为 74"
+      },
+      "timestamp_valid_from": 1773024339904,
+      "timestamp_valid_to": null,
+      "created_at": 1771037139858,
+      "updated_at": 1772333139858,
+      "confidence": 0.8279256038490224,
+      "salience": 0.8385202189853035,
+      "recency": 0.47053974250246255,
+      "access_count": 3,
+      "linked_entities": [
+        "CacheService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/services/cache.js:L42"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_4": {
+      "id": "mem_4",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "授权",
+        "rule": "授权相关规则：使用标准配置，最大连接数为 145"
+      },
+      "timestamp_valid_from": 1773024339907,
+      "timestamp_valid_to": null,
+      "created_at": 1770864339858,
+      "updated_at": 1772333139858,
+      "confidence": 0.9611483203887478,
+      "salience": 0.7260903904766381,
+      "recency": 0.8430278636685401,
+      "access_count": 7,
+      "linked_entities": [
+        "DatabaseService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/models/user.js:L49"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_5": {
+      "id": "mem_5",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "日志",
+        "rule": "日志相关规则：使用标准配置，最大连接数为 120"
+      },
+      "timestamp_valid_from": 1773024339910,
+      "timestamp_valid_to": null,
+      "created_at": 1771123539858,
+      "updated_at": 1772592339858,
+      "confidence": 0.5563761687467834,
+      "salience": 0.9962040434806364,
+      "recency": 0.703457395907403,
+      "access_count": 4,
+      "linked_entities": [
+        "OrderService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/models/order.js:L95"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_6": {
+      "id": "mem_6",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "配置",
+        "rule": "配置相关规则：使用标准配置，最大连接数为 74"
+      },
+      "timestamp_valid_from": 1773024339914,
+      "timestamp_valid_to": null,
+      "created_at": 1771469139858,
+      "updated_at": 1772419539858,
+      "confidence": 0.5746169104367355,
+      "salience": 0.9906913867534923,
+      "recency": 0.2829827766367383,
+      "access_count": 5,
+      "linked_entities": [
+        "ProductService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/models/product.js:L45"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_7": {
+      "id": "mem_7",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "API",
+        "rule": "API相关规则：使用标准配置，最大连接数为 97"
+      },
+      "timestamp_valid_from": 1773024339917,
+      "timestamp_valid_to": null,
+      "created_at": 1772765139858,
+      "updated_at": 1772765139858,
+      "confidence": 0.6931815273672955,
+      "salience": 0.6601568157752806,
+      "recency": 0.2725127288938304,
+      "access_count": 4,
+      "linked_entities": [
+        "PaymentService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/utils/helper.js:L10"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_8": {
+      "id": "mem_8",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "微服务",
+        "rule": "微服务相关规则：使用标准配置，最大连接数为 86"
+      },
+      "timestamp_valid_from": 1773024339921,
+      "timestamp_valid_to": null,
+      "created_at": 1770605139858,
+      "updated_at": 1772678739858,
+      "confidence": 0.652922914871453,
+      "salience": 0.6386761938504157,
+      "recency": 0.34200410487921873,
+      "access_count": 4,
+      "linked_entities": [
+        "NotificationService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/utils/validator.js:L73"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_9": {
+      "id": "mem_9",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "消息队列",
+        "rule": "消息队列相关规则：使用标准配置，最大连接数为 89"
+      },
+      "timestamp_valid_from": 1773024339924,
+      "timestamp_valid_to": null,
+      "created_at": 1772592339858,
+      "updated_at": 1772678739858,
+      "confidence": 0.7023532478134671,
+      "salience": 0.975093482956887,
+      "recency": 0.6654193694649683,
+      "access_count": 7,
+      "linked_entities": [
+        "helper"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/utils/logger.js:L71"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_10": {
+      "id": "mem_10",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "定时任务",
+        "rule": "定时任务相关规则：使用标准配置，最大连接数为 117"
+      },
+      "timestamp_valid_from": 1773024339928,
+      "timestamp_valid_to": null,
+      "created_at": 1770950739858,
+      "updated_at": 1772246739858,
+      "confidence": 0.8475965584816623,
+      "salience": 0.965095321047607,
+      "recency": 0.21351318500858874,
+      "access_count": 2,
+      "linked_entities": [
+        "validator"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "config/database.js:L98"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_11": {
+      "id": "mem_11",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "文件上传",
+        "rule": "文件上传相关规则：使用标准配置，最大连接数为 112"
+      },
+      "timestamp_valid_from": 1773024339930,
+      "timestamp_valid_to": null,
+      "created_at": 1772765139858,
+      "updated_at": 1772851539858,
+      "confidence": 0.5471892522128111,
+      "salience": 0.7397176108443551,
+      "recency": 0.2405956233904556,
+      "access_count": 9,
+      "linked_entities": [
+        "logger"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "config/redis.js:L35"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_12": {
+      "id": "mem_12",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "性能优化",
+        "rule": "性能优化相关规则：使用标准配置，最大连接数为 62"
+      },
+      "timestamp_valid_from": 1773024339933,
+      "timestamp_valid_to": null,
+      "created_at": 1772246739858,
+      "updated_at": 1772765139858,
+      "confidence": 0.9222863230954159,
+      "salience": 0.8509886993108859,
+      "recency": 0.30757715051815904,
+      "access_count": 5,
+      "linked_entities": [
+        "middleware"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "config/app.js:L63"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_13": {
+      "id": "mem_13",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "安全防护",
+        "rule": "安全防护相关规则：使用标准配置，最大连接数为 76"
+      },
+      "timestamp_valid_from": 1773024339936,
+      "timestamp_valid_to": null,
+      "created_at": 1770691539858,
+      "updated_at": 1772505939858,
+      "confidence": 0.8410895423027678,
+      "salience": 0.9088903568195859,
+      "recency": 0.8345982629423283,
+      "access_count": 4,
+      "linked_entities": [
+        "controller"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "tests/api.test.js:L83"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_14": {
+      "id": "mem_14",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "测试",
+        "rule": "测试相关规则：使用标准配置，最大连接数为 110"
+      },
+      "timestamp_valid_from": 1773024339938,
+      "timestamp_valid_to": null,
+      "created_at": 1771037139858,
+      "updated_at": 1773024339858,
+      "confidence": 0.5373968401029484,
+      "salience": 0.5134279178376082,
+      "recency": 0.3849372227243717,
+      "access_count": 0,
+      "linked_entities": [
+        "UserService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "tests/unit.test.js:L95"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_15": {
+      "id": "mem_15",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "部署",
+        "rule": "部署相关规则：使用标准配置，最大连接数为 71"
+      },
+      "timestamp_valid_from": 1773024339940,
+      "timestamp_valid_to": null,
+      "created_at": 1772851539858,
+      "updated_at": 1772937939858,
+      "confidence": 0.6284534623917686,
+      "salience": 0.6088401868710367,
+      "recency": 0.360886474195391,
+      "access_count": 8,
+      "linked_entities": [
+        "AuthService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "tests/integration.test.js:L45"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_16": {
+      "id": "mem_16",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "监控",
+        "rule": "监控相关规则：使用标准配置，最大连接数为 130"
+      },
+      "timestamp_valid_from": 1773024339944,
+      "timestamp_valid_to": null,
+      "created_at": 1771469139858,
+      "updated_at": 1773024339858,
+      "confidence": 0.6219243792896919,
+      "salience": 0.5856533089701449,
+      "recency": 0.12674965978066988,
+      "access_count": 3,
+      "linked_entities": [
+        "CacheService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/services/api.js:L99"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_17": {
+      "id": "mem_17",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "错误处理",
+        "rule": "错误处理相关规则：使用标准配置，最大连接数为 93"
+      },
+      "timestamp_valid_from": 1773024339946,
+      "timestamp_valid_to": null,
+      "created_at": 1771728339858,
+      "updated_at": 1772419539858,
+      "confidence": 0.6874878061480251,
+      "salience": 0.8005995427417747,
+      "recency": 0.4404968874629026,
+      "access_count": 9,
+      "linked_entities": [
+        "DatabaseService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/services/auth.js:L47"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_18": {
+      "id": "mem_18",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "数据验证",
+        "rule": "数据验证相关规则：使用标准配置，最大连接数为 87"
+      },
+      "timestamp_valid_from": 1773024339949,
+      "timestamp_valid_to": null,
+      "created_at": 1771901139858,
+      "updated_at": 1772333139858,
+      "confidence": 0.5154151066273887,
+      "salience": 0.6122451344800044,
+      "recency": 0.5383120436790896,
+      "access_count": 8,
+      "linked_entities": [
+        "OrderService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/services/cache.js:L23"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_19": {
+      "id": "mem_19",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "并发控制",
+        "rule": "并发控制相关规则：使用标准配置，最大连接数为 114"
+      },
+      "timestamp_valid_from": 1773024339952,
+      "timestamp_valid_to": null,
+      "created_at": 1772333139858,
+      "updated_at": 1772246739858,
+      "confidence": 0.5731631861777475,
+      "salience": 0.9560527919288203,
+      "recency": 0.6136362930361078,
+      "access_count": 0,
+      "linked_entities": [
+        "ProductService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/models/user.js:L77"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_20": {
+      "id": "mem_20",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "事务管理",
+        "rule": "事务管理相关规则：使用标准配置，最大连接数为 136"
+      },
+      "timestamp_valid_from": 1773024339955,
+      "timestamp_valid_to": null,
+      "created_at": 1771382739858,
+      "updated_at": 1772419539858,
+      "confidence": 0.7253746038695821,
+      "salience": 0.9260541248604792,
+      "recency": 0.7289043757457867,
+      "access_count": 3,
+      "linked_entities": [
+        "PaymentService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/models/order.js:L93"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_21": {
+      "id": "mem_21",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "数据库",
+        "rule": "数据库相关规则：使用标准配置，最大连接数为 148"
+      },
+      "timestamp_valid_from": 1773024339958,
+      "timestamp_valid_to": null,
+      "created_at": 1772333139858,
+      "updated_at": 1772333139858,
+      "confidence": 0.964919713779485,
+      "salience": 0.7595090690209138,
+      "recency": 0.6853010383065143,
+      "access_count": 9,
+      "linked_entities": [
+        "NotificationService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/models/product.js:L69"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_22": {
+      "id": "mem_22",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "缓存",
+        "rule": "缓存相关规则：使用标准配置，最大连接数为 92"
+      },
+      "timestamp_valid_from": 1773024339961,
+      "timestamp_valid_to": null,
+      "created_at": 1772160339858,
+      "updated_at": 1772851539858,
+      "confidence": 0.9516758038637609,
+      "salience": 0.8096964512848124,
+      "recency": 0.2665425827410334,
+      "access_count": 8,
+      "linked_entities": [
+        "helper"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/utils/helper.js:L81"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_23": {
+      "id": "mem_23",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "认证",
+        "rule": "认证相关规则：使用标准配置，最大连接数为 112"
+      },
+      "timestamp_valid_from": 1773024339964,
+      "timestamp_valid_to": null,
+      "created_at": 1771987539858,
+      "updated_at": 1772246739858,
+      "confidence": 0.6960930792715916,
+      "salience": 0.9556793859337073,
+      "recency": 0.7516216399426494,
+      "access_count": 5,
+      "linked_entities": [
+        "validator"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/utils/validator.js:L38"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_24": {
+      "id": "mem_24",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "授权",
+        "rule": "授权相关规则：使用标准配置，最大连接数为 92"
+      },
+      "timestamp_valid_from": 1773024339967,
+      "timestamp_valid_to": null,
+      "created_at": 1771814739858,
+      "updated_at": 1772419539858,
+      "confidence": 0.8815024184649239,
+      "salience": 0.9801925983271158,
+      "recency": 0.8295636041181755,
+      "access_count": 9,
+      "linked_entities": [
+        "logger"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/utils/logger.js:L11"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_25": {
+      "id": "mem_25",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "日志",
+        "rule": "日志相关规则：使用标准配置，最大连接数为 110"
+      },
+      "timestamp_valid_from": 1773024339970,
+      "timestamp_valid_to": null,
+      "created_at": 1771728339858,
+      "updated_at": 1772333139858,
+      "confidence": 0.6270865271668631,
+      "salience": 0.9931148516698619,
+      "recency": 0.1207645700829062,
+      "access_count": 8,
+      "linked_entities": [
+        "middleware"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "config/database.js:L5"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_26": {
+      "id": "mem_26",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "配置",
+        "rule": "配置相关规则：使用标准配置，最大连接数为 129"
+      },
+      "timestamp_valid_from": 1773024339973,
+      "timestamp_valid_to": null,
+      "created_at": 1770777939858,
+      "updated_at": 1772333139858,
+      "confidence": 0.5831601621984142,
+      "salience": 0.952029288395977,
+      "recency": 0.6712393044538914,
+      "access_count": 3,
+      "linked_entities": [
+        "controller"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "config/redis.js:L41"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_27": {
+      "id": "mem_27",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "API",
+        "rule": "API相关规则：使用标准配置，最大连接数为 141"
+      },
+      "timestamp_valid_from": 1773024339976,
+      "timestamp_valid_to": null,
+      "created_at": 1772160339858,
+      "updated_at": 1772678739858,
+      "confidence": 0.8971630321344163,
+      "salience": 0.6692498299594722,
+      "recency": 0.761227175187033,
+      "access_count": 5,
+      "linked_entities": [
+        "UserService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "config/app.js:L82"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_28": {
+      "id": "mem_28",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "微服务",
+        "rule": "微服务相关规则：使用标准配置，最大连接数为 107"
+      },
+      "timestamp_valid_from": 1773024339979,
+      "timestamp_valid_to": null,
+      "created_at": 1770950739858,
+      "updated_at": 1772592339858,
+      "confidence": 0.585602490993092,
+      "salience": 0.7257272512157,
+      "recency": 0.4435327247736265,
+      "access_count": 9,
+      "linked_entities": [
+        "AuthService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "tests/api.test.js:L65"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_29": {
+      "id": "mem_29",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "消息队列",
+        "rule": "消息队列相关规则：使用标准配置，最大连接数为 81"
+      },
+      "timestamp_valid_from": 1773024339982,
+      "timestamp_valid_to": null,
+      "created_at": 1773024339858,
+      "updated_at": 1772505939858,
+      "confidence": 0.9853159420179793,
+      "salience": 0.9135326558560248,
+      "recency": 0.8935909043131284,
+      "access_count": 9,
+      "linked_entities": [
+        "CacheService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "tests/unit.test.js:L73"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_30": {
+      "id": "mem_30",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "定时任务",
+        "rule": "定时任务相关规则：使用标准配置，最大连接数为 57"
+      },
+      "timestamp_valid_from": 1773024339985,
+      "timestamp_valid_to": null,
+      "created_at": 1771728339858,
+      "updated_at": 1772333139858,
+      "confidence": 0.6485495019909278,
+      "salience": 0.7515630769337709,
+      "recency": 0.03771147383188933,
+      "access_count": 0,
+      "linked_entities": [
+        "DatabaseService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "tests/integration.test.js:L37"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_31": {
+      "id": "mem_31",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "文件上传",
+        "rule": "文件上传相关规则：使用标准配置，最大连接数为 140"
+      },
+      "timestamp_valid_from": 1773024339990,
+      "timestamp_valid_to": null,
+      "created_at": 1770518739858,
+      "updated_at": 1772246739858,
+      "confidence": 0.6367565579384278,
+      "salience": 0.9923673452103583,
+      "recency": 0.8504994379644583,
+      "access_count": 9,
+      "linked_entities": [
+        "OrderService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/services/api.js:L77"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_32": {
+      "id": "mem_32",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "性能优化",
+        "rule": "性能优化相关规则：使用标准配置，最大连接数为 94"
+      },
+      "timestamp_valid_from": 1773024339992,
+      "timestamp_valid_to": null,
+      "created_at": 1772073939858,
+      "updated_at": 1772505939858,
+      "confidence": 0.5383417517392854,
+      "salience": 0.6767522029788551,
+      "recency": 0.06020406201315609,
+      "access_count": 4,
+      "linked_entities": [
+        "ProductService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/services/auth.js:L56"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_33": {
+      "id": "mem_33",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "安全防护",
+        "rule": "安全防护相关规则：使用标准配置，最大连接数为 85"
+      },
+      "timestamp_valid_from": 1773024339995,
+      "timestamp_valid_to": null,
+      "created_at": 1771469139858,
+      "updated_at": 1772678739858,
+      "confidence": 0.8447480439540976,
+      "salience": 0.6310912085288783,
+      "recency": 0.7563816542950724,
+      "access_count": 9,
+      "linked_entities": [
+        "PaymentService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/services/cache.js:L35"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_34": {
+      "id": "mem_34",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "测试",
+        "rule": "测试相关规则：使用标准配置，最大连接数为 143"
+      },
+      "timestamp_valid_from": 1773024339998,
+      "timestamp_valid_to": null,
+      "created_at": 1772246739858,
+      "updated_at": 1772505939858,
+      "confidence": 0.7009736129560385,
+      "salience": 0.7280194490256966,
+      "recency": 0.8356165623736926,
+      "access_count": 9,
+      "linked_entities": [
+        "NotificationService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/models/user.js:L60"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_35": {
+      "id": "mem_35",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "部署",
+        "rule": "部署相关规则：使用标准配置，最大连接数为 146"
+      },
+      "timestamp_valid_from": 1773024340000,
+      "timestamp_valid_to": null,
+      "created_at": 1770950739858,
+      "updated_at": 1772851539858,
+      "confidence": 0.8176751319951415,
+      "salience": 0.8351220602855393,
+      "recency": 0.33020631863323724,
+      "access_count": 5,
+      "linked_entities": [
+        "helper"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/models/order.js:L72"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_36": {
+      "id": "mem_36",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "监控",
+        "rule": "监控相关规则：使用标准配置，最大连接数为 105"
+      },
+      "timestamp_valid_from": 1773024340003,
+      "timestamp_valid_to": null,
+      "created_at": 1771987539858,
+      "updated_at": 1772419539858,
+      "confidence": 0.7629847136110101,
+      "salience": 0.8915382607306439,
+      "recency": 0.6063408655670464,
+      "access_count": 0,
+      "linked_entities": [
+        "validator"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/models/product.js:L18"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_37": {
+      "id": "mem_37",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "错误处理",
+        "rule": "错误处理相关规则：使用标准配置，最大连接数为 64"
+      },
+      "timestamp_valid_from": 1773024340006,
+      "timestamp_valid_to": null,
+      "created_at": 1770691539858,
+      "updated_at": 1772678739858,
+      "confidence": 0.5691910803705857,
+      "salience": 0.6316089685236147,
+      "recency": 0.041033436803172174,
+      "access_count": 9,
+      "linked_entities": [
+        "logger"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/utils/helper.js:L96"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_38": {
+      "id": "mem_38",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "数据验证",
+        "rule": "数据验证相关规则：使用标准配置，最大连接数为 115"
+      },
+      "timestamp_valid_from": 1773024340009,
+      "timestamp_valid_to": null,
+      "created_at": 1770605139858,
+      "updated_at": 1772765139858,
+      "confidence": 0.7025415749326511,
+      "salience": 0.5750771202254263,
+      "recency": 0.4152287447637598,
+      "access_count": 1,
+      "linked_entities": [
+        "middleware"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/utils/validator.js:L60"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_39": {
+      "id": "mem_39",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "并发控制",
+        "rule": "并发控制相关规则：使用标准配置，最大连接数为 145"
+      },
+      "timestamp_valid_from": 1773024340012,
+      "timestamp_valid_to": null,
+      "created_at": 1771296339858,
+      "updated_at": 1772419539858,
+      "confidence": 0.8291890439010365,
+      "salience": 0.6813239609030725,
+      "recency": 0.6158175961960172,
+      "access_count": 6,
+      "linked_entities": [
+        "controller"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/utils/logger.js:L33"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_40": {
+      "id": "mem_40",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "事务管理",
+        "rule": "事务管理相关规则：使用标准配置，最大连接数为 148"
+      },
+      "timestamp_valid_from": 1773024340015,
+      "timestamp_valid_to": null,
+      "created_at": 1772937939858,
+      "updated_at": 1772592339858,
+      "confidence": 0.6819234998429841,
+      "salience": 0.8693428300151528,
+      "recency": 0.16308114375042337,
+      "access_count": 4,
+      "linked_entities": [
+        "UserService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "config/database.js:L94"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_41": {
+      "id": "mem_41",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "数据库",
+        "rule": "数据库相关规则：使用标准配置，最大连接数为 105"
+      },
+      "timestamp_valid_from": 1773024340017,
+      "timestamp_valid_to": null,
+      "created_at": 1771814739858,
+      "updated_at": 1772246739858,
+      "confidence": 0.9427755126617483,
+      "salience": 0.8498884222425471,
+      "recency": 0.6259689264274796,
+      "access_count": 8,
+      "linked_entities": [
+        "AuthService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "config/redis.js:L66"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_42": {
+      "id": "mem_42",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "缓存",
+        "rule": "缓存相关规则：使用标准配置，最大连接数为 120"
+      },
+      "timestamp_valid_from": 1773024340021,
+      "timestamp_valid_to": null,
+      "created_at": 1771987539858,
+      "updated_at": 1772765139858,
+      "confidence": 0.9572568430978096,
+      "salience": 0.5207165893965457,
+      "recency": 0.968274723459037,
+      "access_count": 2,
+      "linked_entities": [
+        "CacheService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "config/app.js:L90"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_43": {
+      "id": "mem_43",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "认证",
+        "rule": "认证相关规则：使用标准配置，最大连接数为 92"
+      },
+      "timestamp_valid_from": 1773024340023,
+      "timestamp_valid_to": null,
+      "created_at": 1771382739858,
+      "updated_at": 1772419539858,
+      "confidence": 0.8146678661460578,
+      "salience": 0.5487789794653298,
+      "recency": 0.9968265624883162,
+      "access_count": 8,
+      "linked_entities": [
+        "DatabaseService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "tests/api.test.js:L20"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_44": {
+      "id": "mem_44",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "授权",
+        "rule": "授权相关规则：使用标准配置，最大连接数为 104"
+      },
+      "timestamp_valid_from": 1773024340026,
+      "timestamp_valid_to": null,
+      "created_at": 1771382739858,
+      "updated_at": 1773024339858,
+      "confidence": 0.9173038297968561,
+      "salience": 0.7105094016594693,
+      "recency": 0.6222293531264493,
+      "access_count": 9,
+      "linked_entities": [
+        "OrderService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "tests/unit.test.js:L98"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_45": {
+      "id": "mem_45",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "日志",
+        "rule": "日志相关规则：使用标准配置，最大连接数为 90"
+      },
+      "timestamp_valid_from": 1773024340030,
+      "timestamp_valid_to": null,
+      "created_at": 1771641939858,
+      "updated_at": 1772419539858,
+      "confidence": 0.5899621478720712,
+      "salience": 0.5355926747803104,
+      "recency": 0.34452943691165616,
+      "access_count": 8,
+      "linked_entities": [
+        "ProductService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "tests/integration.test.js:L23"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_46": {
+      "id": "mem_46",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "配置",
+        "rule": "配置相关规则：使用标准配置，最大连接数为 53"
+      },
+      "timestamp_valid_from": 1773024340033,
+      "timestamp_valid_to": null,
+      "created_at": 1772246739858,
+      "updated_at": 1772937939858,
+      "confidence": 0.8872854508553266,
+      "salience": 0.5950865047916871,
+      "recency": 0.8703648039175663,
+      "access_count": 1,
+      "linked_entities": [
+        "PaymentService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/services/api.js:L81"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_47": {
+      "id": "mem_47",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "API",
+        "rule": "API相关规则：使用标准配置，最大连接数为 93"
+      },
+      "timestamp_valid_from": 1773024340036,
+      "timestamp_valid_to": null,
+      "created_at": 1772678739858,
+      "updated_at": 1772851539858,
+      "confidence": 0.9400454722747252,
+      "salience": 0.8536927923616963,
+      "recency": 0.09873751416385601,
+      "access_count": 7,
+      "linked_entities": [
+        "NotificationService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/services/auth.js:L45"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_48": {
+      "id": "mem_48",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "微服务",
+        "rule": "微服务相关规则：使用标准配置，最大连接数为 61"
+      },
+      "timestamp_valid_from": 1773024340040,
+      "timestamp_valid_to": null,
+      "created_at": 1772765139858,
+      "updated_at": 1773024339858,
+      "confidence": 0.5351122028706121,
+      "salience": 0.5602224475996289,
+      "recency": 0.6824103154307779,
+      "access_count": 6,
+      "linked_entities": [
+        "helper"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/services/cache.js:L0"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_49": {
+      "id": "mem_49",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "消息队列",
+        "rule": "消息队列相关规则：使用标准配置，最大连接数为 67"
+      },
+      "timestamp_valid_from": 1773024340043,
+      "timestamp_valid_to": null,
+      "created_at": 1772505939858,
+      "updated_at": 1772419539858,
+      "confidence": 0.9519765035919248,
+      "salience": 0.8941820630075534,
+      "recency": 0.9584109614974154,
+      "access_count": 3,
+      "linked_entities": [
+        "validator"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/models/user.js:L97"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_50": {
+      "id": "mem_50",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "定时任务",
+        "rule": "定时任务相关规则：使用标准配置，最大连接数为 50"
+      },
+      "timestamp_valid_from": 1773024340046,
+      "timestamp_valid_to": null,
+      "created_at": 1772678739858,
+      "updated_at": 1772937939858,
+      "confidence": 0.9554943966377518,
+      "salience": 0.8780080687045622,
+      "recency": 0.6594758631830803,
+      "access_count": 8,
+      "linked_entities": [
+        "logger"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/models/order.js:L89"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_51": {
+      "id": "mem_51",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "文件上传",
+        "rule": "文件上传相关规则：使用标准配置，最大连接数为 97"
+      },
+      "timestamp_valid_from": 1773024340049,
+      "timestamp_valid_to": null,
+      "created_at": 1770605139858,
+      "updated_at": 1772333139858,
+      "confidence": 0.89351617440333,
+      "salience": 0.7121984524822145,
+      "recency": 0.5642563354576682,
+      "access_count": 4,
+      "linked_entities": [
+        "middleware"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/models/product.js:L61"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_52": {
+      "id": "mem_52",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "性能优化",
+        "rule": "性能优化相关规则：使用标准配置，最大连接数为 121"
+      },
+      "timestamp_valid_from": 1773024340052,
+      "timestamp_valid_to": null,
+      "created_at": 1772765139858,
+      "updated_at": 1772592339858,
+      "confidence": 0.5477393581033695,
+      "salience": 0.5918933580143713,
+      "recency": 0.7764366798682558,
+      "access_count": 5,
+      "linked_entities": [
+        "controller"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/utils/helper.js:L22"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_53": {
+      "id": "mem_53",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "安全防护",
+        "rule": "安全防护相关规则：使用标准配置，最大连接数为 123"
+      },
+      "timestamp_valid_from": 1773024340056,
+      "timestamp_valid_to": null,
+      "created_at": 1771814739858,
+      "updated_at": 1772246739858,
+      "confidence": 0.9667929636079835,
+      "salience": 0.8525630636661473,
+      "recency": 0.5239114595524028,
+      "access_count": 3,
+      "linked_entities": [
+        "UserService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/utils/validator.js:L35"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_54": {
+      "id": "mem_54",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "测试",
+        "rule": "测试相关规则：使用标准配置，最大连接数为 124"
+      },
+      "timestamp_valid_from": 1773024340059,
+      "timestamp_valid_to": null,
+      "created_at": 1773024339858,
+      "updated_at": 1772765139858,
+      "confidence": 0.9782249080681238,
+      "salience": 0.8743285635311071,
+      "recency": 0.9585244348852879,
+      "access_count": 0,
+      "linked_entities": [
+        "AuthService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/utils/logger.js:L42"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_55": {
+      "id": "mem_55",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "部署",
+        "rule": "部署相关规则：使用标准配置，最大连接数为 141"
+      },
+      "timestamp_valid_from": 1773024340062,
+      "timestamp_valid_to": null,
+      "created_at": 1771469139858,
+      "updated_at": 1772851539858,
+      "confidence": 0.8718619568385837,
+      "salience": 0.7740870983959023,
+      "recency": 0.7833073114586467,
+      "access_count": 3,
+      "linked_entities": [
+        "CacheService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "config/database.js:L83"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_56": {
+      "id": "mem_56",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "监控",
+        "rule": "监控相关规则：使用标准配置，最大连接数为 74"
+      },
+      "timestamp_valid_from": 1773024340065,
+      "timestamp_valid_to": null,
+      "created_at": 1770864339858,
+      "updated_at": 1772592339858,
+      "confidence": 0.5065156408826894,
+      "salience": 0.7101898715400068,
+      "recency": 0.5628912415442281,
+      "access_count": 0,
+      "linked_entities": [
+        "DatabaseService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "config/redis.js:L57"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_57": {
+      "id": "mem_57",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "错误处理",
+        "rule": "错误处理相关规则：使用标准配置，最大连接数为 145"
+      },
+      "timestamp_valid_from": 1773024340068,
+      "timestamp_valid_to": null,
+      "created_at": 1770864339858,
+      "updated_at": 1773024339858,
+      "confidence": 0.9493935825649817,
+      "salience": 0.7440872528038234,
+      "recency": 0.8682502827905456,
+      "access_count": 9,
+      "linked_entities": [
+        "OrderService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "config/app.js:L27"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_58": {
+      "id": "mem_58",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "数据验证",
+        "rule": "数据验证相关规则：使用标准配置，最大连接数为 131"
+      },
+      "timestamp_valid_from": 1773024340071,
+      "timestamp_valid_to": null,
+      "created_at": 1771469139858,
+      "updated_at": 1772678739858,
+      "confidence": 0.6668883406562358,
+      "salience": 0.9403363930134045,
+      "recency": 0.21799653945961794,
+      "access_count": 3,
+      "linked_entities": [
+        "ProductService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "tests/api.test.js:L12"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_59": {
+      "id": "mem_59",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "并发控制",
+        "rule": "并发控制相关规则：使用标准配置，最大连接数为 100"
+      },
+      "timestamp_valid_from": 1773024340074,
+      "timestamp_valid_to": null,
+      "created_at": 1770777939858,
+      "updated_at": 1772246739858,
+      "confidence": 0.8579994741238468,
+      "salience": 0.693391277824502,
+      "recency": 0.9070934338828297,
+      "access_count": 4,
+      "linked_entities": [
+        "PaymentService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "tests/unit.test.js:L89"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_60": {
+      "id": "mem_60",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "事务管理",
+        "rule": "事务管理相关规则：使用标准配置，最大连接数为 87"
+      },
+      "timestamp_valid_from": 1773024340077,
+      "timestamp_valid_to": null,
+      "created_at": 1772765139858,
+      "updated_at": 1772333139858,
+      "confidence": 0.5363448187611024,
+      "salience": 0.792179484008908,
+      "recency": 0.19072565055173973,
+      "access_count": 0,
+      "linked_entities": [
+        "NotificationService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "tests/integration.test.js:L31"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_61": {
+      "id": "mem_61",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "数据库",
+        "rule": "数据库相关规则：使用标准配置，最大连接数为 95"
+      },
+      "timestamp_valid_from": 1773024340080,
+      "timestamp_valid_to": null,
+      "created_at": 1771123539858,
+      "updated_at": 1772419539858,
+      "confidence": 0.6745786769760744,
+      "salience": 0.5587553709352345,
+      "recency": 0.247018035639471,
+      "access_count": 3,
+      "linked_entities": [
+        "helper"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/services/api.js:L99"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_62": {
+      "id": "mem_62",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "缓存",
+        "rule": "缓存相关规则：使用标准配置，最大连接数为 65"
+      },
+      "timestamp_valid_from": 1773024340083,
+      "timestamp_valid_to": null,
+      "created_at": 1770950739858,
+      "updated_at": 1772678739858,
+      "confidence": 0.6413206411027823,
+      "salience": 0.9833091964527861,
+      "recency": 0.6904544904512018,
+      "access_count": 4,
+      "linked_entities": [
+        "validator"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/services/auth.js:L62"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_63": {
+      "id": "mem_63",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "认证",
+        "rule": "认证相关规则：使用标准配置，最大连接数为 64"
+      },
+      "timestamp_valid_from": 1773024340086,
+      "timestamp_valid_to": null,
+      "created_at": 1772419539858,
+      "updated_at": 1772333139858,
+      "confidence": 0.586207254701028,
+      "salience": 0.5078161357508242,
+      "recency": 0.15708136562405595,
+      "access_count": 9,
+      "linked_entities": [
+        "logger"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/services/cache.js:L29"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_64": {
+      "id": "mem_64",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "授权",
+        "rule": "授权相关规则：使用标准配置，最大连接数为 116"
+      },
+      "timestamp_valid_from": 1773024340090,
+      "timestamp_valid_to": null,
+      "created_at": 1773024339858,
+      "updated_at": 1773024339858,
+      "confidence": 0.6751814675148036,
+      "salience": 0.7707881255221541,
+      "recency": 0.3233018526050252,
+      "access_count": 8,
+      "linked_entities": [
+        "middleware"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/models/user.js:L69"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_65": {
+      "id": "mem_65",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "日志",
+        "rule": "日志相关规则：使用标准配置，最大连接数为 116"
+      },
+      "timestamp_valid_from": 1773024340093,
+      "timestamp_valid_to": null,
+      "created_at": 1772505939858,
+      "updated_at": 1772505939858,
+      "confidence": 0.9304402621862342,
+      "salience": 0.6712883795147033,
+      "recency": 0.7409014955524877,
+      "access_count": 2,
+      "linked_entities": [
+        "controller"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/models/order.js:L54"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_66": {
+      "id": "mem_66",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "配置",
+        "rule": "配置相关规则：使用标准配置，最大连接数为 124"
+      },
+      "timestamp_valid_from": 1773024340099,
+      "timestamp_valid_to": null,
+      "created_at": 1772765139858,
+      "updated_at": 1772937939858,
+      "confidence": 0.722299300030345,
+      "salience": 0.610410301585953,
+      "recency": 0.7982785129231323,
+      "access_count": 3,
+      "linked_entities": [
+        "UserService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/models/product.js:L96"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_67": {
+      "id": "mem_67",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "API",
+        "rule": "API相关规则：使用标准配置，最大连接数为 65"
+      },
+      "timestamp_valid_from": 1773024340104,
+      "timestamp_valid_to": null,
+      "created_at": 1771469139858,
+      "updated_at": 1772419539858,
+      "confidence": 0.9228911963488206,
+      "salience": 0.5739232469685183,
+      "recency": 0.008028149288592856,
+      "access_count": 2,
+      "linked_entities": [
+        "AuthService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/utils/helper.js:L8"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_68": {
+      "id": "mem_68",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "微服务",
+        "rule": "微服务相关规则：使用标准配置，最大连接数为 142"
+      },
+      "timestamp_valid_from": 1773024340107,
+      "timestamp_valid_to": null,
+      "created_at": 1771728339858,
+      "updated_at": 1772937939858,
+      "confidence": 0.5663229562191092,
+      "salience": 0.6676926824710215,
+      "recency": 0.49134982093509705,
+      "access_count": 0,
+      "linked_entities": [
+        "CacheService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/utils/validator.js:L66"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_69": {
+      "id": "mem_69",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "消息队列",
+        "rule": "消息队列相关规则：使用标准配置，最大连接数为 98"
+      },
+      "timestamp_valid_from": 1773024340110,
+      "timestamp_valid_to": null,
+      "created_at": 1771037139858,
+      "updated_at": 1772765139858,
+      "confidence": 0.8730557097129573,
+      "salience": 0.9157323926934611,
+      "recency": 0.2515276874180734,
+      "access_count": 5,
+      "linked_entities": [
+        "DatabaseService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "src/utils/logger.js:L73"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_70": {
+      "id": "mem_70",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "定时任务",
+        "rule": "定时任务相关规则：使用标准配置，最大连接数为 77"
+      },
+      "timestamp_valid_from": 1773024340113,
+      "timestamp_valid_to": null,
+      "created_at": 1771901139858,
+      "updated_at": 1772678739858,
+      "confidence": 0.7290159118079611,
+      "salience": 0.6151360948755471,
+      "recency": 0.180647418623746,
+      "access_count": 1,
+      "linked_entities": [
+        "OrderService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "config/database.js:L13"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_71": {
+      "id": "mem_71",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "文件上传",
+        "rule": "文件上传相关规则：使用标准配置，最大连接数为 120"
+      },
+      "timestamp_valid_from": 1773024340116,
+      "timestamp_valid_to": null,
+      "created_at": 1771123539858,
+      "updated_at": 1772851539858,
+      "confidence": 0.7525666645683395,
+      "salience": 0.6380332693222893,
+      "recency": 0.5438235163533597,
+      "access_count": 5,
+      "linked_entities": [
+        "ProductService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "config/redis.js:L6"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_72": {
+      "id": "mem_72",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "性能优化",
+        "rule": "性能优化相关规则：使用标准配置，最大连接数为 149"
+      },
+      "timestamp_valid_from": 1773024340119,
+      "timestamp_valid_to": null,
+      "created_at": 1771901139858,
+      "updated_at": 1772333139858,
+      "confidence": 0.6969592444947257,
+      "salience": 0.9344288352317339,
+      "recency": 0.350403414600748,
+      "access_count": 1,
+      "linked_entities": [
+        "PaymentService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "config/app.js:L72"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "mem_73": {
+      "id": "mem_73",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "安全防护",
+        "rule": "安全防护相关规则：使用标准配置，最大连接数为 69"
+      },
+      "timestamp_valid_from": 1773024340123,
+      "timestamp_valid_to": null,
+      "created_at": 1771641939858,
+      "updated_at": 1772419539858,
+      "confidence": 0.7113236275419976,
+      "salience": 0.791743114031551,
+      "recency": 0.3379940613731235,
+      "access_count": 1,
+      "linked_entities": [
+        "NotificationService"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "file_reference": "tests/api.test.js:L90"
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    }
+  },
+  "latent": {},
+  "metadata": {}
+}
