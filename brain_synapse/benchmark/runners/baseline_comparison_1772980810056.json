@@ -1,0 +1,2230 @@
+{
+  "noMemory": {
+    "totalTests": 26,
+    "passed": 0,
+    "failed": 26,
+    "totalLatency": 0,
+    "totalResults": 0,
+    "totalTokens": 5200,
+    "semanticFallbackHits": 0,
+    "semanticFallbackTotal": 0,
+    "conflictCorrect": 0,
+    "conflictTotal": 7,
+    "staleSuppressed": 0,
+    "staleTotal": 1,
+    "details": [
+      {
+        "id": "temporal_conflict_01",
+        "name": "配置变更 - 超时设置",
+        "type": "temporal_conflict",
+        "passed": false,
+        "latency": 0,
+        "resultCount": 0,
+        "tokenCount": 200,
+        "semanticFallbackTriggered": null,
+        "hasConflict": true,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": null,
+        "error": null
+      },
+      {
+        "id": "temporal_conflict_02",
+        "name": "策略更新 - 重试机制",
+        "type": "temporal_conflict",
+        "passed": false,
+        "latency": 0,
+        "resultCount": 0,
+        "tokenCount": 200,
+        "semanticFallbackTriggered": null,
+        "hasConflict": true,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": null,
+        "error": null
+      },
+      {
+        "id": "temporal_conflict_03",
+        "name": "版本迭代 - API 端点",
+        "type": "temporal_conflict",
+        "passed": false,
+        "latency": 0,
+        "resultCount": 0,
+        "tokenCount": 200,
+        "semanticFallbackTriggered": null,
+        "hasConflict": true,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": null,
+        "error": null
+      },
+      {
+        "id": "temporal_conflict_04",
+        "name": "配置变更 - 连接池大小",
+        "type": "temporal_conflict",
+        "passed": false,
+        "latency": 0,
+        "resultCount": 0,
+        "tokenCount": 200,
+        "semanticFallbackTriggered": null,
+        "hasConflict": true,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": null,
+        "error": null
+      },
+      {
+        "id": "failed_attempt_01",
+        "name": "Failed-Attempt 检索",
+        "type": "failed_attempt",
+        "passed": false,
+        "latency": 0,
+        "resultCount": 0,
+        "tokenCount": 200,
+        "semanticFallbackTriggered": null,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": null,
+        "error": null
+      },
+      {
+        "id": "failed_attempt_02",
+        "name": "Failed-Attempt 阻止重复错误",
+        "type": "failed_attempt",
+        "passed": false,
+        "latency": 0,
+        "resultCount": 0,
+        "tokenCount": 200,
+        "semanticFallbackTriggered": null,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": null,
+        "error": null
+      },
+      {
+        "id": "failed_attempt_03",
+        "name": "多次失败尝试记录",
+        "type": "failed_attempt",
+        "passed": false,
+        "latency": 0,
+        "resultCount": 0,
+        "tokenCount": 200,
+        "semanticFallbackTriggered": null,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": null,
+        "error": null
+      },
+      {
+        "id": "file_reference_01",
+        "name": "文件特定查询",
+        "type": "file_specific",
+        "passed": false,
+        "latency": 0,
+        "resultCount": 0,
+        "tokenCount": 200,
+        "semanticFallbackTriggered": null,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": null,
+        "error": null
+      },
+      {
+        "id": "file_reference_02",
+        "name": "路径模糊匹配",
+        "type": "file_specific",
+        "passed": false,
+        "latency": 0,
+        "resultCount": 0,
+        "tokenCount": 200,
+        "semanticFallbackTriggered": null,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": null,
+        "error": null
+      },
+      {
+        "id": "file_reference_03",
+        "name": "行号精确查询",
+        "type": "file_specific",
+        "passed": false,
+        "latency": 0,
+        "resultCount": 0,
+        "tokenCount": 200,
+        "semanticFallbackTriggered": null,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": null,
+        "error": null
+      },
+      {
+        "id": "conflict_resolution_01",
+        "name": "冲突消解 - 细化关系",
+        "type": "conflict_resolution",
+        "passed": false,
+        "latency": 0,
+        "resultCount": 0,
+        "tokenCount": 200,
+        "semanticFallbackTriggered": null,
+        "hasConflict": true,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": null,
+        "error": null
+      },
+      {
+        "id": "conflict_resolution_02",
+        "name": "冲突消解 - 取代关系",
+        "type": "conflict_resolution",
+        "passed": false,
+        "latency": 0,
+        "resultCount": 0,
+        "tokenCount": 200,
+        "semanticFallbackTriggered": null,
+        "hasConflict": true,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": null,
+        "error": null
+      },
+      {
+        "id": "conflict_resolution_03",
+        "name": "多版本配置冲突",
+        "type": "conflict_resolution",
+        "passed": false,
+        "latency": 0,
+        "resultCount": 0,
+        "tokenCount": 200,
+        "semanticFallbackTriggered": null,
+        "hasConflict": true,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": null,
+        "error": null
+      },
+      {
+        "id": "recall_precision_01",
+        "name": "召回率测试 - 赫布扩散",
+        "type": "recall_precision",
+        "passed": false,
+        "latency": 0,
+        "resultCount": 0,
+        "tokenCount": 200,
+        "semanticFallbackTriggered": null,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": null,
+        "error": null
+      },
+      {
+        "id": "recall_precision_02",
+        "name": "实体关联扩散",
+        "type": "recall_precision",
+        "passed": false,
+        "latency": 0,
+        "resultCount": 0,
+        "tokenCount": 200,
+        "semanticFallbackTriggered": null,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": null,
+        "error": null
+      },
+      {
+        "id": "noisy_log_01",
+        "name": "噪声日志提取关键信息",
+        "type": "noisy_log",
+        "passed": false,
+        "latency": 0,
+        "resultCount": 0,
+        "tokenCount": 200,
+        "semanticFallbackTriggered": null,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": null,
+        "error": null
+      },
+      {
+        "id": "noisy_log_02",
+        "name": "堆栈跟踪解析",
+        "type": "noisy_log",
+        "passed": false,
+        "latency": 0,
+        "resultCount": 0,
+        "tokenCount": 200,
+        "semanticFallbackTriggered": null,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": null,
+        "error": null
+      },
+      {
+        "id": "cross_file_01",
+        "name": "跨文件依赖追踪",
+        "type": "cross_file",
+        "passed": false,
+        "latency": 0,
+        "resultCount": 0,
+        "tokenCount": 200,
+        "semanticFallbackTriggered": null,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": null,
+        "error": null
+      },
+      {
+        "id": "cross_file_02",
+        "name": "模块依赖链",
+        "type": "cross_file",
+        "passed": false,
+        "latency": 0,
+        "resultCount": 0,
+        "tokenCount": 200,
+        "semanticFallbackTriggered": null,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": null,
+        "error": null
+      },
+      {
+        "id": "architecture_decision_01",
+        "name": "架构决策追溯",
+        "type": "architecture_decision",
+        "passed": false,
+        "latency": 0,
+        "resultCount": 0,
+        "tokenCount": 200,
+        "semanticFallbackTriggered": null,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": null,
+        "error": null
+      },
+      {
+        "id": "architecture_decision_02",
+        "name": "技术选型决策",
+        "type": "architecture_decision",
+        "passed": false,
+        "latency": 0,
+        "resultCount": 0,
+        "tokenCount": 200,
+        "semanticFallbackTriggered": null,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": null,
+        "error": null
+      },
+      {
+        "id": "edge_case_01",
+        "name": "干扰项过滤",
+        "type": "edge_case",
+        "passed": false,
+        "latency": 0,
+        "resultCount": 0,
+        "tokenCount": 200,
+        "semanticFallbackTriggered": null,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": null,
+        "error": null
+      },
+      {
+        "id": "edge_case_02",
+        "name": "同义词查询",
+        "type": "edge_case",
+        "passed": false,
+        "latency": 0,
+        "resultCount": 0,
+        "tokenCount": 200,
+        "semanticFallbackTriggered": null,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": null,
+        "error": null
+      },
+      {
+        "id": "stale_config_01",
+        "name": "过期配置检测",
+        "type": "stale_config",
+        "passed": false,
+        "latency": 0,
+        "resultCount": 0,
+        "tokenCount": 200,
+        "semanticFallbackTriggered": null,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": true,
+        "staleSuppressed": false,
+        "topResult": null,
+        "error": null
+      },
+      {
+        "id": "procedural_01",
+        "name": "流程记忆检索",
+        "type": "procedural",
+        "passed": false,
+        "latency": 0,
+        "resultCount": 0,
+        "tokenCount": 200,
+        "semanticFallbackTriggered": null,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": null,
+        "error": null
+      },
+      {
+        "id": "procedural_02",
+        "name": "调试步骤记忆",
+        "type": "procedural",
+        "passed": false,
+        "latency": 0,
+        "resultCount": 0,
+        "tokenCount": 200,
+        "semanticFallbackTriggered": null,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": null,
+        "error": null
+      }
+    ],
+    "avgLatency": 0,
+    "passRate": "0.00",
+    "avgResults": 0,
+    "avgTokens": 200,
+    "semanticFallbackHitRate": "N/A"
+  },
+  "lexicalOnly": {
+    "totalTests": 26,
+    "passed": 23,
+    "failed": 3,
+    "totalLatency": 1,
+    "totalResults": 41,
+    "totalTokens": 7005,
+    "semanticFallbackHits": 0,
+    "semanticFallbackTotal": 26,
+    "conflictCorrect": 0,
+    "conflictTotal": 7,
+    "staleSuppressed": 1,
+    "staleTotal": 1,
+    "details": [
+      {
+        "id": "temporal_conflict_01",
+        "name": "配置变更 - 超时设置",
+        "type": "temporal_conflict",
+        "passed": true,
+        "latency": 0,
+        "resultCount": 2,
+        "tokenCount": 276,
+        "semanticFallbackTriggered": false,
+        "hasConflict": true,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_timeout_v1",
+          "content": {
+            "keyword": "数据库超时",
+            "rule": "数据库连接超时设置为 30 秒"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "temporal_conflict_02",
+        "name": "策略更新 - 重试机制",
+        "type": "temporal_conflict",
+        "passed": true,
+        "latency": 0,
+        "resultCount": 2,
+        "tokenCount": 277,
+        "semanticFallbackTriggered": false,
+        "hasConflict": true,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_retry_v1",
+          "content": {
+            "keyword": "重试策略",
+            "rule": "失败后重试 3 次"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "temporal_conflict_03",
+        "name": "版本迭代 - API 端点",
+        "type": "temporal_conflict",
+        "passed": true,
+        "latency": 0,
+        "resultCount": 2,
+        "tokenCount": 273,
+        "semanticFallbackTriggered": false,
+        "hasConflict": true,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_api_v1",
+          "content": {
+            "keyword": "API端点",
+            "rule": "使用 /api/v1/users 端点"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "temporal_conflict_04",
+        "name": "配置变更 - 连接池大小",
+        "type": "temporal_conflict",
+        "passed": true,
+        "latency": 0,
+        "resultCount": 2,
+        "tokenCount": 276,
+        "semanticFallbackTriggered": false,
+        "hasConflict": true,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_pool_v1",
+          "content": {
+            "keyword": "连接池",
+            "rule": "数据库连接池大小为 10"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "failed_attempt_01",
+        "name": "Failed-Attempt 检索",
+        "type": "failed_attempt",
+        "passed": true,
+        "latency": 0,
+        "resultCount": 2,
+        "tokenCount": 333,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_fail_001",
+          "content": {
+            "type": "failed_attempt",
+            "bug": "竞态条件",
+            "attempted": "setTimeout 延迟加载",
+            "error": "仍然出现竞态条件"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "failed_attempt_02",
+        "name": "Failed-Attempt 阻止重复错误",
+        "type": "failed_attempt",
+        "passed": true,
+        "latency": 0,
+        "resultCount": 1,
+        "tokenCount": 284,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_fail_auth",
+          "content": {
+            "type": "failed_attempt",
+            "bug": "认证失败",
+            "attempted": "在 URL 中传递 token",
+            "error": "安全漏洞：token 暴露在日志中"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "failed_attempt_03",
+        "name": "多次失败尝试记录",
+        "type": "failed_attempt",
+        "passed": true,
+        "latency": 0,
+        "resultCount": 3,
+        "tokenCount": 388,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_fail_mem_1",
+          "content": {
+            "type": "failed_attempt",
+            "bug": "内存泄漏",
+            "attempted": "手动释放对象",
+            "error": "仍有泄漏"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "file_reference_01",
+        "name": "文件特定查询",
+        "type": "file_specific",
+        "passed": false,
+        "latency": 0,
+        "resultCount": 0,
+        "tokenCount": 200,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": null,
+        "error": null
+      },
+      {
+        "id": "file_reference_02",
+        "name": "路径模糊匹配",
+        "type": "file_specific",
+        "passed": false,
+        "latency": 0,
+        "resultCount": 1,
+        "tokenCount": 250,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_handler_001",
+          "content": {
+            "keyword": "错误处理",
+            "rule": "统一使用 errorHandler 中间件"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "file_reference_03",
+        "name": "行号精确查询",
+        "type": "file_specific",
+        "passed": true,
+        "latency": 0,
+        "resultCount": 1,
+        "tokenCount": 245,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_line_001",
+          "content": {
+            "keyword": "Bug修复",
+            "rule": "在 L45 添加了空值检查"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "conflict_resolution_01",
+        "name": "冲突消解 - 细化关系",
+        "type": "conflict_resolution",
+        "passed": true,
+        "latency": 0,
+        "resultCount": 2,
+        "tokenCount": 280,
+        "semanticFallbackTriggered": false,
+        "hasConflict": true,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_general",
+          "content": {
+            "keyword": "错误处理",
+            "rule": "使用 try-catch 捕获错误"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "conflict_resolution_02",
+        "name": "冲突消解 - 取代关系",
+        "type": "conflict_resolution",
+        "passed": true,
+        "latency": 0,
+        "resultCount": 2,
+        "tokenCount": 237,
+        "semanticFallbackTriggered": false,
+        "hasConflict": true,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_old_db",
+          "content": {
+            "keyword": "数据库",
+            "rule": "使用 MySQL 数据库"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "conflict_resolution_03",
+        "name": "多版本配置冲突",
+        "type": "conflict_resolution",
+        "passed": true,
+        "latency": 0,
+        "resultCount": 2,
+        "tokenCount": 234,
+        "semanticFallbackTriggered": false,
+        "hasConflict": true,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_cors_v1",
+          "content": {
+            "keyword": "CORS",
+            "rule": "允许所有来源访问"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "recall_precision_01",
+        "name": "召回率测试 - 赫布扩散",
+        "type": "recall_precision",
+        "passed": false,
+        "latency": 0,
+        "resultCount": 1,
+        "tokenCount": 235,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_browser",
+          "content": {
+            "keyword": "browser",
+            "rule": "使用 browser.newPage()"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "recall_precision_02",
+        "name": "实体关联扩散",
+        "type": "recall_precision",
+        "passed": true,
+        "latency": 0,
+        "resultCount": 2,
+        "tokenCount": 268,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_cache",
+          "content": {
+            "keyword": "缓存",
+            "rule": "使用 Redis 作为缓存层"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "noisy_log_01",
+        "name": "噪声日志提取关键信息",
+        "type": "noisy_log",
+        "passed": true,
+        "latency": 0,
+        "resultCount": 1,
+        "tokenCount": 265,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_error_log",
+          "content": {
+            "keyword": "TypeError",
+            "rule": "TypeError: Cannot read property 'id' of undefined at UserController.getUser (src/controllers/user.js:45)"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "noisy_log_02",
+        "name": "堆栈跟踪解析",
+        "type": "noisy_log",
+        "passed": true,
+        "latency": 0,
+        "resultCount": 1,
+        "tokenCount": 251,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_stack_trace",
+          "content": {
+            "keyword": "Error",
+            "rule": "Error: Connection refused at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1141:16)"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "cross_file_01",
+        "name": "跨文件依赖追踪",
+        "type": "cross_file",
+        "passed": true,
+        "latency": 0,
+        "resultCount": 2,
+        "tokenCount": 298,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_import_002",
+          "content": {
+            "keyword": "使用",
+            "rule": "在 user.service.js 中导入 validateEmail"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "cross_file_02",
+        "name": "模块依赖链",
+        "type": "cross_file",
+        "passed": true,
+        "latency": 0,
+        "resultCount": 3,
+        "tokenCount": 300,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_dep_1",
+          "content": {
+            "keyword": "依赖",
+            "rule": "api.js 依赖 auth.js"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "architecture_decision_01",
+        "name": "架构决策追溯",
+        "type": "architecture_decision",
+        "passed": true,
+        "latency": 0,
+        "resultCount": 1,
+        "tokenCount": 286,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_arch_001",
+          "content": {
+            "keyword": "微服务架构",
+            "rule": "决定采用微服务架构而非单体，原因是团队规模和独立部署需求"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "architecture_decision_02",
+        "name": "技术选型决策",
+        "type": "architecture_decision",
+        "passed": true,
+        "latency": 0,
+        "resultCount": 1,
+        "tokenCount": 249,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_tech_001",
+          "content": {
+            "keyword": "技术选型",
+            "rule": "选择 PostgreSQL 而非 MySQL，因为需要更好的 JSON 支持和并发性能"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "edge_case_01",
+        "name": "干扰项过滤",
+        "type": "edge_case",
+        "passed": true,
+        "latency": 0,
+        "resultCount": 3,
+        "tokenCount": 302,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_target",
+          "content": {
+            "keyword": "登录",
+            "rule": "用户登录使用 JWT 认证"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "edge_case_02",
+        "name": "同义词查询",
+        "type": "edge_case",
+        "passed": true,
+        "latency": 0,
+        "resultCount": 1,
+        "tokenCount": 236,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_synonym_001",
+          "content": {
+            "keyword": "鉴权",
+            "rule": "使用 JWT 进行身份验证"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "stale_config_01",
+        "name": "过期配置检测",
+        "type": "stale_config",
+        "passed": true,
+        "latency": 1,
+        "resultCount": 1,
+        "tokenCount": 269,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": true,
+        "staleSuppressed": true,
+        "topResult": {
+          "id": "mem_stale_001",
+          "content": {
+            "keyword": "旧API",
+            "rule": "使用旧版 API 密钥"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "procedural_01",
+        "name": "流程记忆检索",
+        "type": "procedural",
+        "passed": true,
+        "latency": 0,
+        "resultCount": 1,
+        "tokenCount": 245,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_proc_001",
+          "content": {
+            "keyword": "部署流程",
+            "rule": "1. 运行测试 2. 构建镜像 3. 推送到仓库 4. 更新 k8s"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "procedural_02",
+        "name": "调试步骤记忆",
+        "type": "procedural",
+        "passed": true,
+        "latency": 0,
+        "resultCount": 1,
+        "tokenCount": 248,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_debug_001",
+          "content": {
+            "keyword": "调试",
+            "rule": "内存泄漏调试：1. 使用 Chrome DevTools 2. Heap Snapshot 3. 对比快照"
+          }
+        },
+        "error": null
+      }
+    ],
+    "avgLatency": 0.038461538461538464,
+    "passRate": "88.46",
+    "avgResults": 1.5769230769230769,
+    "avgTokens": 269.4230769230769,
+    "semanticFallbackHitRate": "0.00"
+  },
+  "indexOnly": {
+    "totalTests": 26,
+    "passed": 25,
+    "failed": 1,
+    "totalLatency": 34,
+    "totalResults": 38,
+    "totalTokens": 7140,
+    "semanticFallbackHits": 0,
+    "semanticFallbackTotal": 26,
+    "conflictCorrect": 7,
+    "conflictTotal": 7,
+    "staleSuppressed": 1,
+    "staleTotal": 1,
+    "details": [
+      {
+        "id": "temporal_conflict_01",
+        "name": "配置变更 - 超时设置",
+        "type": "temporal_conflict",
+        "passed": true,
+        "latency": 3,
+        "resultCount": 1,
+        "tokenCount": 276,
+        "semanticFallbackTriggered": false,
+        "hasConflict": true,
+        "conflictCorrect": true,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_timeout_v2",
+          "content": {
+            "keyword": "数据库超时",
+            "rule": "数据库连接超时设置为 60 秒"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "temporal_conflict_02",
+        "name": "策略更新 - 重试机制",
+        "type": "temporal_conflict",
+        "passed": true,
+        "latency": 1,
+        "resultCount": 1,
+        "tokenCount": 277,
+        "semanticFallbackTriggered": false,
+        "hasConflict": true,
+        "conflictCorrect": true,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_retry_v2",
+          "content": {
+            "keyword": "重试策略",
+            "rule": "失败后使用指数退避重试，最多 5 次"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "temporal_conflict_03",
+        "name": "版本迭代 - API 端点",
+        "type": "temporal_conflict",
+        "passed": true,
+        "latency": 1,
+        "resultCount": 1,
+        "tokenCount": 273,
+        "semanticFallbackTriggered": false,
+        "hasConflict": true,
+        "conflictCorrect": true,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_api_v2",
+          "content": {
+            "keyword": "API端点",
+            "rule": "使用 /api/v2/users 端点，v1 已废弃"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "temporal_conflict_04",
+        "name": "配置变更 - 连接池大小",
+        "type": "temporal_conflict",
+        "passed": true,
+        "latency": 1,
+        "resultCount": 1,
+        "tokenCount": 276,
+        "semanticFallbackTriggered": false,
+        "hasConflict": true,
+        "conflictCorrect": true,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_pool_v2",
+          "content": {
+            "keyword": "连接池",
+            "rule": "数据库连接池大小调整为 20，支持更高并发"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "failed_attempt_01",
+        "name": "Failed-Attempt 检索",
+        "type": "failed_attempt",
+        "passed": true,
+        "latency": 1,
+        "resultCount": 2,
+        "tokenCount": 333,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_fail_001",
+          "content": {
+            "type": "failed_attempt",
+            "bug": "竞态条件",
+            "attempted": "setTimeout 延迟加载",
+            "error": "仍然出现竞态条件"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "failed_attempt_02",
+        "name": "Failed-Attempt 阻止重复错误",
+        "type": "failed_attempt",
+        "passed": true,
+        "latency": 1,
+        "resultCount": 1,
+        "tokenCount": 284,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_fail_auth",
+          "content": {
+            "type": "failed_attempt",
+            "bug": "认证失败",
+            "attempted": "在 URL 中传递 token",
+            "error": "安全漏洞：token 暴露在日志中"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "failed_attempt_03",
+        "name": "多次失败尝试记录",
+        "type": "failed_attempt",
+        "passed": true,
+        "latency": 1,
+        "resultCount": 3,
+        "tokenCount": 388,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_fail_mem_1",
+          "content": {
+            "type": "failed_attempt",
+            "bug": "内存泄漏",
+            "attempted": "手动释放对象",
+            "error": "仍有泄漏"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "file_reference_01",
+        "name": "文件特定查询",
+        "type": "file_specific",
+        "passed": true,
+        "latency": 1,
+        "resultCount": 2,
+        "tokenCount": 285,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_config_001",
+          "content": {
+            "keyword": "API_KEY",
+            "rule": "API_KEY 必须从环境变量读取"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "file_reference_02",
+        "name": "路径模糊匹配",
+        "type": "file_specific",
+        "passed": true,
+        "latency": 2,
+        "resultCount": 2,
+        "tokenCount": 298,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_handler_001",
+          "content": {
+            "keyword": "错误处理",
+            "rule": "统一使用 errorHandler 中间件"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "file_reference_03",
+        "name": "行号精确查询",
+        "type": "file_specific",
+        "passed": true,
+        "latency": 1,
+        "resultCount": 1,
+        "tokenCount": 245,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_line_001",
+          "content": {
+            "keyword": "Bug修复",
+            "rule": "在 L45 添加了空值检查"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "conflict_resolution_01",
+        "name": "冲突消解 - 细化关系",
+        "type": "conflict_resolution",
+        "passed": true,
+        "latency": 1,
+        "resultCount": 1,
+        "tokenCount": 244,
+        "semanticFallbackTriggered": false,
+        "hasConflict": true,
+        "conflictCorrect": true,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_specific",
+          "content": {
+            "keyword": "错误处理",
+            "rule": "异步操作使用 async/await + try-catch，不要用回调"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "conflict_resolution_02",
+        "name": "冲突消解 - 取代关系",
+        "type": "conflict_resolution",
+        "passed": true,
+        "latency": 1,
+        "resultCount": 1,
+        "tokenCount": 237,
+        "semanticFallbackTriggered": false,
+        "hasConflict": true,
+        "conflictCorrect": true,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_new_db",
+          "content": {
+            "keyword": "数据库",
+            "rule": "迁移到 PostgreSQL，MySQL 已废弃"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "conflict_resolution_03",
+        "name": "多版本配置冲突",
+        "type": "conflict_resolution",
+        "passed": true,
+        "latency": 1,
+        "resultCount": 1,
+        "tokenCount": 234,
+        "semanticFallbackTriggered": false,
+        "hasConflict": true,
+        "conflictCorrect": true,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_cors_v2",
+          "content": {
+            "keyword": "CORS",
+            "rule": "仅允许特定域名访问"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "recall_precision_01",
+        "name": "召回率测试 - 赫布扩散",
+        "type": "recall_precision",
+        "passed": true,
+        "latency": 1,
+        "resultCount": 3,
+        "tokenCount": 304,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_browser",
+          "content": {
+            "keyword": "browser",
+            "rule": "使用 browser.newPage()"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "recall_precision_02",
+        "name": "实体关联扩散",
+        "type": "recall_precision",
+        "passed": true,
+        "latency": 2,
+        "resultCount": 3,
+        "tokenCount": 302,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_cache",
+          "content": {
+            "keyword": "缓存",
+            "rule": "使用 Redis 作为缓存层"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "noisy_log_01",
+        "name": "噪声日志提取关键信息",
+        "type": "noisy_log",
+        "passed": true,
+        "latency": 2,
+        "resultCount": 1,
+        "tokenCount": 265,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_error_log",
+          "content": {
+            "keyword": "TypeError",
+            "rule": "TypeError: Cannot read property 'id' of undefined at UserController.getUser (src/controllers/user.js:45)"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "noisy_log_02",
+        "name": "堆栈跟踪解析",
+        "type": "noisy_log",
+        "passed": true,
+        "latency": 2,
+        "resultCount": 1,
+        "tokenCount": 251,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_stack_trace",
+          "content": {
+            "keyword": "Error",
+            "rule": "Error: Connection refused at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1141:16)"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "cross_file_01",
+        "name": "跨文件依赖追踪",
+        "type": "cross_file",
+        "passed": true,
+        "latency": 1,
+        "resultCount": 2,
+        "tokenCount": 298,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_import_001",
+          "content": {
+            "keyword": "导入",
+            "rule": "utils/validator.js 导出 validateEmail 函数"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "cross_file_02",
+        "name": "模块依赖链",
+        "type": "cross_file",
+        "passed": false,
+        "latency": 1,
+        "resultCount": 1,
+        "tokenCount": 235,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_dep_3",
+          "content": {
+            "keyword": "依赖",
+            "rule": "database.js 依赖 config.js"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "architecture_decision_01",
+        "name": "架构决策追溯",
+        "type": "architecture_decision",
+        "passed": true,
+        "latency": 2,
+        "resultCount": 1,
+        "tokenCount": 286,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_arch_001",
+          "content": {
+            "keyword": "微服务架构",
+            "rule": "决定采用微服务架构而非单体，原因是团队规模和独立部署需求"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "architecture_decision_02",
+        "name": "技术选型决策",
+        "type": "architecture_decision",
+        "passed": true,
+        "latency": 1,
+        "resultCount": 1,
+        "tokenCount": 249,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_tech_001",
+          "content": {
+            "keyword": "技术选型",
+            "rule": "选择 PostgreSQL 而非 MySQL，因为需要更好的 JSON 支持和并发性能"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "edge_case_01",
+        "name": "干扰项过滤",
+        "type": "edge_case",
+        "passed": true,
+        "latency": 2,
+        "resultCount": 3,
+        "tokenCount": 302,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_target",
+          "content": {
+            "keyword": "登录",
+            "rule": "用户登录使用 JWT 认证"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "edge_case_02",
+        "name": "同义词查询",
+        "type": "edge_case",
+        "passed": true,
+        "latency": 1,
+        "resultCount": 1,
+        "tokenCount": 236,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_synonym_001",
+          "content": {
+            "keyword": "鉴权",
+            "rule": "使用 JWT 进行身份验证"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "stale_config_01",
+        "name": "过期配置检测",
+        "type": "stale_config",
+        "passed": true,
+        "latency": 1,
+        "resultCount": 1,
+        "tokenCount": 269,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": true,
+        "staleSuppressed": true,
+        "topResult": {
+          "id": "mem_stale_001",
+          "content": {
+            "keyword": "旧API",
+            "rule": "使用旧版 API 密钥"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "procedural_01",
+        "name": "流程记忆检索",
+        "type": "procedural",
+        "passed": true,
+        "latency": 1,
+        "resultCount": 1,
+        "tokenCount": 245,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_proc_001",
+          "content": {
+            "keyword": "部署流程",
+            "rule": "1. 运行测试 2. 构建镜像 3. 推送到仓库 4. 更新 k8s"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "procedural_02",
+        "name": "调试步骤记忆",
+        "type": "procedural",
+        "passed": true,
+        "latency": 1,
+        "resultCount": 1,
+        "tokenCount": 248,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_debug_001",
+          "content": {
+            "keyword": "调试",
+            "rule": "内存泄漏调试：1. 使用 Chrome DevTools 2. Heap Snapshot 3. 对比快照"
+          }
+        },
+        "error": null
+      }
+    ],
+    "avgLatency": 1.3076923076923077,
+    "passRate": "96.15",
+    "avgResults": 1.4615384615384615,
+    "avgTokens": 274.61538461538464,
+    "semanticFallbackHitRate": "0.00"
+  },
+  "fullPipeline": {
+    "totalTests": 26,
+    "passed": 26,
+    "failed": 0,
+    "totalLatency": 2757,
+    "totalResults": 138,
+    "totalTokens": 23534,
+    "semanticFallbackHits": 0,
+    "semanticFallbackTotal": 26,
+    "conflictCorrect": 7,
+    "conflictTotal": 7,
+    "staleSuppressed": 1,
+    "staleTotal": 1,
+    "details": [
+      {
+        "id": "temporal_conflict_01",
+        "name": "配置变更 - 超时设置",
+        "type": "temporal_conflict",
+        "passed": true,
+        "latency": 117,
+        "resultCount": 5,
+        "tokenCount": 936,
+        "semanticFallbackTriggered": false,
+        "hasConflict": true,
+        "conflictCorrect": true,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_timeout_v2",
+          "content": {
+            "keyword": "数据库超时",
+            "rule": "数据库连接超时设置为 60 秒"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "temporal_conflict_02",
+        "name": "策略更新 - 重试机制",
+        "type": "temporal_conflict",
+        "passed": true,
+        "latency": 116,
+        "resultCount": 6,
+        "tokenCount": 1113,
+        "semanticFallbackTriggered": false,
+        "hasConflict": true,
+        "conflictCorrect": true,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_retry_v2",
+          "content": {
+            "keyword": "重试策略",
+            "rule": "失败后使用指数退避重试，最多 5 次"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "temporal_conflict_03",
+        "name": "版本迭代 - API 端点",
+        "type": "temporal_conflict",
+        "passed": true,
+        "latency": 103,
+        "resultCount": 6,
+        "tokenCount": 1057,
+        "semanticFallbackTriggered": false,
+        "hasConflict": true,
+        "conflictCorrect": true,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_api_v2",
+          "content": {
+            "keyword": "API端点",
+            "rule": "使用 /api/v2/users 端点，v1 已废弃"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "temporal_conflict_04",
+        "name": "配置变更 - 连接池大小",
+        "type": "temporal_conflict",
+        "passed": true,
+        "latency": 104,
+        "resultCount": 5,
+        "tokenCount": 914,
+        "semanticFallbackTriggered": false,
+        "hasConflict": true,
+        "conflictCorrect": true,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_pool_v2",
+          "content": {
+            "keyword": "连接池",
+            "rule": "数据库连接池大小调整为 20，支持更高并发"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "failed_attempt_01",
+        "name": "Failed-Attempt 检索",
+        "type": "failed_attempt",
+        "passed": true,
+        "latency": 109,
+        "resultCount": 7,
+        "tokenCount": 1187,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_fail_001",
+          "content": {
+            "type": "failed_attempt",
+            "bug": "竞态条件",
+            "attempted": "setTimeout 延迟加载",
+            "error": "仍然出现竞态条件"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "failed_attempt_02",
+        "name": "Failed-Attempt 阻止重复错误",
+        "type": "failed_attempt",
+        "passed": true,
+        "latency": 102,
+        "resultCount": 6,
+        "tokenCount": 981,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_fail_auth",
+          "content": {
+            "type": "failed_attempt",
+            "bug": "认证失败",
+            "attempted": "在 URL 中传递 token",
+            "error": "安全漏洞：token 暴露在日志中"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "failed_attempt_03",
+        "name": "多次失败尝试记录",
+        "type": "failed_attempt",
+        "passed": true,
+        "latency": 107,
+        "resultCount": 8,
+        "tokenCount": 1230,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_fail_mem_1",
+          "content": {
+            "type": "failed_attempt",
+            "bug": "内存泄漏",
+            "attempted": "手动释放对象",
+            "error": "仍有泄漏"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "file_reference_01",
+        "name": "文件特定查询",
+        "type": "file_specific",
+        "passed": true,
+        "latency": 131,
+        "resultCount": 2,
+        "tokenCount": 285,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_config_001",
+          "content": {
+            "keyword": "API_KEY",
+            "rule": "API_KEY 必须从环境变量读取"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "file_reference_02",
+        "name": "路径模糊匹配",
+        "type": "file_specific",
+        "passed": true,
+        "latency": 121,
+        "resultCount": 7,
+        "tokenCount": 1140,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_handler_001",
+          "content": {
+            "keyword": "错误处理",
+            "rule": "统一使用 errorHandler 中间件"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "file_reference_03",
+        "name": "行号精确查询",
+        "type": "file_specific",
+        "passed": true,
+        "latency": 101,
+        "resultCount": 1,
+        "tokenCount": 245,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_line_001",
+          "content": {
+            "keyword": "Bug修复",
+            "rule": "在 L45 添加了空值检查"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "conflict_resolution_01",
+        "name": "冲突消解 - 细化关系",
+        "type": "conflict_resolution",
+        "passed": true,
+        "latency": 103,
+        "resultCount": 6,
+        "tokenCount": 1072,
+        "semanticFallbackTriggered": false,
+        "hasConflict": true,
+        "conflictCorrect": true,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_specific",
+          "content": {
+            "keyword": "错误处理",
+            "rule": "异步操作使用 async/await + try-catch，不要用回调"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "conflict_resolution_02",
+        "name": "冲突消解 - 取代关系",
+        "type": "conflict_resolution",
+        "passed": true,
+        "latency": 109,
+        "resultCount": 6,
+        "tokenCount": 1054,
+        "semanticFallbackTriggered": false,
+        "hasConflict": true,
+        "conflictCorrect": true,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_new_db",
+          "content": {
+            "keyword": "数据库",
+            "rule": "迁移到 PostgreSQL，MySQL 已废弃"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "conflict_resolution_03",
+        "name": "多版本配置冲突",
+        "type": "conflict_resolution",
+        "passed": true,
+        "latency": 102,
+        "resultCount": 5,
+        "tokenCount": 904,
+        "semanticFallbackTriggered": false,
+        "hasConflict": true,
+        "conflictCorrect": true,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_cors_v2",
+          "content": {
+            "keyword": "CORS",
+            "rule": "仅允许特定域名访问"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "recall_precision_01",
+        "name": "召回率测试 - 赫布扩散",
+        "type": "recall_precision",
+        "passed": true,
+        "latency": 100,
+        "resultCount": 3,
+        "tokenCount": 304,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_browser",
+          "content": {
+            "keyword": "browser",
+            "rule": "使用 browser.newPage()"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "recall_precision_02",
+        "name": "实体关联扩散",
+        "type": "recall_precision",
+        "passed": true,
+        "latency": 99,
+        "resultCount": 3,
+        "tokenCount": 302,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_cache",
+          "content": {
+            "keyword": "缓存",
+            "rule": "使用 Redis 作为缓存层"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "noisy_log_01",
+        "name": "噪声日志提取关键信息",
+        "type": "noisy_log",
+        "passed": true,
+        "latency": 101,
+        "resultCount": 1,
+        "tokenCount": 265,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_error_log",
+          "content": {
+            "keyword": "TypeError",
+            "rule": "TypeError: Cannot read property 'id' of undefined at UserController.getUser (src/controllers/user.js:45)"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "noisy_log_02",
+        "name": "堆栈跟踪解析",
+        "type": "noisy_log",
+        "passed": true,
+        "latency": 102,
+        "resultCount": 6,
+        "tokenCount": 1066,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_stack_trace",
+          "content": {
+            "keyword": "Error",
+            "rule": "Error: Connection refused at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1141:16)"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "cross_file_01",
+        "name": "跨文件依赖追踪",
+        "type": "cross_file",
+        "passed": true,
+        "latency": 98,
+        "resultCount": 7,
+        "tokenCount": 1125,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_import_001",
+          "content": {
+            "keyword": "导入",
+            "rule": "utils/validator.js 导出 validateEmail 函数"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "cross_file_02",
+        "name": "模块依赖链",
+        "type": "cross_file",
+        "passed": true,
+        "latency": 110,
+        "resultCount": 6,
+        "tokenCount": 1049,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_dep_3",
+          "content": {
+            "keyword": "依赖",
+            "rule": "database.js 依赖 config.js"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "architecture_decision_01",
+        "name": "架构决策追溯",
+        "type": "architecture_decision",
+        "passed": true,
+        "latency": 102,
+        "resultCount": 5,
+        "tokenCount": 985,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_arch_001",
+          "content": {
+            "keyword": "微服务架构",
+            "rule": "决定采用微服务架构而非单体，原因是团队规模和独立部署需求"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "architecture_decision_02",
+        "name": "技术选型决策",
+        "type": "architecture_decision",
+        "passed": true,
+        "latency": 103,
+        "resultCount": 6,
+        "tokenCount": 1106,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_tech_001",
+          "content": {
+            "keyword": "技术选型",
+            "rule": "选择 PostgreSQL 而非 MySQL，因为需要更好的 JSON 支持和并发性能"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "edge_case_01",
+        "name": "干扰项过滤",
+        "type": "edge_case",
+        "passed": true,
+        "latency": 103,
+        "resultCount": 8,
+        "tokenCount": 1119,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_target",
+          "content": {
+            "keyword": "登录",
+            "rule": "用户登录使用 JWT 认证"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "edge_case_02",
+        "name": "同义词查询",
+        "type": "edge_case",
+        "passed": true,
+        "latency": 100,
+        "resultCount": 6,
+        "tokenCount": 1052,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_synonym_001",
+          "content": {
+            "keyword": "鉴权",
+            "rule": "使用 JWT 进行身份验证"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "stale_config_01",
+        "name": "过期配置检测",
+        "type": "stale_config",
+        "passed": true,
+        "latency": 109,
+        "resultCount": 6,
+        "tokenCount": 1057,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": true,
+        "staleSuppressed": true,
+        "topResult": {
+          "id": "mem_stale_001",
+          "content": {
+            "keyword": "旧API",
+            "rule": "使用旧版 API 密钥"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "procedural_01",
+        "name": "流程记忆检索",
+        "type": "procedural",
+        "passed": true,
+        "latency": 100,
+        "resultCount": 5,
+        "tokenCount": 928,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_proc_001",
+          "content": {
+            "keyword": "部署流程",
+            "rule": "1. 运行测试 2. 构建镜像 3. 推送到仓库 4. 更新 k8s"
+          }
+        },
+        "error": null
+      },
+      {
+        "id": "procedural_02",
+        "name": "调试步骤记忆",
+        "type": "procedural",
+        "passed": true,
+        "latency": 105,
+        "resultCount": 6,
+        "tokenCount": 1058,
+        "semanticFallbackTriggered": false,
+        "hasConflict": false,
+        "conflictCorrect": false,
+        "hasStale": false,
+        "staleSuppressed": false,
+        "topResult": {
+          "id": "mem_debug_001",
+          "content": {
+            "keyword": "调试",
+            "rule": "内存泄漏调试：1. 使用 Chrome DevTools 2. Heap Snapshot 3. 对比快照"
+          }
+        },
+        "error": null
+      }
+    ],
+    "avgLatency": 106.03846153846153,
+    "passRate": "100.00",
+    "avgResults": 5.3076923076923075,
+    "avgTokens": 905.1538461538462,
+    "semanticFallbackHitRate": "0.00"
+  }
+}

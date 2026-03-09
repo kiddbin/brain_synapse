@@ -1,0 +1,709 @@
+{
+  "test_cases": [
+    {
+      "id": "temporal_conflict_01",
+      "name": "配置变更 - 超时设置",
+      "type": "temporal_conflict",
+      "setup": {
+        "memories": [
+          {
+            "id": "mem_timeout_v1",
+            "memory_type": "semantic",
+            "content": { "keyword": "数据库超时", "rule": "数据库连接超时设置为 30 秒" },
+            "timestamp_valid_from": 1708032000000,
+            "timestamp_valid_to": 1708204800000,
+            "superseded_by": "mem_timeout_v2"
+          },
+          {
+            "id": "mem_timeout_v2",
+            "memory_type": "semantic",
+            "content": { "keyword": "数据库超时", "rule": "数据库连接超时设置为 60 秒" },
+            "timestamp_valid_from": 1708204800000,
+            "timestamp_valid_to": null,
+            "supersedes": "mem_timeout_v1"
+          }
+        ]
+      },
+      "query": "数据库连接超时是多少？",
+      "expected": {
+        "result_contains": "60 秒",
+        "result_id": "mem_timeout_v2"
+      }
+    },
+    {
+      "id": "temporal_conflict_02",
+      "name": "策略更新 - 重试机制",
+      "type": "temporal_conflict",
+      "setup": {
+        "memories": [
+          {
+            "id": "mem_retry_v1",
+            "memory_type": "procedural",
+            "content": { "keyword": "重试策略", "rule": "失败后重试 3 次" },
+            "timestamp_valid_from": 1707945600000,
+            "timestamp_valid_to": 1708118400000,
+            "superseded_by": "mem_retry_v2"
+          },
+          {
+            "id": "mem_retry_v2",
+            "memory_type": "procedural",
+            "content": { "keyword": "重试策略", "rule": "失败后使用指数退避重试，最多 5 次" },
+            "timestamp_valid_from": 1708118400000,
+            "timestamp_valid_to": null,
+            "supersedes": "mem_retry_v1"
+          }
+        ]
+      },
+      "query": "重试策略是什么？",
+      "expected": {
+        "result_contains": "指数退避"
+      }
+    },
+    {
+      "id": "temporal_conflict_03",
+      "name": "版本迭代 - API 端点",
+      "type": "temporal_conflict",
+      "setup": {
+        "memories": [
+          {
+            "id": "mem_api_v1",
+            "memory_type": "semantic",
+            "content": { "keyword": "API端点", "rule": "使用 /api/v1/users 端点" },
+            "timestamp_valid_from": 1707686400000,
+            "timestamp_valid_to": 1708032000000,
+            "superseded_by": "mem_api_v2"
+          },
+          {
+            "id": "mem_api_v2",
+            "memory_type": "semantic",
+            "content": { "keyword": "API端点", "rule": "使用 /api/v2/users 端点，v1 已废弃" },
+            "timestamp_valid_from": 1708032000000,
+            "timestamp_valid_to": null,
+            "supersedes": "mem_api_v1"
+          }
+        ]
+      },
+      "query": "用户 API 端点",
+      "expected": {
+        "result_contains": "/api/v2/users"
+      }
+    },
+    {
+      "id": "temporal_conflict_04",
+      "name": "配置变更 - 连接池大小",
+      "type": "temporal_conflict",
+      "setup": {
+        "memories": [
+          {
+            "id": "mem_pool_v1",
+            "memory_type": "semantic",
+            "content": { "keyword": "连接池", "rule": "数据库连接池大小为 10" },
+            "timestamp_valid_from": 1707600000000,
+            "timestamp_valid_to": 1708000000000,
+            "superseded_by": "mem_pool_v2"
+          },
+          {
+            "id": "mem_pool_v2",
+            "memory_type": "semantic",
+            "content": { "keyword": "连接池", "rule": "数据库连接池大小调整为 20，支持更高并发" },
+            "timestamp_valid_from": 1708000000000,
+            "timestamp_valid_to": null,
+            "supersedes": "mem_pool_v1"
+          }
+        ]
+      },
+      "query": "数据库连接池大小",
+      "expected": {
+        "result_contains": "20"
+      }
+    },
+    {
+      "id": "failed_attempt_01",
+      "name": "Failed-Attempt 检索",
+      "type": "failed_attempt",
+      "setup": {
+        "memories": [
+          {
+            "id": "mem_fail_001",
+            "memory_type": "failed_attempt",
+            "content": {
+              "type": "failed_attempt",
+              "bug": "竞态条件",
+              "attempted": "setTimeout 延迟加载",
+              "error": "仍然出现竞态条件"
+            },
+            "provenance": { "file_reference": "src/api/handler.js:L78" }
+          },
+          {
+            "id": "mem_success_001",
+            "memory_type": "procedural",
+            "content": {
+              "type": "solution",
+              "bug": "竞态条件",
+              "solution": "使用 Promise.all 同步加载"
+            },
+            "provenance": { "file_reference": "src/api/handler.js:L78" },
+            "supersedes": "mem_fail_001"
+          }
+        ]
+      },
+      "query": "竞态条件 解决方案",
+      "expected": {
+        "result_contains": "Promise.all",
+        "failed_attempts_count": 1
+      }
+    },
+    {
+      "id": "failed_attempt_02",
+      "name": "Failed-Attempt 阻止重复错误",
+      "type": "failed_attempt",
+      "setup": {
+        "memories": [
+          {
+            "id": "mem_fail_auth",
+            "memory_type": "failed_attempt",
+            "content": {
+              "type": "failed_attempt",
+              "bug": "认证失败",
+              "attempted": "在 URL 中传递 token",
+              "error": "安全漏洞：token 暴露在日志中"
+            },
+            "provenance": { "file_reference": "src/auth/middleware.js:L23" }
+          }
+        ]
+      },
+      "query": "认证 token 传递",
+      "expected": {
+        "result_contains": "failed_attempt"
+      }
+    },
+    {
+      "id": "failed_attempt_03",
+      "name": "多次失败尝试记录",
+      "type": "failed_attempt",
+      "setup": {
+        "memories": [
+          {
+            "id": "mem_fail_mem_1",
+            "memory_type": "failed_attempt",
+            "content": {
+              "type": "failed_attempt",
+              "bug": "内存泄漏",
+              "attempted": "手动释放对象",
+              "error": "仍有泄漏"
+            }
+          },
+          {
+            "id": "mem_fail_mem_2",
+            "memory_type": "failed_attempt",
+            "content": {
+              "type": "failed_attempt",
+              "bug": "内存泄漏",
+              "attempted": "使用 WeakMap",
+              "error": "泄漏位置不在 WeakMap 中"
+            }
+          },
+          {
+            "id": "mem_success_mem",
+            "memory_type": "procedural",
+            "content": {
+              "type": "solution",
+              "bug": "内存泄漏",
+              "solution": "使用 Chrome DevTools Memory Profile 定位并修复"
+            }
+          }
+        ]
+      },
+      "query": "内存泄漏 解决",
+      "expected": {
+        "result_contains": "DevTools",
+        "min_results": 2
+      }
+    },
+    {
+      "id": "file_reference_01",
+      "name": "文件特定查询",
+      "type": "file_specific",
+      "setup": {
+        "memories": [
+          {
+            "id": "mem_config_001",
+            "memory_type": "semantic",
+            "content": { "keyword": "API_KEY", "rule": "API_KEY 必须从环境变量读取" },
+            "provenance": { "file_reference": "config/app.js:L12" }
+          },
+          {
+            "id": "mem_config_002",
+            "memory_type": "semantic",
+            "content": { "keyword": "PORT", "rule": "服务端口默认为 3000" },
+            "provenance": { "file_reference": "config/app.js:L15" }
+          }
+        ]
+      },
+      "query": "config/app.js 的配置",
+      "expected": {
+        "file_filter": "config/app.js",
+        "min_results": 2
+      }
+    },
+    {
+      "id": "file_reference_02",
+      "name": "路径模糊匹配",
+      "type": "file_specific",
+      "setup": {
+        "memories": [
+          {
+            "id": "mem_handler_001",
+            "memory_type": "procedural",
+            "content": { "keyword": "错误处理", "rule": "统一使用 errorHandler 中间件" },
+            "provenance": { "file_reference": "src/middleware/errorHandler.js:L5" }
+          },
+          {
+            "id": "mem_handler_002",
+            "memory_type": "procedural",
+            "content": { "keyword": "日志记录", "rule": "错误日志包含堆栈信息" },
+            "provenance": { "file_reference": "src/middleware/errorHandler.js:L28" }
+          }
+        ]
+      },
+      "query": "errorHandler 相关",
+      "expected": {
+        "file_filter": "errorHandler",
+        "min_results": 2
+      }
+    },
+    {
+      "id": "file_reference_03",
+      "name": "行号精确查询",
+      "type": "file_specific",
+      "setup": {
+        "memories": [
+          {
+            "id": "mem_line_001",
+            "memory_type": "episodic",
+            "content": { "keyword": "Bug修复", "rule": "在 L45 添加了空值检查" },
+            "provenance": { "file_reference": "src/controllers/user.js:L45" }
+          }
+        ]
+      },
+      "query": "user.js L45",
+      "expected": {
+        "file_filter": "user.js",
+        "min_results": 1
+      }
+    },
+    {
+      "id": "conflict_resolution_01",
+      "name": "冲突消解 - 细化关系",
+      "type": "conflict_resolution",
+      "setup": {
+        "memories": [
+          {
+            "id": "mem_general",
+            "memory_type": "semantic",
+            "content": { "keyword": "错误处理", "rule": "使用 try-catch 捕获错误" }
+          },
+          {
+            "id": "mem_specific",
+            "memory_type": "procedural",
+            "content": { 
+              "keyword": "错误处理", 
+              "rule": "异步操作使用 async/await + try-catch，不要用回调" 
+            },
+            "supersedes": "mem_general"
+          }
+        ]
+      },
+      "query": "错误处理",
+      "expected": {
+        "result_id": "mem_specific",
+        "result_contains": "async/await"
+      }
+    },
+    {
+      "id": "conflict_resolution_02",
+      "name": "冲突消解 - 取代关系",
+      "type": "conflict_resolution",
+      "setup": {
+        "memories": [
+          {
+            "id": "mem_old_db",
+            "memory_type": "semantic",
+            "content": { "keyword": "数据库", "rule": "使用 MySQL 数据库" },
+            "superseded_by": "mem_new_db"
+          },
+          {
+            "id": "mem_new_db",
+            "memory_type": "semantic",
+            "content": { "keyword": "数据库", "rule": "迁移到 PostgreSQL，MySQL 已废弃" },
+            "supersedes": "mem_old_db"
+          }
+        ]
+      },
+      "query": "数据库选择",
+      "expected": {
+        "result_id": "mem_new_db",
+        "result_contains": "PostgreSQL"
+      }
+    },
+    {
+      "id": "conflict_resolution_03",
+      "name": "多版本配置冲突",
+      "type": "conflict_resolution",
+      "setup": {
+        "memories": [
+          {
+            "id": "mem_cors_v1",
+            "memory_type": "semantic",
+            "content": { "keyword": "CORS", "rule": "允许所有来源访问" },
+            "superseded_by": "mem_cors_v2"
+          },
+          {
+            "id": "mem_cors_v2",
+            "memory_type": "semantic",
+            "content": { "keyword": "CORS", "rule": "仅允许特定域名访问" },
+            "supersedes": "mem_cors_v1"
+          }
+        ]
+      },
+      "query": "CORS 配置",
+      "expected": {
+        "result_contains": "特定域名"
+      }
+    },
+    {
+      "id": "recall_precision_01",
+      "name": "召回率测试 - 赫布扩散",
+      "type": "recall_precision",
+      "setup": {
+        "memories": [
+          {
+            "id": "mem_browser",
+            "memory_type": "experience",
+            "content": { "keyword": "browser", "rule": "使用 browser.newPage()" },
+            "linked_entities": ["Playwright", "automation"]
+          },
+          {
+            "id": "mem_playwright",
+            "memory_type": "experience",
+            "content": { "keyword": "Playwright", "rule": "安装 playwright 包" },
+            "linked_entities": ["automation", "testing"]
+          },
+          {
+            "id": "mem_testing",
+            "memory_type": "experience",
+            "content": { "keyword": "testing", "rule": "使用 Jest 测试框架" },
+            "linked_entities": ["Jest", "QA"]
+          }
+        ]
+      },
+      "query": "browser",
+      "expected": {
+        "should_activate": ["mem_browser", "mem_playwright"],
+        "min_results": 2
+      }
+    },
+    {
+      "id": "recall_precision_02",
+      "name": "实体关联扩散",
+      "type": "recall_precision",
+      "setup": {
+        "memories": [
+          {
+            "id": "mem_cache",
+            "memory_type": "semantic",
+            "content": { "keyword": "缓存", "rule": "使用 Redis 作为缓存层" },
+            "linked_entities": ["Redis", "performance"]
+          },
+          {
+            "id": "mem_redis",
+            "memory_type": "procedural",
+            "content": { "keyword": "Redis", "rule": "Redis 连接池配置为 10" },
+            "linked_entities": ["cache", "performance"]
+          },
+          {
+            "id": "mem_perf",
+            "memory_type": "semantic",
+            "content": { "keyword": "性能优化", "rule": "缓存命中率应 > 80%" },
+            "linked_entities": ["Redis", "cache"]
+          }
+        ]
+      },
+      "query": "缓存",
+      "expected": {
+        "should_activate": ["mem_cache", "mem_redis", "mem_perf"],
+        "min_results": 2
+      }
+    },
+    {
+      "id": "noisy_log_01",
+      "name": "噪声日志提取关键信息",
+      "type": "noisy_log",
+      "setup": {
+        "memories": [
+          {
+            "id": "mem_error_log",
+            "memory_type": "episodic",
+            "content": {
+              "keyword": "TypeError",
+              "rule": "TypeError: Cannot read property 'id' of undefined at UserController.getUser (src/controllers/user.js:45)"
+            },
+            "provenance": { "file_reference": "src/controllers/user.js:L45" }
+          }
+        ]
+      },
+      "query": "user.js 错误",
+      "expected": {
+        "result_contains": "TypeError",
+        "file_filter": "user.js"
+      }
+    },
+    {
+      "id": "noisy_log_02",
+      "name": "堆栈跟踪解析",
+      "type": "noisy_log",
+      "setup": {
+        "memories": [
+          {
+            "id": "mem_stack_trace",
+            "memory_type": "episodic",
+            "content": {
+              "keyword": "Error",
+              "rule": "Error: Connection refused at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1141:16)"
+            }
+          }
+        ]
+      },
+      "query": "Connection refused",
+      "expected": {
+        "result_contains": "Connection refused"
+      }
+    },
+    {
+      "id": "cross_file_01",
+      "name": "跨文件依赖追踪",
+      "type": "cross_file",
+      "setup": {
+        "memories": [
+          {
+            "id": "mem_import_001",
+            "memory_type": "semantic",
+            "content": { "keyword": "导入", "rule": "utils/validator.js 导出 validateEmail 函数" },
+            "provenance": { "file_reference": "utils/validator.js:L12" },
+            "linked_entities": ["validator", "email"]
+          },
+          {
+            "id": "mem_import_002",
+            "memory_type": "procedural",
+            "content": { "keyword": "使用", "rule": "在 user.service.js 中导入 validateEmail" },
+            "provenance": { "file_reference": "src/services/user.service.js:L5" },
+            "linked_entities": ["validator", "email"]
+          }
+        ]
+      },
+      "query": "validateEmail 在哪里使用",
+      "expected": {
+        "min_results": 2
+      }
+    },
+    {
+      "id": "cross_file_02",
+      "name": "模块依赖链",
+      "type": "cross_file",
+      "setup": {
+        "memories": [
+          {
+            "id": "mem_dep_1",
+            "memory_type": "semantic",
+            "content": { "keyword": "依赖", "rule": "api.js 依赖 auth.js" },
+            "linked_entities": ["api", "auth"]
+          },
+          {
+            "id": "mem_dep_2",
+            "memory_type": "semantic",
+            "content": { "keyword": "依赖", "rule": "auth.js 依赖 database.js" },
+            "linked_entities": ["auth", "database"]
+          },
+          {
+            "id": "mem_dep_3",
+            "memory_type": "semantic",
+            "content": { "keyword": "依赖", "rule": "database.js 依赖 config.js" },
+            "linked_entities": ["database", "config"]
+          }
+        ]
+      },
+      "query": "api 依赖",
+      "expected": {
+        "min_results": 2
+      }
+    },
+    {
+      "id": "architecture_decision_01",
+      "name": "架构决策追溯",
+      "type": "architecture_decision",
+      "setup": {
+        "memories": [
+          {
+            "id": "mem_arch_001",
+            "memory_type": "reflective",
+            "content": {
+              "keyword": "微服务架构",
+              "rule": "决定采用微服务架构而非单体，原因是团队规模和独立部署需求"
+            },
+            "timestamp_valid_from": 1707859200000,
+            "timestamp_valid_to": null
+          }
+        ]
+      },
+      "query": "为什么选择微服务",
+      "expected": {
+        "result_contains": "团队规模"
+      }
+    },
+    {
+      "id": "architecture_decision_02",
+      "name": "技术选型决策",
+      "type": "architecture_decision",
+      "setup": {
+        "memories": [
+          {
+            "id": "mem_tech_001",
+            "memory_type": "reflective",
+            "content": {
+              "keyword": "技术选型",
+              "rule": "选择 PostgreSQL 而非 MySQL，因为需要更好的 JSON 支持和并发性能"
+            }
+          }
+        ]
+      },
+      "query": "为什么选择 PostgreSQL",
+      "expected": {
+        "result_contains": "JSON"
+      }
+    },
+    {
+      "id": "edge_case_01",
+      "name": "干扰项过滤",
+      "type": "edge_case",
+      "setup": {
+        "memories": [
+          {
+            "id": "mem_target",
+            "memory_type": "semantic",
+            "content": { "keyword": "登录", "rule": "用户登录使用 JWT 认证" },
+            "linked_entities": ["auth", "JWT"]
+          },
+          {
+            "id": "mem_noise_001",
+            "memory_type": "semantic",
+            "content": { "keyword": "登出", "rule": "登出时清除 token" },
+            "linked_entities": ["auth"]
+          },
+          {
+            "id": "mem_noise_002",
+            "memory_type": "semantic",
+            "content": { "keyword": "注册", "rule": "用户注册需要邮箱验证" },
+            "linked_entities": ["auth", "email"]
+          }
+        ]
+      },
+      "query": "登录认证方式",
+      "expected": {
+        "result_contains": "JWT",
+        "first_result_id": "mem_target"
+      }
+    },
+    {
+      "id": "edge_case_02",
+      "name": "同义词查询",
+      "type": "edge_case",
+      "setup": {
+        "memories": [
+          {
+            "id": "mem_synonym_001",
+            "memory_type": "semantic",
+            "content": { "keyword": "鉴权", "rule": "使用 JWT 进行身份验证" }
+          }
+        ]
+      },
+      "query": "认证方式",
+      "expected": {
+        "min_results": 1
+      }
+    },
+    {
+      "id": "stale_config_01",
+      "name": "过期配置检测",
+      "type": "stale_config",
+      "setup": {
+        "memories": [
+          {
+            "id": "mem_stale_001",
+            "memory_type": "semantic",
+            "content": { "keyword": "旧API", "rule": "使用旧版 API 密钥" },
+            "created_at": 1700000000000,
+            "updated_at": 1700000000000
+          }
+        ]
+      },
+      "query": "API 密钥",
+      "expected": {
+        "min_results": 1
+      }
+    },
+    {
+      "id": "procedural_01",
+      "name": "流程记忆检索",
+      "type": "procedural",
+      "setup": {
+        "memories": [
+          {
+            "id": "mem_proc_001",
+            "memory_type": "procedural",
+            "content": { "keyword": "部署流程", "rule": "1. 运行测试 2. 构建镜像 3. 推送到仓库 4. 更新 k8s" }
+          }
+        ]
+      },
+      "query": "如何部署",
+      "expected": {
+        "result_contains": "测试"
+      }
+    },
+    {
+      "id": "procedural_02",
+      "name": "调试步骤记忆",
+      "type": "procedural",
+      "setup": {
+        "memories": [
+          {
+            "id": "mem_debug_001",
+            "memory_type": "procedural",
+            "content": { "keyword": "调试", "rule": "内存泄漏调试：1. 使用 Chrome DevTools 2. Heap Snapshot 3. 对比快照" }
+          }
+        ]
+      },
+      "query": "内存泄漏调试",
+      "expected": {
+        "result_contains": "DevTools"
+      }
+    }
+  ],
+  "metadata": {
+    "version": "2.2.0",
+    "created_at": "2026-03-08",
+    "total_cases": 25,
+    "categories": {
+      "temporal_conflict": 4,
+      "failed_attempt": 3,
+      "file_specific": 3,
+      "conflict_resolution": 3,
+      "recall_precision": 2,
+      "noisy_log": 2,
+      "cross_file": 2,
+      "architecture_decision": 2,
+      "edge_case": 2,
+      "stale_config": 1,
+      "procedural": 1
+    }
+  }
+}

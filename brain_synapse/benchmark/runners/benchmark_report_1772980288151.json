@@ -1,0 +1,363 @@
+{
+  "summary": {
+    "total": 26,
+    "passed": 26,
+    "failed": 0,
+    "passRate": "100.00%",
+    "avgLatency": "105.77ms"
+  },
+  "typeStats": {
+    "temporal_conflict": {
+      "total": 4,
+      "passed": 4
+    },
+    "failed_attempt": {
+      "total": 3,
+      "passed": 3
+    },
+    "file_specific": {
+      "total": 3,
+      "passed": 3
+    },
+    "conflict_resolution": {
+      "total": 3,
+      "passed": 3
+    },
+    "recall_precision": {
+      "total": 2,
+      "passed": 2
+    },
+    "noisy_log": {
+      "total": 2,
+      "passed": 2
+    },
+    "cross_file": {
+      "total": 2,
+      "passed": 2
+    },
+    "architecture_decision": {
+      "total": 2,
+      "passed": 2
+    },
+    "edge_case": {
+      "total": 2,
+      "passed": 2
+    },
+    "stale_config": {
+      "total": 1,
+      "passed": 1
+    },
+    "procedural": {
+      "total": 2,
+      "passed": 2
+    }
+  },
+  "testResults": [
+    {
+      "id": "temporal_conflict_01",
+      "name": "配置变更 - 超时设置",
+      "type": "temporal_conflict",
+      "passed": true,
+      "latency": 114,
+      "resultCount": 5,
+      "confidence": 0.4903762757887309,
+      "query": "数据库连接超时是多少？",
+      "validationDetails": []
+    },
+    {
+      "id": "temporal_conflict_02",
+      "name": "策略更新 - 重试机制",
+      "type": "temporal_conflict",
+      "passed": true,
+      "latency": 107,
+      "resultCount": 6,
+      "confidence": 0.41911910902729826,
+      "query": "重试策略是什么？",
+      "validationDetails": []
+    },
+    {
+      "id": "temporal_conflict_03",
+      "name": "版本迭代 - API 端点",
+      "type": "temporal_conflict",
+      "passed": true,
+      "latency": 113,
+      "resultCount": 6,
+      "confidence": 0.4864775372638283,
+      "query": "用户 API 端点",
+      "validationDetails": []
+    },
+    {
+      "id": "temporal_conflict_04",
+      "name": "配置变更 - 连接池大小",
+      "type": "temporal_conflict",
+      "passed": true,
+      "latency": 104,
+      "resultCount": 5,
+      "confidence": 0.8958797346140275,
+      "query": "数据库连接池大小",
+      "validationDetails": []
+    },
+    {
+      "id": "failed_attempt_01",
+      "name": "Failed-Attempt 检索",
+      "type": "failed_attempt",
+      "passed": true,
+      "latency": 106,
+      "resultCount": 7,
+      "confidence": 0.38816242111356936,
+      "query": "竞态条件 解决方案",
+      "validationDetails": []
+    },
+    {
+      "id": "failed_attempt_02",
+      "name": "Failed-Attempt 阻止重复错误",
+      "type": "failed_attempt",
+      "passed": true,
+      "latency": 107,
+      "resultCount": 6,
+      "confidence": 0.6810685521693597,
+      "query": "认证 token 传递",
+      "validationDetails": []
+    },
+    {
+      "id": "failed_attempt_03",
+      "name": "多次失败尝试记录",
+      "type": "failed_attempt",
+      "passed": true,
+      "latency": 110,
+      "resultCount": 8,
+      "confidence": 0.5592935287764923,
+      "query": "内存泄漏 解决",
+      "validationDetails": []
+    },
+    {
+      "id": "file_reference_01",
+      "name": "文件特定查询",
+      "type": "file_specific",
+      "passed": true,
+      "latency": 101,
+      "resultCount": 2,
+      "confidence": 0.16479184330021646,
+      "query": "config/app.js 的配置",
+      "validationDetails": []
+    },
+    {
+      "id": "file_reference_02",
+      "name": "路径模糊匹配",
+      "type": "file_specific",
+      "passed": true,
+      "latency": 110,
+      "resultCount": 7,
+      "confidence": 0.2079441541679836,
+      "query": "errorHandler 相关",
+      "validationDetails": []
+    },
+    {
+      "id": "file_reference_03",
+      "name": "行号精确查询",
+      "type": "file_specific",
+      "passed": true,
+      "latency": 114,
+      "resultCount": 1,
+      "confidence": 0.2772588722239781,
+      "query": "user.js L45",
+      "validationDetails": []
+    },
+    {
+      "id": "conflict_resolution_01",
+      "name": "冲突消解 - 细化关系",
+      "type": "conflict_resolution",
+      "passed": true,
+      "latency": 110,
+      "resultCount": 6,
+      "confidence": 0.9729550745276566,
+      "query": "错误处理",
+      "validationDetails": []
+    },
+    {
+      "id": "conflict_resolution_02",
+      "name": "冲突消解 - 取代关系",
+      "type": "conflict_resolution",
+      "passed": true,
+      "latency": 107,
+      "resultCount": 6,
+      "confidence": 0.4324244775678474,
+      "query": "数据库选择",
+      "validationDetails": []
+    },
+    {
+      "id": "conflict_resolution_03",
+      "name": "多版本配置冲突",
+      "type": "conflict_resolution",
+      "passed": true,
+      "latency": 108,
+      "resultCount": 5,
+      "confidence": 0.1791759469228055,
+      "query": "CORS 配置",
+      "validationDetails": []
+    },
+    {
+      "id": "recall_precision_01",
+      "name": "召回率测试 - 赫布扩散",
+      "type": "recall_precision",
+      "passed": true,
+      "latency": 98,
+      "resultCount": 3,
+      "confidence": 0.6931471805599453,
+      "query": "browser",
+      "validationDetails": []
+    },
+    {
+      "id": "recall_precision_02",
+      "name": "实体关联扩散",
+      "type": "recall_precision",
+      "passed": true,
+      "latency": 97,
+      "resultCount": 3,
+      "confidence": 0.6931471805599453,
+      "query": "缓存",
+      "validationDetails": []
+    },
+    {
+      "id": "noisy_log_01",
+      "name": "噪声日志提取关键信息",
+      "type": "noisy_log",
+      "passed": true,
+      "latency": 107,
+      "resultCount": 1,
+      "confidence": 0.11090354888959127,
+      "query": "user.js 错误",
+      "validationDetails": []
+    },
+    {
+      "id": "noisy_log_02",
+      "name": "堆栈跟踪解析",
+      "type": "noisy_log",
+      "passed": true,
+      "latency": 104,
+      "resultCount": 6,
+      "confidence": 0.9729550745276566,
+      "query": "Connection refused",
+      "validationDetails": []
+    },
+    {
+      "id": "cross_file_01",
+      "name": "跨文件依赖追踪",
+      "type": "cross_file",
+      "passed": true,
+      "latency": 102,
+      "resultCount": 7,
+      "confidence": 0.4158883083359672,
+      "query": "validateEmail 在哪里使用",
+      "validationDetails": []
+    },
+    {
+      "id": "cross_file_02",
+      "name": "模块依赖链",
+      "type": "cross_file",
+      "passed": true,
+      "latency": 104,
+      "resultCount": 6,
+      "confidence": 0.5837730447165941,
+      "query": "api 依赖",
+      "validationDetails": []
+    },
+    {
+      "id": "architecture_decision_01",
+      "name": "架构决策追溯",
+      "type": "architecture_decision",
+      "passed": true,
+      "latency": 104,
+      "resultCount": 5,
+      "confidence": 0.23890126256374067,
+      "query": "为什么选择微服务",
+      "validationDetails": []
+    },
+    {
+      "id": "architecture_decision_02",
+      "name": "技术选型决策",
+      "type": "architecture_decision",
+      "passed": true,
+      "latency": 100,
+      "resultCount": 6,
+      "confidence": 0.38918202981106265,
+      "query": "为什么选择 PostgreSQL",
+      "validationDetails": []
+    },
+    {
+      "id": "edge_case_01",
+      "name": "干扰项过滤",
+      "type": "edge_case",
+      "passed": true,
+      "latency": 103,
+      "resultCount": 8,
+      "confidence": 0.4793944532369933,
+      "query": "登录认证方式",
+      "validationDetails": []
+    },
+    {
+      "id": "edge_case_02",
+      "name": "同义词查询",
+      "type": "edge_case",
+      "passed": true,
+      "latency": 112,
+      "resultCount": 6,
+      "confidence": 0.38918202981106265,
+      "query": "认证方式",
+      "validationDetails": []
+    },
+    {
+      "id": "stale_config_01",
+      "name": "过期配置检测",
+      "type": "stale_config",
+      "passed": true,
+      "latency": 103,
+      "resultCount": 6,
+      "confidence": 0.9729550745276566,
+      "query": "API 密钥",
+      "validationDetails": []
+    },
+    {
+      "id": "procedural_01",
+      "name": "流程记忆检索",
+      "type": "procedural",
+      "passed": true,
+      "latency": 101,
+      "resultCount": 5,
+      "confidence": 0.30715876615338084,
+      "query": "如何部署",
+      "validationDetails": []
+    },
+    {
+      "id": "procedural_02",
+      "name": "调试步骤记忆",
+      "type": "procedural",
+      "passed": true,
+      "latency": 104,
+      "resultCount": 6,
+      "confidence": 0.9729550745276566,
+      "query": "内存泄漏调试",
+      "validationDetails": []
+    }
+  ],
+  "metadata": {
+    "version": "2.2.0",
+    "created_at": "2026-03-08",
+    "total_cases": 25,
+    "categories": {
+      "temporal_conflict": 4,
+      "failed_attempt": 3,
+      "file_specific": 3,
+      "conflict_resolution": 3,
+      "recall_precision": 2,
+      "noisy_log": 2,
+      "cross_file": 2,
+      "architecture_decision": 2,
+      "edge_case": 2,
+      "stale_config": 1,
+      "procedural": 1
+    }
+  },
+  "timestamp": "2026-03-08T14:31:28.148Z",
+  "version": "2.1.0"
+}

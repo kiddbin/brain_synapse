@@ -1,0 +1,127 @@
+{
+  "memories": {
+    "986b76f1c6fde5a6310bf014e79ffe12": {
+      "id": "986b76f1c6fde5a6310bf014e79ffe12",
+      "memory_type": "failed_attempt",
+      "content": {
+        "type": "failed_attempt",
+        "bug": "API 调用出现竞态条件，数据不一致",
+        "attempted": "使用 setTimeout 延迟 100ms 加载",
+        "error": "Race condition detected: multiple async calls"
+      },
+      "timestamp_valid_from": 1772973759317,
+      "timestamp_valid_to": null,
+      "created_at": 1772973759317,
+      "updated_at": 1772973759317,
+      "confidence": 0.9,
+      "salience": 0.8,
+      "recency": 1,
+      "access_count": 0,
+      "linked_entities": [
+        "handler.js:L78"
+      ],
+      "supersedes": null,
+      "superseded_by": null,
+      "provenance": {
+        "source_type": "failed_attempt",
+        "file_reference": "src/api/handler.js:L78",
+        "timestamp": 1772973759317
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [
+        "bug",
+        "failed",
+        "anti_pattern"
+      ],
+      "pinned": false,
+      "weight": 1
+    },
+    "773c9534d4dc28502e496079110b717a": {
+      "id": "773c9534d4dc28502e496079110b717a",
+      "memory_type": "procedural",
+      "content": {
+        "type": "solution",
+        "bug": "API 调用出现竞态条件，数据不一致",
+        "solution": "使用 Promise.all 同步加载所有依赖"
+      },
+      "timestamp_valid_from": 1772973759322,
+      "timestamp_valid_to": null,
+      "created_at": 1772973759322,
+      "updated_at": 1772973759322,
+      "confidence": 0.95,
+      "salience": 0.9,
+      "recency": 1,
+      "access_count": 0,
+      "linked_entities": [
+        "handler.js:L78"
+      ],
+      "supersedes": [
+        "986b76f1c6fde5a6310bf014e79ffe12"
+      ],
+      "superseded_by": null,
+      "provenance": {
+        "source_type": "success",
+        "file_reference": "src/api/handler.js:L78",
+        "timestamp": 1772973759322
+      },
+      "embedding_refs": [],
+      "symbolic_tags": [
+        "bugfix",
+        "solution",
+        "verified"
+      ],
+      "pinned": false,
+      "weight": 1
+    },
+    "748dc5db09823c541c42bdad12add254": {
+      "id": "748dc5db09823c541c42bdad12add254",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "数据库超时",
+        "rule": "数据库连接超时设置为 30 秒"
+      },
+      "timestamp_valid_from": 1772800959325,
+      "timestamp_valid_to": 1772887359325,
+      "created_at": 1772973759325,
+      "updated_at": 1772973759325,
+      "confidence": 0.5,
+      "salience": 0.5,
+      "recency": 1,
+      "access_count": 0,
+      "linked_entities": [],
+      "supersedes": null,
+      "superseded_by": "config_v2",
+      "provenance": null,
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    },
+    "b70859803adcaa6ce95c89686d8946d7": {
+      "id": "b70859803adcaa6ce95c89686d8946d7",
+      "memory_type": "semantic",
+      "content": {
+        "keyword": "数据库超时",
+        "rule": "数据库连接超时设置为 60 秒"
+      },
+      "timestamp_valid_from": 1772887359328,
+      "timestamp_valid_to": null,
+      "created_at": 1772973759328,
+      "updated_at": 1772973759328,
+      "confidence": 0.5,
+      "salience": 0.5,
+      "recency": 1,
+      "access_count": 0,
+      "linked_entities": [],
+      "supersedes": "748dc5db09823c541c42bdad12add254",
+      "superseded_by": null,
+      "provenance": null,
+      "embedding_refs": [],
+      "symbolic_tags": [],
+      "pinned": false,
+      "weight": 1
+    }
+  },
+  "latent": {},
+  "metadata": {}
+}

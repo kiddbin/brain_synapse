@@ -1,0 +1,739 @@
+{
+  "blindTests": [
+    {
+      "id": "blind_01_query_rewrite",
+      "name": "Query 改写 - 数据库连接池",
+      "type": "query_rewrite",
+      "query": "最大连接数是多少",
+      "expected": {
+        "result_contains": "50"
+      },
+      "actual": {
+        "resultCount": 4,
+        "topResult": {
+          "id": "m1",
+          "content": {
+            "keyword": "连接池",
+            "rule": "数据库连接池最大连接数为 50"
+          }
+        },
+        "latency": 3110
+      },
+      "passed": true,
+      "details": [],
+      "trace": [
+        {
+          "timestamp": 1772979590766,
+          "level": "info",
+          "message": "Recall started: \"最大连接数是多少\"",
+          "data": {
+            "context": {}
+          }
+        },
+        {
+          "timestamp": 1772979593874,
+          "level": "info",
+          "message": "Track A returned 6 candidates",
+          "data": {}
+        },
+        {
+          "timestamp": 1772979593875,
+          "level": "info",
+          "message": "Track B validated to 4 results",
+          "data": {}
+        }
+      ]
+    },
+    {
+      "id": "blind_02_synonym",
+      "name": "同义表达 - 认证/鉴权",
+      "type": "synonym",
+      "query": "身份验证方式",
+      "expected": {
+        "min_results": 1
+      },
+      "actual": {
+        "resultCount": 6,
+        "topResult": {
+          "id": "m2",
+          "content": {
+            "keyword": "鉴权",
+            "rule": "使用 OAuth 2.0 进行身份验证"
+          }
+        },
+        "latency": 598
+      },
+      "passed": true,
+      "details": [],
+      "trace": [
+        {
+          "timestamp": 1772979593954,
+          "level": "info",
+          "message": "Recall started: \"身份验证方式\"",
+          "data": {
+            "context": {}
+          }
+        },
+        {
+          "timestamp": 1772979594551,
+          "level": "info",
+          "message": "Track A returned 6 candidates",
+          "data": {}
+        },
+        {
+          "timestamp": 1772979594552,
+          "level": "info",
+          "message": "Track B validated to 6 results",
+          "data": {}
+        }
+      ]
+    },
+    {
+      "id": "blind_03_file_hard",
+      "name": "File/Path Hard Query",
+      "type": "file_path",
+      "query": "main.js",
+      "expected": {
+        "file_filter": "main.js",
+        "min_results": 1
+      },
+      "actual": {
+        "resultCount": 1,
+        "topResult": {
+          "id": "m3",
+          "content": {
+            "keyword": "初始化",
+            "rule": "在 main.js 中初始化应用"
+          }
+        },
+        "latency": 106
+      },
+      "passed": true,
+      "details": [],
+      "trace": [
+        {
+          "timestamp": 1772979594604,
+          "level": "info",
+          "message": "Recall started: \"main.js\"",
+          "data": {
+            "context": {}
+          }
+        },
+        {
+          "timestamp": 1772979594709,
+          "level": "info",
+          "message": "Track A returned 1 candidates",
+          "data": {}
+        },
+        {
+          "timestamp": 1772979594710,
+          "level": "info",
+          "message": "Track B validated to 1 results",
+          "data": {}
+        }
+      ]
+    },
+    {
+      "id": "blind_04_noisy_log",
+      "name": "Noisy Log 提取",
+      "type": "noisy_log",
+      "query": "数据库超时错误",
+      "expected": {
+        "min_results": 1
+      },
+      "actual": {
+        "resultCount": 4,
+        "topResult": {
+          "id": "semantic_2026-02-23-0700.md_0",
+          "content": {
+            "keyword": "2026-02-23-0700.md",
+            "rule": "[2026-02-23-0700.md] | 项目 | 报告声称 | 实际情况 | 修正建议 |\n|------|---------|---------|---------|\n| **向量检索耗时** | 328ms (向量264ms + 计算64ms) | 代码显示 3s 超时，实际取决于缓存状态 | 有缓存时确实快；无缓存时需构建索引（可能几分钟） |\n| **每次会话省 4500 token",
+            "source": "silicon_embed"
+          }
+        },
+        "latency": 612
+      },
+      "passed": true,
+      "details": [],
+      "trace": [
+        {
+          "timestamp": 1772979594754,
+          "level": "info",
+          "message": "Recall started: \"数据库超时错误\"",
+          "data": {
+            "context": {}
+          }
+        },
+        {
+          "timestamp": 1772979595366,
+          "level": "info",
+          "message": "Track A returned 5 candidates",
+          "data": {}
+        },
+        {
+          "timestamp": 1772979595366,
+          "level": "info",
+          "message": "Track B validated to 4 results",
+          "data": {}
+        }
+      ]
+    },
+    {
+      "id": "blind_05_cross_file",
+      "name": "Cross-File 依赖追踪",
+      "type": "cross_file",
+      "query": "helper 函数",
+      "expected": {
+        "min_results": 2
+      },
+      "actual": {
+        "resultCount": 5,
+        "topResult": {
+          "id": "m6",
+          "content": {
+            "keyword": "导入",
+            "rule": "从 utils.js 导入 helper 函数"
+          }
+        },
+        "latency": 606
+      },
+      "passed": true,
+      "details": [],
+      "trace": [
+        {
+          "timestamp": 1772979595421,
+          "level": "info",
+          "message": "Recall started: \"helper 函数\"",
+          "data": {
+            "context": {}
+          }
+        },
+        {
+          "timestamp": 1772979596026,
+          "level": "info",
+          "message": "Track A returned 7 candidates",
+          "data": {}
+        },
+        {
+          "timestamp": 1772979596027,
+          "level": "info",
+          "message": "Track B validated to 5 results",
+          "data": {}
+        }
+      ]
+    },
+    {
+      "id": "blind_06_stale_supersede",
+      "name": "Stale/Supersede 检测",
+      "type": "stale_supersede",
+      "query": "缓存策略",
+      "expected": {
+        "result_contains": "Redis",
+        "result_id": "m9"
+      },
+      "actual": {
+        "resultCount": 6,
+        "topResult": {
+          "id": "m9",
+          "content": {
+            "keyword": "缓存策略",
+            "rule": "使用 Redis 分布式缓存"
+          }
+        },
+        "latency": 619
+      },
+      "passed": true,
+      "details": [],
+      "trace": [
+        {
+          "timestamp": 1772979596075,
+          "level": "info",
+          "message": "Recall started: \"缓存策略\"",
+          "data": {
+            "context": {}
+          }
+        },
+        {
+          "timestamp": 1772979596693,
+          "level": "info",
+          "message": "Track A returned 7 candidates",
+          "data": {}
+        },
+        {
+          "timestamp": 1772979596694,
+          "level": "info",
+          "message": "Track B validated to 6 results",
+          "data": {}
+        }
+      ]
+    },
+    {
+      "id": "blind_07_abstract_query",
+      "name": "抽象表达 - 性能问题",
+      "type": "abstract",
+      "query": "数据库性能问题怎么解决",
+      "expected": {
+        "min_results": 1
+      },
+      "actual": {
+        "resultCount": 5,
+        "topResult": {
+          "id": "semantic_2026-02-16-0640.md_0",
+          "content": {
+            "keyword": "2026-02-16-0640.md",
+            "rule": "[2026-02-16-0640.md] ## **第一性原理拆解**\n\n### **1. 核心需求分析**\n- **低耗** = 最小化计算资源消耗（CPU、内存、I/O、网络）\n- **高能** = 最大化记忆检索准确性和效率\n- **关键约束** = 本地化、无外部API依赖\n\n### **2. QMD的本质**\n从之前的记忆中，QMD是：\n- **本地 Markdown 混合搜索引擎**\n",
+            "source": "silicon_embed"
+          }
+        },
+        "latency": 604
+      },
+      "passed": true,
+      "details": [],
+      "trace": [
+        {
+          "timestamp": 1772979596741,
+          "level": "info",
+          "message": "Recall started: \"数据库性能问题怎么解决\"",
+          "data": {
+            "context": {}
+          }
+        },
+        {
+          "timestamp": 1772979597345,
+          "level": "info",
+          "message": "Track A returned 5 candidates",
+          "data": {}
+        },
+        {
+          "timestamp": 1772979597345,
+          "level": "info",
+          "message": "Track B validated to 5 results",
+          "data": {}
+        }
+      ]
+    },
+    {
+      "id": "blind_08_query_rewrite_2",
+      "name": "Query 改写 - 端口配置",
+      "type": "query_rewrite",
+      "query": "服务跑在哪个端口",
+      "expected": {
+        "result_contains": "8080"
+      },
+      "actual": {
+        "resultCount": 6,
+        "topResult": {
+          "id": "m12",
+          "content": {
+            "keyword": "端口",
+            "rule": "应用监听端口为 8080"
+          }
+        },
+        "latency": 613
+      },
+      "passed": true,
+      "details": [],
+      "trace": [
+        {
+          "timestamp": 1772979597387,
+          "level": "info",
+          "message": "Recall started: \"服务跑在哪个端口\"",
+          "data": {
+            "context": {}
+          }
+        },
+        {
+          "timestamp": 1772979598000,
+          "level": "info",
+          "message": "Track A returned 6 candidates",
+          "data": {}
+        },
+        {
+          "timestamp": 1772979598000,
+          "level": "info",
+          "message": "Track B validated to 6 results",
+          "data": {}
+        }
+      ]
+    }
+  ],
+  "semanticComparison": {
+    "results": [
+      {
+        "query": "如何处理并发请求",
+        "type": "low_lexical_overlap",
+        "semanticEnabled": {
+          "resultCount": 7,
+          "latency": 606,
+          "topScore": 0.2,
+          "confidence": 0.4158883083359672
+        },
+        "semanticDisabled": {
+          "resultCount": 2,
+          "latency": 1,
+          "topScore": 0.2,
+          "confidence": 0.21972245773362192
+        },
+        "fallbackStatus": {
+          "initialized": true,
+          "available": true,
+          "enabled": true,
+          "config": {
+            "minResultCount": 3,
+            "minTopScore": 0.5,
+            "semanticScoreFactor": 0.7,
+            "maxSemanticResults": 5,
+            "enabled": true
+          }
+        },
+        "difference": {
+          "resultCountDiff": 5,
+          "latencyDiff": 605
+        }
+      },
+      {
+        "query": "系统架构设计原则",
+        "type": "low_lexical_overlap",
+        "semanticEnabled": {
+          "resultCount": 7,
+          "latency": 624,
+          "topScore": 0.2,
+          "confidence": 0.4158883083359672
+        },
+        "semanticDisabled": {
+          "resultCount": 2,
+          "latency": 2,
+          "topScore": 0.2,
+          "confidence": 0.21972245773362192
+        },
+        "fallbackStatus": {
+          "initialized": true,
+          "available": true,
+          "enabled": true,
+          "config": {
+            "minResultCount": 3,
+            "minTopScore": 0.5,
+            "semanticScoreFactor": 0.7,
+            "maxSemanticResults": 5,
+            "enabled": true
+          }
+        },
+        "difference": {
+          "resultCountDiff": 5,
+          "latencyDiff": 622
+        }
+      },
+      {
+        "query": "错误处理最佳实践",
+        "type": "low_lexical_overlap",
+        "semanticEnabled": {
+          "resultCount": 7,
+          "latency": 109,
+          "topScore": 0.2,
+          "confidence": 0.4158883083359672
+        },
+        "semanticDisabled": {
+          "resultCount": 2,
+          "latency": 1,
+          "topScore": 0.2,
+          "confidence": 0.21972245773362192
+        },
+        "fallbackStatus": {
+          "initialized": true,
+          "available": true,
+          "enabled": true,
+          "config": {
+            "minResultCount": 3,
+            "minTopScore": 0.5,
+            "semanticScoreFactor": 0.7,
+            "maxSemanticResults": 5,
+            "enabled": true
+          }
+        },
+        "difference": {
+          "resultCountDiff": 5,
+          "latencyDiff": 108
+        }
+      },
+      {
+        "query": "src/handler.js",
+        "type": "file_path_query",
+        "semanticEnabled": {
+          "resultCount": 2,
+          "latency": 106,
+          "topScore": 0.5,
+          "confidence": 0.5493061443340548
+        },
+        "semanticDisabled": {
+          "resultCount": 2,
+          "latency": 1,
+          "topScore": 0.5,
+          "confidence": 0.5493061443340548
+        },
+        "fallbackStatus": {
+          "initialized": true,
+          "available": true,
+          "enabled": true,
+          "config": {
+            "minResultCount": 3,
+            "minTopScore": 0.5,
+            "semanticScoreFactor": 0.7,
+            "maxSemanticResults": 5,
+            "enabled": true
+          }
+        },
+        "difference": {
+          "resultCountDiff": 0,
+          "latencyDiff": 105
+        }
+      },
+      {
+        "query": "config.json",
+        "type": "file_path_query",
+        "semanticEnabled": {
+          "resultCount": 1,
+          "latency": 106,
+          "topScore": 0.5,
+          "confidence": 0.34657359027997264
+        },
+        "semanticDisabled": {
+          "resultCount": 1,
+          "latency": 2,
+          "topScore": 0.5,
+          "confidence": 0.34657359027997264
+        },
+        "fallbackStatus": {
+          "initialized": true,
+          "available": true,
+          "enabled": true,
+          "config": {
+            "minResultCount": 3,
+            "minTopScore": 0.5,
+            "semanticScoreFactor": 0.7,
+            "maxSemanticResults": 5,
+            "enabled": true
+          }
+        },
+        "difference": {
+          "resultCountDiff": 0,
+          "latencyDiff": 104
+        }
+      },
+      {
+        "query": "validateEmail",
+        "type": "identifier_query",
+        "semanticEnabled": {
+          "resultCount": 1,
+          "latency": 102,
+          "topScore": 0.5,
+          "confidence": 0.34657359027997264
+        },
+        "semanticDisabled": {
+          "resultCount": 1,
+          "latency": 1,
+          "topScore": 0.5,
+          "confidence": 0.34657359027997264
+        },
+        "fallbackStatus": {
+          "initialized": true,
+          "available": true,
+          "enabled": true,
+          "config": {
+            "minResultCount": 3,
+            "minTopScore": 0.5,
+            "semanticScoreFactor": 0.7,
+            "maxSemanticResults": 5,
+            "enabled": true
+          }
+        },
+        "difference": {
+          "resultCountDiff": 0,
+          "latencyDiff": 101
+        }
+      },
+      {
+        "query": "数据库优化方案",
+        "type": "low_lexical_overlap",
+        "semanticEnabled": {
+          "resultCount": 7,
+          "latency": 628,
+          "topScore": 0.24615384615384617,
+          "confidence": 0.5118625333365749
+        },
+        "semanticDisabled": {
+          "resultCount": 2,
+          "latency": 1,
+          "topScore": 0.24615384615384617,
+          "confidence": 0.2704276402875347
+        },
+        "fallbackStatus": {
+          "initialized": true,
+          "available": true,
+          "enabled": true,
+          "config": {
+            "minResultCount": 3,
+            "minTopScore": 0.5,
+            "semanticScoreFactor": 0.7,
+            "maxSemanticResults": 5,
+            "enabled": true
+          }
+        },
+        "difference": {
+          "resultCountDiff": 5,
+          "latencyDiff": 627
+        }
+      },
+      {
+        "query": "安全防护措施",
+        "type": "low_lexical_overlap",
+        "semanticEnabled": {
+          "resultCount": 4,
+          "latency": 611,
+          "topScore": 0.21818181818181817,
+          "confidence": 0.35115008998562186
+        },
+        "semanticDisabled": {
+          "resultCount": 1,
+          "latency": 0,
+          "topScore": 0.21818181818181817,
+          "confidence": 0.15123211212216986
+        },
+        "fallbackStatus": {
+          "initialized": true,
+          "available": true,
+          "enabled": true,
+          "config": {
+            "minResultCount": 3,
+            "minTopScore": 0.5,
+            "semanticScoreFactor": 0.7,
+            "maxSemanticResults": 5,
+            "enabled": true
+          }
+        },
+        "difference": {
+          "resultCountDiff": 3,
+          "latencyDiff": 611
+        }
+      }
+    ],
+    "summary": {
+      "totalQueries": 8,
+      "fileQueriesBlocked": 3,
+      "semanticAvailable": 8
+    }
+  },
+  "indexAudit": {
+    "indexBuildStatus": {
+      "built": true,
+      "tokenIndexSize": 30,
+      "entityIndexSize": 5,
+      "fileIndexSize": 3,
+      "adjacencyListSize": 3
+    },
+    "lookupTests": {
+      "token": {
+        "query": "测试",
+        "expected": 2,
+        "actual": 2,
+        "passed": true
+      },
+      "entity": {
+        "query": "test",
+        "expected": 3,
+        "actual": 2,
+        "passed": false
+      },
+      "file": {
+        "query": "test.js",
+        "expected": 2,
+        "actual": 2,
+        "passed": true
+      }
+    },
+    "fullScanLocations": [
+      {
+        "file": "track_a_intuitive.js",
+        "method": "_anchorConceptsFallback",
+        "type": "fallback_path",
+        "severity": "medium",
+        "description": "Fallback path uses full scan when index not built"
+      },
+      {
+        "file": "track_a_intuitive.js",
+        "method": "_hebbianSpreadFallback",
+        "type": "fallback_path",
+        "severity": "medium",
+        "description": "Hebbian spread fallback uses full scan"
+      },
+      {
+        "file": "track_b_deliberative.js",
+        "method": "directQuery",
+        "type": "query_path",
+        "severity": "high",
+        "description": "directQuery uses getAll() which is full scan"
+      },
+      {
+        "file": "backend_json.js",
+        "method": "query",
+        "type": "query_path",
+        "severity": "medium",
+        "description": "Generic query method uses filter on all memories"
+      }
+    ]
+  },
+  "layer4Audit": {
+    "bugfixScenario": {
+      "rawCount": 7,
+      "packedCount": 7,
+      "tokenCount": 1060,
+      "conflicts": 0,
+      "staleWarnings": 5
+    },
+    "configScenario": {
+      "rawCount": 5,
+      "packedCount": 5,
+      "tokenCount": 872
+    },
+    "codingScenario": {
+      "rawCount": 5,
+      "packedCount": 5,
+      "tokenCount": 844
+    },
+    "tokenBudgetTest": {
+      "budget": 500,
+      "packedCount": 7,
+      "actualTokens": 1060
+    }
+  },
+  "vulnerabilities": [
+    {
+      "severity": "high",
+      "area": "IndexManager",
+      "description": "1 index lookup tests failed"
+    },
+    {
+      "severity": "high",
+      "area": "IndexManager",
+      "description": "1 high-severity full scan paths exist"
+    }
+  ],
+  "strengths": [
+    {
+      "area": "Blind Tests",
+      "description": "All 8 blind tests passed"
+    },
+    {
+      "area": "Semantic Fallback",
+      "description": "Semantic fallback properly configured and functional"
+    },
+    {
+      "area": "Context Packer",
+      "description": "Conflict and stale detection working"
+    }
+  ],
+  "blindTestSummary": {
+    "passed": 8,
+    "failed": 0,
+    "total": 8
+  }
+}

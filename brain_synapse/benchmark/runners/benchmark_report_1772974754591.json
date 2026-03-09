@@ -1,0 +1,63 @@
+{
+  "summary": {
+    "total": 5,
+    "passed": 5,
+    "failed": 0,
+    "passRate": "100.00%",
+    "avgLatency": "2.40ms"
+  },
+  "testResults": [
+    {
+      "id": "temporal_conflict_01",
+      "name": "配置变更 - 超时设置",
+      "type": "temporal_conflict",
+      "passed": true,
+      "latency": 5,
+      "resultCount": 1,
+      "confidence": 0.17328679513998632,
+      "query": "数据库连接超时是多少？"
+    },
+    {
+      "id": "failed_attempt_01",
+      "name": "Failed-Attempt 检索",
+      "type": "failed_attempt",
+      "passed": true,
+      "latency": 2,
+      "resultCount": 2,
+      "confidence": 0.7690286020676766,
+      "query": "竞态条件 解决方案"
+    },
+    {
+      "id": "file_reference_01",
+      "name": "文件特定查询",
+      "type": "file_specific",
+      "passed": true,
+      "latency": 2,
+      "resultCount": 2,
+      "confidence": 0.7690286020676766,
+      "query": "config/app.js 的配置"
+    },
+    {
+      "id": "conflict_resolution_01",
+      "name": "冲突消解 - 细化关系",
+      "type": "conflict_resolution",
+      "passed": true,
+      "latency": 1,
+      "resultCount": 1,
+      "confidence": 0.4158883083359672,
+      "query": "错误处理"
+    },
+    {
+      "id": "recall_precision_01",
+      "name": "召回率测试 - 赫布扩散",
+      "type": "recall_precision",
+      "passed": true,
+      "latency": 2,
+      "resultCount": 3,
+      "confidence": 1,
+      "query": "browser"
+    }
+  ],
+  "timestamp": "2026-03-08T12:59:14.589Z",
+  "version": "2.0.0"
+}

@@ -1,0 +1,55 @@
+{
+  "summary": {
+    "total": 5,
+    "passed": 0,
+    "failed": 5,
+    "passRate": "0.00%",
+    "avgLatency": "Infinityms"
+  },
+  "testResults": [
+    {
+      "id": "temporal_conflict_01",
+      "name": "配置变更 - 超时设置",
+      "type": "temporal_conflict",
+      "passed": false,
+      "latency": 2,
+      "resultCount": 0,
+      "confidence": 0,
+      "query": "数据库连接超时是多少？"
+    },
+    {
+      "id": "failed_attempt_01",
+      "name": "Failed-Attempt 检索",
+      "type": "failed_attempt",
+      "passed": false,
+      "latency": 1,
+      "resultCount": 0,
+      "confidence": 0,
+      "query": "竞态条件 解决方案"
+    },
+    {
+      "id": "file_reference_01",
+      "name": "文件特定查询",
+      "type": "file_specific",
+      "passed": false,
+      "latency": 1,
+      "resultCount": 0,
+      "confidence": 0,
+      "query": "config/app.js 的配置"
+    },
+    {
+      "id": "conflict_resolution_01",
+      "name": "冲突消解 - 细化关系",
+      "passed": false,
+      "error": "frontier.addAll is not a function"
+    },
+    {
+      "id": "recall_precision_01",
+      "name": "召回率测试 - 赫布扩散",
+      "passed": false,
+      "error": "frontier.addAll is not a function"
+    }
+  ],
+  "timestamp": "2026-03-08T12:42:57.203Z",
+  "version": "2.0.0"
+}

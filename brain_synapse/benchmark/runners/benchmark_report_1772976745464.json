@@ -1,0 +1,255 @@
+{
+  "summary": {
+    "total": 15,
+    "passed": 3,
+    "failed": 12,
+    "passRate": "20.00%",
+    "avgLatency": "1.64ms"
+  },
+  "typeStats": {
+    "temporal_conflict": {
+      "total": 3,
+      "passed": 0
+    },
+    "failed_attempt": {
+      "total": 2,
+      "passed": 1
+    },
+    "file_specific": {
+      "total": 2,
+      "passed": 0
+    },
+    "conflict_resolution": {
+      "total": 2,
+      "passed": 1
+    },
+    "recall_precision": {
+      "total": 2,
+      "passed": 0
+    },
+    "noisy_log": {
+      "total": 1,
+      "passed": 0
+    },
+    "cross_file": {
+      "total": 1,
+      "passed": 0
+    },
+    "architecture_decision": {
+      "total": 1,
+      "passed": 0
+    },
+    "edge_case": {
+      "total": 1,
+      "passed": 1
+    }
+  },
+  "testResults": [
+    {
+      "id": "temporal_conflict_01",
+      "name": "配置变更 - 超时设置",
+      "type": "temporal_conflict",
+      "passed": false,
+      "latency": 2,
+      "resultCount": 2,
+      "confidence": 0.5493061443340548,
+      "query": "数据库连接超时是多少？",
+      "validationDetails": [
+        "unexpected_content_found:30 秒"
+      ]
+    },
+    {
+      "id": "temporal_conflict_02",
+      "name": "策略更新 - 重试机制",
+      "type": "temporal_conflict",
+      "passed": false,
+      "latency": 2,
+      "resultCount": 2,
+      "confidence": 0.5493061443340548,
+      "query": "重试策略是什么？",
+      "validationDetails": [
+        "unexpected_content_found:重试 3 次"
+      ]
+    },
+    {
+      "id": "temporal_conflict_03",
+      "name": "版本迭代 - API 端点",
+      "type": "temporal_conflict",
+      "passed": false,
+      "latency": 1,
+      "resultCount": 2,
+      "confidence": 0.5493061443340548,
+      "query": "用户 API 端点",
+      "validationDetails": [
+        "unexpected_content_found:/api/v1/"
+      ]
+    },
+    {
+      "id": "failed_attempt_01",
+      "name": "Failed-Attempt 检索",
+      "type": "failed_attempt",
+      "passed": false,
+      "latency": 1,
+      "resultCount": 0,
+      "confidence": 0,
+      "query": "竞态条件 解决方案",
+      "validationDetails": [
+        "expected_content_not_found:Promise.all",
+        "failed_attempts_count_mismatch:expected=1,actual=0"
+      ]
+    },
+    {
+      "id": "failed_attempt_02",
+      "name": "Failed-Attempt 阻止重复错误",
+      "type": "failed_attempt",
+      "passed": true,
+      "latency": 3,
+      "resultCount": 1,
+      "confidence": 0.34657359027997264,
+      "query": "认证 token 传递",
+      "validationDetails": []
+    },
+    {
+      "id": "file_reference_01",
+      "name": "文件特定查询",
+      "type": "file_specific",
+      "passed": false,
+      "latency": 3,
+      "resultCount": 0,
+      "confidence": 0,
+      "query": "config/app.js 的配置",
+      "validationDetails": [
+        "insufficient_results:expected>=2,actual=0",
+        "file_filter_failed:config/app.js"
+      ]
+    },
+    {
+      "id": "file_reference_02",
+      "name": "路径模糊匹配",
+      "type": "file_specific",
+      "passed": false,
+      "latency": 2,
+      "resultCount": 0,
+      "confidence": 0,
+      "query": "errorHandler 相关",
+      "validationDetails": [
+        "insufficient_results:expected>=2,actual=0",
+        "file_filter_failed:errorHandler"
+      ]
+    },
+    {
+      "id": "conflict_resolution_01",
+      "name": "冲突消解 - 细化关系",
+      "type": "conflict_resolution",
+      "passed": true,
+      "latency": 1,
+      "resultCount": 2,
+      "confidence": 0.5493061443340548,
+      "query": "错误处理",
+      "validationDetails": []
+    },
+    {
+      "id": "conflict_resolution_02",
+      "name": "冲突消解 - 取代关系",
+      "type": "conflict_resolution",
+      "passed": false,
+      "latency": 2,
+      "resultCount": 2,
+      "confidence": 0.5493061443340548,
+      "query": "数据库选择",
+      "validationDetails": [
+        "unexpected_content_found:MySQL"
+      ]
+    },
+    {
+      "id": "recall_precision_01",
+      "name": "召回率测试 - 赫布扩散",
+      "type": "recall_precision",
+      "passed": false,
+      "latency": 1,
+      "resultCount": 1,
+      "confidence": 0.34657359027997264,
+      "query": "browser",
+      "validationDetails": [
+        "insufficient_results:expected>=2,actual=1",
+        "expected_activations_missing:mem_playwright"
+      ]
+    },
+    {
+      "id": "recall_precision_02",
+      "name": "实体关联扩散",
+      "type": "recall_precision",
+      "passed": false,
+      "latency": 1,
+      "resultCount": 2,
+      "confidence": 0.5493061443340548,
+      "query": "缓存",
+      "validationDetails": [
+        "expected_activations_missing:mem_redis"
+      ]
+    },
+    {
+      "id": "noisy_log_01",
+      "name": "噪声日志提取关键信息",
+      "type": "noisy_log",
+      "passed": false,
+      "latency": 2,
+      "resultCount": 0,
+      "confidence": 0,
+      "query": "user.js 错误",
+      "validationDetails": [
+        "expected_content_not_found:TypeError",
+        "file_filter_failed:user.js"
+      ]
+    },
+    {
+      "id": "cross_file_01",
+      "name": "跨文件依赖追踪",
+      "type": "cross_file",
+      "passed": false,
+      "latency": 1,
+      "resultCount": 1,
+      "confidence": 0.34657359027997264,
+      "query": "validateEmail 在哪里使用",
+      "validationDetails": [
+        "insufficient_results:expected>=2,actual=1"
+      ]
+    },
+    {
+      "id": "architecture_decision_01",
+      "name": "架构决策追溯",
+      "type": "architecture_decision",
+      "passed": false,
+      "error": "memory_type is not defined"
+    },
+    {
+      "id": "edge_case_01",
+      "name": "干扰项过滤",
+      "type": "edge_case",
+      "passed": true,
+      "latency": 1,
+      "resultCount": 1,
+      "confidence": 0.34657359027997264,
+      "query": "登录认证方式",
+      "validationDetails": []
+    }
+  ],
+  "metadata": {
+    "version": "2.1.0",
+    "created_at": "2026-03-08",
+    "total_cases": 15,
+    "categories": {
+      "temporal_conflict": 3,
+      "failed_attempt": 2,
+      "file_specific": 2,
+      "conflict_resolution": 2,
+      "recall_precision": 2,
+      "noisy_log": 1,
+      "cross_file": 1,
+      "architecture_decision": 1,
+      "edge_case": 1
+    }
+  },
+  "timestamp": "2026-03-08T13:32:25.456Z",
+  "version": "2.1.0"
+}

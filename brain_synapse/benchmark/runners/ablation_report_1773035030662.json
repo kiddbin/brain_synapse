@@ -1,0 +1,78 @@
+{
+  "scale": 10000,
+  "weights": [
+    0,
+    0.1,
+    0.2,
+    0.3,
+    0.4
+  ],
+  "results": {
+    "0": {
+      "weight": 0,
+      "passRate": "10.00",
+      "top1Correctness": "N/A",
+      "irrelevantRatio": "0.00",
+      "avgLatency": "24.5",
+      "passed": 2,
+      "failed": 18,
+      "top1Correct": 0,
+      "top1Total": 0,
+      "irrelevantCount": 0,
+      "totalResults": 0
+    },
+    "0.1": {
+      "weight": 0.1,
+      "passRate": "10.00",
+      "top1Correctness": "N/A",
+      "irrelevantRatio": "0.00",
+      "avgLatency": "16.4",
+      "passed": 2,
+      "failed": 18,
+      "top1Correct": 0,
+      "top1Total": 0,
+      "irrelevantCount": 0,
+      "totalResults": 0
+    },
+    "0.2": {
+      "weight": 0.2,
+      "passRate": "10.00",
+      "top1Correctness": "N/A",
+      "irrelevantRatio": "0.00",
+      "avgLatency": "16.3",
+      "passed": 2,
+      "failed": 18,
+      "top1Correct": 0,
+      "top1Total": 0,
+      "irrelevantCount": 0,
+      "totalResults": 0
+    },
+    "0.3": {
+      "weight": 0.3,
+      "passRate": "10.00",
+      "top1Correctness": "N/A",
+      "irrelevantRatio": "0.00",
+      "avgLatency": "16.5",
+      "passed": 2,
+      "failed": 18,
+      "top1Correct": 0,
+      "top1Total": 0,
+      "irrelevantCount": 0,
+      "totalResults": 0
+    },
+    "0.4": {
+      "weight": 0.4,
+      "passRate": "10.00",
+      "top1Correctness": "N/A",
+      "irrelevantRatio": "0.00",
+      "avgLatency": "18.6",
+      "passed": 2,
+      "failed": 18,
+      "top1Correct": 0,
+      "top1Total": 0,
+      "irrelevantCount": 0,
+      "totalResults": 0
+    }
+  },
+  "timestamp": "2026-03-09T05:43:50.662Z"
+}

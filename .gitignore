@@ -1,36 +1,31 @@
-# Dependencies
+# Runtime data (memory storage)
+synapse_weights.v2.json
+latent_weights.v2.json
+memory_guardian_log.json
+*.log
+*.tmp
+
+# Node dependencies
 node_modules/
 
-# Logs
-logs/
-*.log
+# Test artifacts
+__tests__/
+coverage/
 
-# Data files (keep templates)
-*.json
-!package.json
+# Observations (optional)
+observations/
+instincts/
+plasticity/
 
-# Runtime data
-*.jsonl
-observations.jsonl
-
-# Cache
-cache/
-.vector_cache/
-local_index_cache.json
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
 
 # OS
 .DS_Store
 Thumbs.db
 
-# IDE
-.vscode/
-.idea/
-
 # Environment
 .env
-.env.local
-
-# API Keys (NEVER commit)
-*api*.js
-*key*.js
-credentials.json
