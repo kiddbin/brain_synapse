@@ -16,6 +16,7 @@
  */
 
 const SemanticFallback = require('./semantic_fallback');
+const { expandQuery, getSynonyms } = require('./synonyms');
 
 class TrackAIntuitive {
     /**
@@ -65,24 +66,38 @@ class TrackAIntuitive {
     }
 
     /**
-     * 提取查询 Token
+     * 提取查询 Token（支持英文词干提取 + 中文二元组）
      * @private
      * @param {string} text - 文本
      * @returns {Array<string>}
      */
     _extractTokens(text) {
         const textLower = text.toLowerCase();
-        const words = textLower.match(/[a-z0-9]+/g) || [];
+        
+        // 英文：提取单词 + 词干归一化（Layer 1: 词法归一化）
+        const englishWords = textLower.match(/[a-z0-9]+/g) || [];
+        let stemmedWords = [];
+        try {
+            const stemmer = require('stemmer');
+            stemmedWords = englishWords.map(w => stemmer(w));
+        } catch (e) {
+            // stemmer 未安装时降级处理
+            stemmedWords = englishWords;
+        }
+        
+        // 中文：保持原有逻辑（汉字 + 二元组）
         const hanzi = textLower.match(/[\u4e00-\u9fa5]/g) || [];
         const bigrams = [];
         for (let i = 0; i < hanzi.length - 1; i++) {
             bigrams.push(hanzi[i] + hanzi[i+1]);
         }
-        return [...new Set([...words, ...hanzi, ...bigrams])];
+        
+        // 合并：原词 + 词干（提高召回率）
+        return [...new Set([...englishWords, ...stemmedWords, ...hanzi, ...bigrams])];
     }
 
     /**
-     * 锚定检索 - 使用 IndexManager O(T) 查找
+     * 锚定检索 - 使用 IndexManager O(T) 查找 + 同义词扩展（Layer 2）
      * @param {string} query - 查询
      * @returns {Array<string>} 锚定概念列表
      */
@@ -90,6 +105,9 @@ class TrackAIntuitive {
         const anchorStart = Date.now();
         const queryTokens = this._extractTokens(query);
         const queryLower = query.toLowerCase();
+        
+        // Layer 2: 同义词扩展
+        const expandedTokens = expandQuery(queryTokens);
         
         const anchorSet = new Set();
         const indexManager = this.backend.indexManager;
@@ -101,7 +119,15 @@ class TrackAIntuitive {
             return fallbackResult;
         }
         
+        // 原始 Token 匹配
         for (const token of queryTokens) {
+            const matchedIds = indexManager.getMemoriesByToken(token);
+            matchedIds.forEach(id => anchorSet.add(id));
+        }
+        
+        // 同义词扩展匹配（权重衰减，在排序时处理）
+        const synonymTokens = expandedTokens.filter(t => !queryTokens.includes(t));
+        for (const token of synonymTokens) {
             const matchedIds = indexManager.getMemoriesByToken(token);
             matchedIds.forEach(id => anchorSet.add(id));
         }
@@ -110,7 +136,7 @@ class TrackAIntuitive {
         fullQueryMatches.forEach(id => anchorSet.add(id));
         
         this.lastAnchorMs = Date.now() - anchorStart;
-        console.log(`[TrackA] ✓ Anchor retrieval: ${anchorSet.size} concepts in ${this.lastAnchorMs}ms`);
+        console.log(`[TrackA] ✓ Anchor retrieval: ${anchorSet.size} concepts (with synonyms) in ${this.lastAnchorMs}ms`);
         return Array.from(anchorSet);
     }
 
@@ -363,7 +389,7 @@ class TrackAIntuitive {
     }
 
     /**
-     * 计算激活分数
+     * 计算激活分数（支持同义词权重衰减）
      * @private
      * @param {Object} memory - 记忆
      * @param {string} query - 查询
@@ -373,18 +399,38 @@ class TrackAIntuitive {
         const memoryText = this._getTextContent(memory).toLowerCase();
         const queryLower = query.toLowerCase();
         const queryTokens = this._extractTokens(query);
+        const expandedTokens = expandQuery(queryTokens);
+        
+        // 识别哪些是同义词（需要权重衰减）
+        const synonymTokens = expandedTokens.filter(t => !queryTokens.includes(t));
         
         let score = 0;
         if (memoryText.includes(queryLower)) {
             score = 1.0;
         } else {
-            let matchCount = 0;
+            let originalMatchCount = 0;
+            let synonymMatchCount = 0;
+            
             for (const token of queryTokens) {
-                if (memoryText.includes(token)) matchCount++;
+                if (memoryText.includes(token)) originalMatchCount++;
             }
-            if (queryTokens.length > 0) {
-                score = (matchCount / queryTokens.length) * 0.8;
-            } else {
+            
+            // 同义词匹配（权重衰减）
+            for (const token of synonymTokens) {
+                if (memoryText.includes(token)) synonymMatchCount++;
+            }
+            
+            // 原始词匹配权重 1.0，同义词匹配权重 0.7
+            const originalScore = queryTokens.length > 0 
+                ? (originalMatchCount / queryTokens.length) * 0.8 
+                : 0;
+            const synonymScore = synonymTokens.length > 0 
+                ? (synonymMatchCount / synonymTokens.length) * 0.8 * 0.7 
+                : 0;
+            
+            score = originalScore + synonymScore;
+            
+            if (score === 0 && (originalMatchCount > 0 || synonymMatchCount > 0)) {
                 score = 0.3;
             }
         }
